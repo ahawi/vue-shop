@@ -19,6 +19,7 @@ const props = defineProps<TextProps>()
 <style scoped lang="scss">
 .typography {
   line-height: 150%;
+  font-weight: 400;
 }
 
 .text-size {

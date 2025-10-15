@@ -9,6 +9,7 @@
 
 body {
   background-color: var(--main-page-background);
+  color: var(--main-on-surface);
 }
 
 ul,
@@ -19,10 +20,4 @@ ol {
 a {
   text-decoration: none;
   color: unset;
-}
-
-.container {
-  max-width: 1280px;
-  padding-inline: 15px;
-  width: 100%;
 }

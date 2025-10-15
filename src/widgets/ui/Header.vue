@@ -1,29 +1,95 @@
 <script setup lang="ts">
-import { LogoMouthColor, LogoTextColor, LogoVariant } from '@/shared/types'
-import { Button } from '@/shared/ui'
-import { Logo } from '@/shared/ui'
+import { LogoMouthColor, LogoTextColor, LogoVariant, IconColor } from '@/shared/types'
+import { Button, Logo, Field, Icon, Typography } from '@/shared/ui'
 </script>
 
 <template>
   <header class="header">
     <div class="header__container">
-      <div class="header__inner">
-        <div class="logo">
-          <Logo
-            :variant="LogoVariant.TEXT"
-            :mouth-color="LogoMouthColor.ORANGE"
-            :color="LogoTextColor.BLACK"
-          />
-        </div>
+      <a href="/" class="header__logo">
+        <Logo
+          :variant="LogoVariant.TEXT"
+          :mouth-color="LogoMouthColor.ORANGE"
+          :color="LogoTextColor.BLACK"
+        />
+      </a>
+      <div class="header__actions">
         <Button
-          :icon="{ type: 'menu', textColor: 'black', width: 24, height: 24, position: 'left' }"
+          :left-icon="{
+            type: 'menu',
+            textColor: IconColor.BLACK,
+            width: 24,
+            height: 24,
+          }"
           background-color="secondary"
           decoration="outline"
           size="m"
           :disabled="false"
           >Каталог</Button
         >
+        <Field
+          :right-icon="{
+            type: 'search',
+            textColor: IconColor.BLACK,
+            width: 24,
+            height: 24,
+          }"
+          :label="false"
+          :disabled="false"
+          placeholder="Найти товар"
+          size="m"
+          class="header__search"
+        ></Field>
       </div>
+
+      <div class="header__controls">
+        <Button
+          :top-icon="{
+            type: 'favorite',
+            textColor: IconColor.BLACK,
+            width: 24,
+            height: 24,
+          }"
+          class="header__control"
+        >
+          <Typography tag="p" size="xs">Избранное</Typography>
+        </Button>
+        <Button
+          :top-icon="{
+            type: 'order',
+            textColor: IconColor.BLACK,
+            width: 24,
+            height: 24,
+          }"
+          class="header__control"
+        >
+          <Typography tag="p" size="xs">Заказы</Typography>
+        </Button>
+        <Button
+          :top-icon="{
+            type: 'cart',
+            textColor: IconColor.BLACK,
+            width: 24,
+            height: 24,
+          }"
+          class="header__control"
+        >
+          <Typography tag="p" size="xs">Корзина</Typography>
+        </Button>
+      </div>
+
+      <Button
+        class="header__user"
+        :left-icon="{ type: 'user' }"
+        :right-icon="{
+          type: 'arrow-down',
+          textColor: IconColor.BLACK,
+          width: 24,
+          height: 24,
+        }"
+      >
+        <Typography tag="span" size="s">Алексей</Typography></Button
+      >
     </div>
   </header>
 </template>
@@ -40,18 +106,63 @@ import { Logo } from '@/shared/ui'
 }
 
 .header__container {
-  max-width: 1280px;
-  padding: 15px;
-}
-
-.header__inner {
+  max-width: 1208px;
+  padding: 10px 15px;
+  margin-inline: auto;
   display: flex;
   align-items: center;
-  justify-content: start;
+  justify-content: space-between;
+  gap: 40px;
 }
 
-.logo {
+.header__logo {
   width: 152px;
   height: 32px;
+}
+
+.header__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex: 1;
+}
+
+.header__user-actions {
+  display: flex;
+  align-items: center;
+}
+
+.header__controls {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  gap: 24px;
+}
+
+.header__search {
+  flex: 1;
+}
+
+.header__control {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    color: var(--main-secondary);
+  }
+}
+
+.header__user {
+  padding: 0;
+
+  :deep(.button__text) {
+    padding-left: 0 !important;
+  }
+
+  &:hover {
+    color: var(--main-secondary);
+  }
 }
 </style>

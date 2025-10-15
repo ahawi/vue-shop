@@ -4,11 +4,13 @@ import Typography from './Typography.vue'
 import Icon, { type IconProps } from './Icon.vue'
 
 interface ButtonProps {
-  icon?: IconProps
+  leftIcon?: IconProps
+  rightIcon?: IconProps
+  topIcon?: IconProps
   backgroundColor?: 'primary' | 'secondary' | 'grayscale' | 'error'
   decoration?: 'default' | 'outline' | 'none'
   size?: 's' | 'm' | 'l'
-  disabled: boolean
+  disabled?: boolean
 }
 
 const props = defineProps<ButtonProps>()
@@ -41,27 +43,36 @@ const buttonTextSize = () => {
           ? 'outline'
           : 'default'
         : props.decoration || '',
+      props.topIcon ? 'zero-padding' : '',
     ]"
     @mouseenter="isHovered = true"
     @mouseleave="isHovered = false"
   >
-    <Icon v-if="props.icon?.position === 'left'" v-bind="props.icon" />
-    <Typography tag="p" :size="buttonTextSize()" class="button__text"><slot></slot></Typography>
-    <Icon v-if="props.icon?.position === 'right'" v-bind="props.icon" />
+    <Icon v-if="props.leftIcon" v-bind="props.leftIcon" />
+    <Icon v-if="props.topIcon" v-bind="props.topIcon" />
+    <Typography
+      tag="p"
+      :size="buttonTextSize()"
+      :class="['button__text', props.topIcon ? 'zero-padding' : '']"
+      ><slot></slot
+    ></Typography>
+    <Icon v-if="props.rightIcon" v-bind="props.rightIcon" />
   </button>
 </template>
 
 <style lang="scss">
 @use '@/app/styles/index.scss';
+
 .button {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 8px;
+  padding: 7px 8px;
   gap: 8px;
   border-radius: 4px;
   background-color: transparent;
-  border-color: transparent;
+  color: var(--main-on-surface);
+  border: 1px solid transparent;
   cursor: pointer;
   transition:
     background-color 0.3s ease,
@@ -73,13 +84,17 @@ const buttonTextSize = () => {
   }
 }
 
+.button__text {
+  padding-inline: 14px;
+}
+
+.zero-padding {
+  padding: 0;
+}
+
 .outline {
   border: 1px solid currentColor;
   background-color: transparent;
-}
-
-.button__text {
-  padding-inline: 14px;
 }
 
 .secondary {

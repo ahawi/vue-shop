@@ -1,2 +1,3 @@
 import { LogoMouthColor, LogoTextColor, LogoVariant } from './logo'
-export { LogoMouthColor, LogoTextColor, LogoVariant }
+import { IconColor } from './icon'
+export { LogoMouthColor, LogoTextColor, LogoVariant, IconColor }
