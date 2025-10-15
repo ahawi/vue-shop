@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 interface TextProps {
   tag: 'span' | 'p' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5'
-  bold?: Boolean
+  bold?: boolean
   size?: 'xs' | 's' | 'm' | 'l' | 'xl'
 }
 
