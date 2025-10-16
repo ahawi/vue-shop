@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { LogoMouthColor, LogoTextColor, LogoVariant } from '../types/logo'
+import { LogoMouthColor, LogoTextColor, LogoVariant } from '../lib/types/logo'
 
 interface LogoProps {
   variant: LogoVariant

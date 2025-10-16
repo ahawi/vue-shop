@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { IconColor } from '../types'
+import type { IconColor } from '../lib/types'
 
 export interface IconProps {
   type:
@@ -189,6 +189,23 @@ const { type, width, height, textColor } = props
           fill-rule="evenodd"
           clip-rule="evenodd"
           d="M5.64645 8.64645C5.84171 8.45118 6.15829 8.45118 6.35355 8.64645L12 14.2929L17.6464 8.64645C17.8417 8.45118 18.1583 8.45118 18.3536 8.64645C18.5488 8.84171 18.5488 9.15829 18.3536 9.35355L12.3536 15.3536C12.1583 15.5488 11.8417 15.5488 11.6464 15.3536L5.64645 9.35355C5.45118 9.15829 5.45118 8.84171 5.64645 8.64645Z"
+          fill="currentColor"
+        />
+      </svg>
+    </template>
+
+    <template v-if="type === 'arrow-left'">
+      <svg
+        :width="width"
+        :height="height"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M8.64645 5.64645C8.84171 5.45118 9.15829 5.45118 9.35355 5.64645L15.3536 11.6464C15.5488 11.8417 15.5488 12.1583 15.3536 12.3536L9.35355 18.3536C9.15829 18.5488 8.84171 18.5488 8.64645 18.3536C8.45118 18.1583 8.45118 17.8417 8.64645 17.6464L14.2929 12L8.64645 6.35355C8.45118 6.15829 8.45118 5.84171 8.64645 5.64645Z"
           fill="currentColor"
         />
       </svg>

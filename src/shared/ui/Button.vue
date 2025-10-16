@@ -28,6 +28,14 @@ const buttonTextSize = () => {
       return 's'
   }
 }
+
+const toggleDecorationOnHover = computed(() => {
+  if (isHovered.value) {
+    return props.decoration === 'default' ? 'outline' : 'default'
+  } else {
+    return props.decoration || 'default'
+  }
+})
 </script>
 
 <template>
@@ -38,11 +46,7 @@ const buttonTextSize = () => {
       props.backgroundColor || '',
       props.size || '',
       props.disabled ? 'disabled' : '',
-      isHovered === false
-        ? props.decoration === 'default'
-          ? 'outline'
-          : 'default'
-        : props.decoration || '',
+      toggleDecorationOnHover,
       props.topIcon ? 'zero-padding' : '',
     ]"
     @mouseenter="isHovered = true"

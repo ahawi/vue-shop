@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { LogoMouthColor, LogoTextColor, LogoVariant, IconColor } from '@/shared/types'
+import { LogoMouthColor, LogoTextColor, LogoVariant, IconColor } from '@/shared/lib/types'
 import { Button, Logo, Field, Icon, Typography } from '@/shared/ui'
 </script>
 
