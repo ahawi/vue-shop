@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { useCartStore } from '@/app/stores/cart'
 import { LogoMouthColor, LogoTextColor, LogoVariant, IconColor } from '@/shared/lib/types'
-import { Button, Logo, Field, Icon, Typography } from '@/shared/ui'
+import { Button, Logo, Field, Typography } from '@/shared/ui'
+
+const cartStore = useCartStore()
 </script>
 
 <template>
@@ -73,7 +76,9 @@ import { Button, Logo, Field, Icon, Typography } from '@/shared/ui'
             height: 24,
           }"
           class="header__control"
-        >
+          ><div v-if="cartStore.totalItems > 0" class="header__badge">
+            <Typography tag="span" size="xs">{{ cartStore.totalItems.toString() }}</Typography>
+          </div>
           <Typography tag="p" size="xs">Корзина</Typography>
         </Button>
       </div>
@@ -148,10 +153,22 @@ import { Button, Logo, Field, Icon, Typography } from '@/shared/ui'
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  position: relative;
 
   &:hover {
     color: var(--main-secondary);
   }
+}
+
+.header__badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: var(--main-on-primary);
+  background-color: var(--main-primary);
+  line-height: 1;
+  padding-inline: 4px;
+  border-radius: 4px;
 }
 
 .header__user {

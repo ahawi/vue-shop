@@ -1,8 +1,25 @@
 <script setup lang="ts">
 import { Typography, Button, Icon, StarRating, Badge } from '@/shared/ui'
 import type { Product } from '@/shared/lib/types'
+import { useCartStore } from '@/app/stores/cart'
 
 const props = defineProps<Product>()
+
+const cartStore = useCartStore()
+
+const normalizePrice = () => {
+  const priceWithDot = props.price.replace(',', '.')
+  return parseFloat(priceWithDot)
+}
+
+const addToCart = () => {
+  cartStore.addToCart({
+    id: props.id,
+    title: props.title,
+    price: normalizePrice(),
+    image: props.image,
+  })
+}
 </script>
 
 <template>
@@ -38,6 +55,7 @@ const props = defineProps<Product>()
         decoration="outline"
         size="m"
         :disabled="false"
+        @click="addToCart"
         >В корзину</Button
       >
     </div>
