@@ -14,7 +14,7 @@ export const mockProductSections: ProductSection[] = [
         badge: '-50%',
         rating: 2,
         hasCardPrice: true,
-        isFavorite: false,
+        isFavorite: true,
         hasSaleBadge: true,
         image: `/images/product-1.png`,
       },

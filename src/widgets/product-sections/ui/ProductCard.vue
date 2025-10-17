@@ -2,10 +2,13 @@
 import { Typography, Button, Icon, StarRating, Badge } from '@/shared/ui'
 import type { Product } from '@/shared/lib/types'
 import { useCartStore } from '@/app/stores/cart'
+import { useFavoriteStore } from '@/app/stores/favorite'
+import { computed } from 'vue'
 
 const props = defineProps<Product>()
 
 const cartStore = useCartStore()
+const favoriteStore = useFavoriteStore()
 
 const normalizePrice = () => {
   const priceWithDot = props.price.replace(',', '.')
@@ -20,13 +23,34 @@ const addToCart = () => {
     image: props.image,
   })
 }
+
+const isFavorite = computed(() => {
+  return favoriteStore.isInFavorites(props.id)
+})
+
+const toggleFavorite = () => {
+  favoriteStore.toggleFavorite(props)
+}
 </script>
 
 <template>
   <div class="product-card">
     <div class="product-card__header">
-      <Button class="product-card__favorite">
-        <Icon type="favorite" :width="24" :height="24" class="product-card__favorite-icon" />
+      <Button
+        :class="['product-card__favorite', { 'product-card__favorite--active': isFavorite }]"
+        @click="toggleFavorite"
+      >
+        <Icon
+          type="favorite"
+          :width="24"
+          :height="24"
+          :fill="isFavorite ? 'currentColor' : 'none'"
+          stroke="currentColor"
+          :class="[
+            'product-card__favorite-icon',
+            { 'product-card__favorite-icon--active': isFavorite },
+          ]"
+        />
       </Button>
       <Badge v-if="props.hasSaleBadge" :title="props.badge" :is-visible="true" />
       <img :src="props.image" alt="" class="product-card__image" />
@@ -100,6 +124,10 @@ const addToCart = () => {
   position: absolute;
   right: 0;
 
+  &--active {
+    background-color: transparent;
+  }
+
   &-icon {
     color: var(--main-on-surface);
   }
@@ -107,6 +135,35 @@ const addToCart = () => {
   &:hover {
     background-color: transparent;
   }
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.product-card__favorite-icon {
+  color: var(--main-on-surface);
+  fill: none;
+  transition: all 0.3s ease;
+}
+
+.product-card__favorite-icon--active {
+  color: #ed1944;
+  fill: #ed1944;
+  stroke: #ed1944;
+  animation: pop 0.3s ease;
+}
+
+.product-card__favorite-icon--active svg {
+  fill: #ed1944;
 }
 
 .product-card__inner {

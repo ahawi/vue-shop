@@ -14,6 +14,9 @@ const props = defineProps<ProductSection>()
       <Button
         :rightIcon="{ type: 'arrow-left', textColor: IconColor.BLACK, width: 24, height: 24 }"
         :disabled="false"
+        background-color="grayscale"
+        decoration="none"
+        class="seaction__header-button"
         >{{ props.linkTitle }}
       </Button>
     </div>
@@ -29,6 +32,13 @@ const props = defineProps<ProductSection>()
   align-items: center;
   justify-content: space-between;
   margin-bottom: 40px;
+}
+
+.seaction__header-button {
+  &:hover {
+    background-color: transparent;
+    color: var(--main-secondary);
+  }
 }
 
 .section__main {

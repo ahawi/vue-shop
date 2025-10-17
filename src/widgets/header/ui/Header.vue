@@ -50,6 +50,7 @@ const cartStore = useCartStore()
           :top-icon="{
             type: 'favorite',
             textColor: IconColor.BLACK,
+            fill: 'none',
             width: 24,
             height: 24,
           }"
