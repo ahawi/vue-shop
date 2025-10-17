@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { useCartStore } from '@/app/stores/cart'
+import { useFavoriteStore } from '@/app/stores/favorite'
 import { LogoMouthColor, LogoTextColor, LogoVariant, IconColor } from '@/shared/lib/types'
 import { Button, Logo, Field, Typography } from '@/shared/ui'
 
 const cartStore = useCartStore()
+const favoriteStore = useFavoriteStore()
 </script>
 
 <template>
@@ -56,6 +58,11 @@ const cartStore = useCartStore()
           }"
           class="header__control"
         >
+          <div v-if="favoriteStore.totalFavorites > 0" class="header__badge">
+            <Typography tag="span" size="xs">{{
+              favoriteStore.totalFavorites.toString()
+            }}</Typography>
+          </div>
           <Typography tag="p" size="xs">Избранное</Typography>
         </Button>
         <Button
@@ -109,6 +116,7 @@ const cartStore = useCartStore()
   top: 0;
   left: 0;
   height: 72px;
+  z-index: 2;
 }
 
 .header__container {
@@ -155,6 +163,7 @@ const cartStore = useCartStore()
   justify-content: center;
   align-items: center;
   position: relative;
+  width: 65px;
 
   &:hover {
     color: var(--main-secondary);
@@ -164,7 +173,7 @@ const cartStore = useCartStore()
 .header__badge {
   position: absolute;
   top: 0;
-  right: 0;
+  right: 3px;
   color: var(--main-on-primary);
   background-color: var(--main-primary);
   line-height: 1;

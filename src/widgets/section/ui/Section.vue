@@ -1,10 +1,13 @@
 <script setup lang="ts">
-import { IconColor, type Product } from '@/shared/lib/types'
+import { IconColor } from '@/shared/lib/types'
 import { Button, Typography } from '@/shared/ui'
-import ProductCard from './ProductCard.vue'
-import type { ProductSection } from '@/shared/lib/types/product'
 
-const props = defineProps<ProductSection>()
+export interface SectionProps {
+  title: string
+  linkTitle?: string
+}
+
+const props = defineProps<SectionProps>()
 </script>
 
 <template>
@@ -12,21 +15,28 @@ const props = defineProps<ProductSection>()
     <div class="section__header">
       <Typography tag="h3" bold size="m">{{ props.title }}</Typography>
       <Button
+        v-if="props.linkTitle"
         :rightIcon="{ type: 'arrow-left', textColor: IconColor.BLACK, width: 24, height: 24 }"
         :disabled="false"
         background-color="grayscale"
         decoration="none"
-        class="seaction__header-button"
+        class="section__header-button"
         >{{ props.linkTitle }}
       </Button>
     </div>
     <div class="section__main">
-      <ProductCard v-for="product in props.products" :key="product.id" v-bind="product" />
+      <slot></slot>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
+.section {
+  &:not(:first-child) {
+    margin-top: 120px;
+  }
+}
+
 .section__header {
   display: flex;
   align-items: center;
@@ -34,7 +44,7 @@ const props = defineProps<ProductSection>()
   margin-bottom: 40px;
 }
 
-.seaction__header-button {
+.section__header-button {
   &:hover {
     background-color: transparent;
     color: var(--main-secondary);
@@ -44,5 +54,6 @@ const props = defineProps<ProductSection>()
 .section__main {
   display: grid;
   grid-template-columns: repeat(4, auto);
+  gap: 40px;
 }
 </style>

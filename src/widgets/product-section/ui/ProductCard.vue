@@ -31,6 +31,16 @@ const isFavorite = computed(() => {
 const toggleFavorite = () => {
   favoriteStore.toggleFavorite(props)
 }
+
+const addToFavorite = () => {
+  favoriteStore.addToFavorite({
+    id: props.id,
+    title: props.title,
+    price: props.price,
+    rating: props.rating,
+    image: props.image,
+  })
+}
 </script>
 
 <template>
@@ -91,6 +101,7 @@ const toggleFavorite = () => {
   display: flex;
   align-items: center;
   flex-direction: column;
+  justify-content: center;
   background-color: var(--main-surface);
   border-radius: 4px;
   width: 100%;
@@ -177,6 +188,7 @@ const toggleFavorite = () => {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  height: 40px;
 }
 
 .product-card__price {
