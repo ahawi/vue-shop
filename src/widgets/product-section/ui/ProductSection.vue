@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Section } from '@/widgets/section'
+import { Section } from '@/shared/ui'
 import { mockProductSections } from '../lib/mock-products'
 import ProductCard from './ProductCard.vue'
 

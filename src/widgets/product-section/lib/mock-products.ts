@@ -16,7 +16,7 @@ export const mockProductSections: ProductSection[] = [
         hasCardPrice: true,
         isFavorite: true,
         hasSaleBadge: true,
-        image: `/images/product-1.png`,
+        image: `/products/product-1.png`,
       },
       {
         id: '2',
@@ -28,7 +28,7 @@ export const mockProductSections: ProductSection[] = [
         hasCardPrice: true,
         isFavorite: false,
         hasSaleBadge: true,
-        image: `/images/product-2.png`,
+        image: `/products/product-2.png`,
       },
       {
         id: '3',
@@ -40,7 +40,7 @@ export const mockProductSections: ProductSection[] = [
         hasCardPrice: true,
         isFavorite: false,
         hasSaleBadge: true,
-        image: `/images/product-3.png`,
+        image: `/products/product-3.png`,
       },
       {
         id: '4',
@@ -52,7 +52,7 @@ export const mockProductSections: ProductSection[] = [
         hasCardPrice: true,
         isFavorite: false,
         hasSaleBadge: true,
-        image: `/images/product-4.png`,
+        image: `/products/product-4.png`,
       },
     ],
   },
@@ -69,7 +69,7 @@ export const mockProductSections: ProductSection[] = [
         hasCardPrice: true,
         isFavorite: true,
         hasSaleBadge: false,
-        image: `/images/product-1.png`,
+        image: `/products/product-1.png`,
       },
       {
         id: '2',
@@ -79,7 +79,7 @@ export const mockProductSections: ProductSection[] = [
         hasCardPrice: false,
         isFavorite: false,
         hasSaleBadge: false,
-        image: `/images/product-2.png`,
+        image: `/products/product-2.png`,
       },
       {
         id: '3',
@@ -89,7 +89,7 @@ export const mockProductSections: ProductSection[] = [
         hasCardPrice: false,
         isFavorite: false,
         hasSaleBadge: false,
-        image: `/images/product-3.png`,
+        image: `/products/product-3.png`,
       },
       {
         id: '4',
@@ -99,7 +99,7 @@ export const mockProductSections: ProductSection[] = [
         hasCardPrice: false,
         isFavorite: false,
         hasSaleBadge: false,
-        image: `/images/product-4.png`,
+        image: `/products/product-4.png`,
       },
     ],
   },
@@ -116,7 +116,7 @@ export const mockProductSections: ProductSection[] = [
         hasCardPrice: true,
         isFavorite: true,
         hasSaleBadge: false,
-        image: `/images/product-1.png`,
+        image: `/products/product-1.png`,
       },
       {
         id: '2',
@@ -126,7 +126,7 @@ export const mockProductSections: ProductSection[] = [
         hasCardPrice: false,
         isFavorite: false,
         hasSaleBadge: false,
-        image: `/images/product-2.png`,
+        image: `/products/product-2.png`,
       },
       {
         id: '3',
@@ -136,7 +136,7 @@ export const mockProductSections: ProductSection[] = [
         hasCardPrice: false,
         isFavorite: false,
         hasSaleBadge: false,
-        image: `/images/product-3.png`,
+        image: `/products/product-3.png`,
       },
       {
         id: '4',
@@ -146,7 +146,7 @@ export const mockProductSections: ProductSection[] = [
         hasCardPrice: false,
         isFavorite: false,
         hasSaleBadge: false,
-        image: `/images/product-4.png`,
+        image: `/products/product-4.png`,
       },
     ],
   },

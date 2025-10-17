@@ -2,6 +2,7 @@
 import { Header } from '@/widgets/header'
 import { ProductSection } from '@/widgets/product-section'
 import { PromoBar } from '@/widgets/promo-bar'
+import { SpecialOffers } from '@/widgets/special-offers'
 </script>
 
 <template>
@@ -11,6 +12,7 @@ import { PromoBar } from '@/widgets/promo-bar'
     <ProductSection id="promotions" />
     <ProductSection id="newProducts" />
     <ProductSection id="buyBefore" />
+    <SpecialOffers />
   </main>
 </template>
 
