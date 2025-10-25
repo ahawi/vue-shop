@@ -31,6 +31,7 @@ const props = defineProps<ArticleCardProps>()
   flex-direction: column;
   width: 376px;
   border-radius: 4px;
+  cursor: pointer;
 
   &:hover {
     box-shadow: var(--shadow-primary-m);

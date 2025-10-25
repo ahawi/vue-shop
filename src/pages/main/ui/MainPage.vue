@@ -5,6 +5,7 @@ import { PromoBar } from '@/widgets/promo-bar'
 import { SpecialOffers } from '@/widgets/special-offers'
 import { OurShopsSections } from '@/widgets/our-shops'
 import { ArticlesSection } from '@/widgets/articles'
+import { Footer } from '@/widgets/footer'
 </script>
 
 <template>
@@ -18,6 +19,7 @@ import { ArticlesSection } from '@/widgets/articles'
     <OurShopsSections />
     <ArticlesSection />
   </main>
+  <Footer/>
 </template>
 
 <style lang="scss" scoped>

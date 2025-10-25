@@ -108,6 +108,7 @@ const addToFavorite = () => {
   box-shadow: var(--shadow-default-xs);
   max-width: 272px;
   transition: all 0.3s;
+  cursor: pointer;
 
   &:hover {
     box-shadow: var(--shadow-primary-m);
@@ -165,6 +166,7 @@ const addToFavorite = () => {
     flex-direction: column;
     padding: 8px;
     gap: 8px;
+    cursor: pointer;
   }
 
   &__prices {
