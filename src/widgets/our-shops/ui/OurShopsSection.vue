@@ -39,27 +39,27 @@ const currentCity = computed(() => mockYandexMap.find((city) => city.id === curr
 </template>
 
 <style lang="scss" scoped>
-.contacts__buttons {
-  display: flex;
-  gap: 24px;
-  margin-bottom: 24px;
-}
-
-.contacts__button {
-  &.active {
-    background-color: var(--main-secondary);
-    border-color: transparent;
-    color: var(--main-on-secondary);
-  }
-  &:hover {
-    background-color: var(--main-secondary);
-    border-color: transparent;
-    color: var(--main-on-secondary);
-  }
-}
-
 .contacts {
   display: flex !important;
   flex-direction: column;
+
+  &__buttons {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+
+  &__button {
+    &.active {
+      background-color: var(--main-secondary);
+      border-color: transparent;
+      color: var(--main-on-secondary);
+    }
+    &:hover {
+      background-color: var(--main-secondary);
+      border-color: transparent;
+      color: var(--main-on-secondary);
+    }
+  }
 }
 </style>

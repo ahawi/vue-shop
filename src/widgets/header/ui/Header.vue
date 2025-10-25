@@ -117,79 +117,79 @@ const favoriteStore = useFavoriteStore()
   left: 0;
   height: 72px;
   z-index: 2;
-}
 
-.header__container {
-  max-width: 1208px;
-  padding: 10px 15px;
-  margin-inline: auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 40px;
-}
-
-.header__logo {
-  width: 152px;
-  height: 32px;
-}
-
-.header__actions {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  flex: 1;
-}
-
-.header__user-actions {
-  display: flex;
-  align-items: center;
-}
-
-.header__controls {
-  display: grid;
-  grid-template-columns: repeat(3, auto);
-  gap: 24px;
-}
-
-.header__search {
-  flex: 1;
-}
-
-.header__control {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  width: 65px;
-
-  &:hover {
-    color: var(--main-secondary);
-  }
-}
-
-.header__badge {
-  position: absolute;
-  top: 0;
-  right: 3px;
-  color: var(--main-on-primary);
-  background-color: var(--main-primary);
-  line-height: 1;
-  padding-inline: 4px;
-  border-radius: 4px;
-}
-
-.header__user {
-  padding: 0;
-
-  :deep(.button__text) {
-    padding-left: 0 !important;
+  &__container {
+    max-width: 1208px;
+    padding: 10px 15px;
+    margin-inline: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
   }
 
-  &:hover {
-    color: var(--main-secondary);
+  &__logo {
+    width: 152px;
+    height: 32px;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex: 1;
+  }
+
+  &__user-actions {
+    display: flex;
+    align-items: center;
+  }
+
+  &__controls {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    gap: 24px;
+  }
+
+  &__search {
+    flex: 1;
+  }
+
+  &__control {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 65px;
+
+    &:hover {
+      color: var(--main-secondary);
+    }
+  }
+
+  &__badge {
+    position: absolute;
+    top: 0;
+    right: 3px;
+    color: var(--main-on-primary);
+    background-color: var(--main-primary);
+    line-height: 1;
+    padding-inline: 4px;
+    border-radius: 4px;
+  }
+
+  &__user {
+    padding: 0;
+
+    :deep(.button__text) {
+      padding-left: 0 !important;
+    }
+
+    &:hover {
+      color: var(--main-secondary);
+    }
   }
 }
 </style>

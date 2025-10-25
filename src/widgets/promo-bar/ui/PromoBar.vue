@@ -18,12 +18,12 @@ import { Typography } from '@/shared/ui'
   background-blend-mode: multiply;
   background-color: var(--main-surface);
   margin-top: 4px;
-}
 
-.promo-bar__container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 18px;
+  &__container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+  }
 }
 </style>

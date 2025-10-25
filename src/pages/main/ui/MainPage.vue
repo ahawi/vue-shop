@@ -4,6 +4,7 @@ import { ProductSection } from '@/widgets/product-section'
 import { PromoBar } from '@/widgets/promo-bar'
 import { SpecialOffers } from '@/widgets/special-offers'
 import { OurShopsSections } from '@/widgets/our-shops'
+import { ArticlesSection } from '@/widgets/articles'
 </script>
 
 <template>
@@ -15,6 +16,7 @@ import { OurShopsSections } from '@/widgets/our-shops'
     <ProductSection id="buyBefore" />
     <SpecialOffers />
     <OurShopsSections />
+    <ArticlesSection />
   </main>
 </template>
 
