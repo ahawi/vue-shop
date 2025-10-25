@@ -22,7 +22,8 @@
   "dependencies": {
     "pinia": "^3.0.3",
     "vue": "^3.5.22",
-    "vue-router": "^4.5.1"
+    "vue-router": "^4.5.1",
+    "vue-yandex-maps": "^2.2.3"
   },
   "devDependencies": {
     "@tsconfig/node22": "^22.0.2",
@@ -34,6 +35,7 @@
     "@vue/eslint-config-typescript": "^14.6.0",
     "@vue/test-utils": "^2.4.6",
     "@vue/tsconfig": "^0.8.1",
+    "@yandex/ymaps3-types": "^1.0.17734864",
     "cypress": "^15.3.0",
     "eslint": "^9.33.0",
     "eslint-plugin-cypress": "^5.1.1",

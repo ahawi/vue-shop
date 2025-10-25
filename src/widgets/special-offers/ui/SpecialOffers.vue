@@ -10,7 +10,7 @@ export interface SpecialOffers {
 </script>
 
 <template>
-  <Section title="Специальные предложения" class="special-offers">
+  <Section display="grid" title="Специальные предложения" class="special-offers">
     <SpecialOfferCard
       v-for="offer in mockSpecialOffers"
       :key="offer.id"

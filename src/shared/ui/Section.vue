@@ -5,6 +5,7 @@ import { Button, Typography } from '@/shared/ui'
 export interface SectionProps {
   title: string
   linkTitle?: string
+  display: 'grid' | 'flex'
 }
 
 const props = defineProps<SectionProps>()
@@ -24,7 +25,7 @@ const props = defineProps<SectionProps>()
         >{{ props.linkTitle }}
       </Button>
     </div>
-    <div class="section__main">
+    <div :class="[props.display === 'grid' ? 'section__main-grid' : 'section__main-flex']">
       <slot></slot>
     </div>
   </div>
@@ -52,8 +53,14 @@ const props = defineProps<SectionProps>()
 }
 
 .section__main {
-  display: grid;
-  grid-template-columns: repeat(4, auto);
-  gap: 40px;
+  &-grid {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    gap: 40px;
+  }
+  &-flex {
+    display: flex;
+    flex-direction: column;
+  }
 }
 </style>

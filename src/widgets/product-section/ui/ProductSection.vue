@@ -11,7 +11,7 @@ const section = mockProductSections.find((section) => section.id === props.id)
 </script>
 
 <template>
-  <Section v-if="section" :title="section.title" :link-title="section.linkTitle">
+  <Section display="grid" v-if="section" :title="section.title" :link-title="section.linkTitle">
     <ProductCard v-for="product in section?.products" :key="product.id" v-bind="product" />
   </Section>
 </template>
