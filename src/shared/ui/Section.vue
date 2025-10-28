@@ -14,18 +14,18 @@ const props = defineProps<SectionProps>()
 <template>
   <div class="section">
     <div class="section__header">
-      <Typography tag="h3" bold size="m">{{ props.title }}</Typography>
+      <Typography tag="h3" bold size="m">{{ title }}</Typography>
       <Button
-        v-if="props.linkTitle"
+        v-if="linkTitle"
         :rightIcon="{ type: 'arrow-left', textColor: IconColor.BLACK, width: 24, height: 24 }"
         :disabled="false"
         background-color="grayscale"
         decoration="none"
         class="section__header-button"
-        >{{ props.linkTitle }}
+        >{{ linkTitle }}
       </Button>
     </div>
-    <div :class="[props.display === 'grid' ? 'section__main-grid' : 'section__main-flex']">
+    <div :class="[display === 'grid' ? 'section__main-grid' : 'section__main-flex']">
       <slot></slot>
     </div>
   </div>

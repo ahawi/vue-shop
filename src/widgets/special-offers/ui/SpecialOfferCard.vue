@@ -26,10 +26,10 @@ const props = defineProps<SpecialOffer>()
     ]"
   >
     <div class="special-offer__text">
-      <Typography tag="h4" size="s" bold>{{ props.title }}</Typography>
-      <Typography tag="p" size="s">{{ props.description }}</Typography>
+      <Typography tag="h4" size="s" bold>{{ title }}</Typography>
+      <Typography tag="p" size="s">{{ description }}</Typography>
     </div>
-    <img class="special-offer__image" :src="props.image" alt="" />
+    <img class="special-offer__image" :src="image" alt="" />
   </div>
 </template>
 

@@ -3,9 +3,23 @@ import { useCartStore } from '@/app/stores/cart'
 import { useFavoriteStore } from '@/app/stores/favorite'
 import { LogoMouthColor, LogoTextColor, LogoVariant, IconColor } from '@/shared/lib/types'
 import { Button, Logo, Field, Typography } from '@/shared/ui'
+import { ref } from 'vue'
 
 const cartStore = useCartStore()
 const favoriteStore = useFavoriteStore()
+
+const products = [
+  { id: 'p1', title: 'Телефон' },
+  { id: 'p2', title: 'Футболка' },
+  { id: 'p3', title: 'Мяч' },
+]
+
+const categories = [
+  { id: 'c1', title: 'Электроника' },
+  { id: 'c2', title: 'Одежда' },
+  { id: 'c3', title: 'Игрушки' },
+]
+const selectedCity = ref('')
 </script>
 
 <template>
@@ -30,6 +44,7 @@ const favoriteStore = useFavoriteStore()
           decoration="outline"
           size="m"
           :disabled="false"
+          class="header__actions-button"
           >Каталог</Button
         >
         <Field
@@ -41,9 +56,13 @@ const favoriteStore = useFavoriteStore()
           }"
           :label="false"
           :disabled="false"
+          type="select"
           placeholder="Найти товар"
           size="m"
           class="header__search"
+          :options="products"
+          :categories="categories"
+          v-model="selectedCity"
         ></Field>
       </div>
 
@@ -139,6 +158,10 @@ const favoriteStore = useFavoriteStore()
     justify-content: space-between;
     gap: 16px;
     flex: 1;
+
+    &-button {
+      height: 40px;
+    }
   }
 
   &__user-actions {

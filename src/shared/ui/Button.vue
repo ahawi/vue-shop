@@ -40,27 +40,27 @@ const toggleDecorationOnHover = computed(() => {
 
 <template>
   <button
-    :disabled="props.disabled"
+    :disabled="disabled"
     :class="[
       'button',
-      props.backgroundColor || '',
-      props.size || '',
-      props.disabled ? 'disabled' : '',
+      backgroundColor || '',
+      size || '',
+      disabled ? 'disabled' : '',
       toggleDecorationOnHover,
-      props.topIcon ? 'zero-padding' : '',
+      topIcon ? 'zero-padding' : '',
     ]"
     @mouseenter="isHovered = true"
     @mouseleave="isHovered = false"
   >
-    <Icon v-if="props.leftIcon" v-bind="props.leftIcon" />
-    <Icon v-if="props.topIcon" v-bind="props.topIcon" />
+    <Icon v-if="leftIcon" v-bind="leftIcon" />
+    <Icon v-if="topIcon" v-bind="topIcon" />
     <Typography
       tag="p"
       :size="buttonTextSize()"
-      :class="['button__text', props.topIcon ? 'zero-padding' : '']"
+      :class="['button__text', topIcon ? 'zero-padding' : '']"
       ><slot></slot
     ></Typography>
-    <Icon v-if="props.rightIcon" v-bind="props.rightIcon" />
+    <Icon v-if="rightIcon" v-bind="rightIcon" />
   </button>
 </template>
 

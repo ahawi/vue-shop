@@ -10,8 +10,8 @@ const props = defineProps<BadgeProps>()
 </script>
 
 <template>
-  <div v-if="props.isVisible" class="badge">
-    <Typography tag="span" size="s">{{ props.title }}</Typography>
+  <div v-if="isVisible" class="badge">
+    <Typography tag="span" size="s">{{ title }}</Typography>
   </div>
 </template>
 

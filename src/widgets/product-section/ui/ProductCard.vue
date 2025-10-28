@@ -62,26 +62,26 @@ const addToFavorite = () => {
           ]"
         />
       </Button>
-      <Badge v-if="props.hasSaleBadge" :title="props.badge" :is-visible="true" />
-      <img :src="props.image" alt="" class="product-card__image" />
+      <Badge v-if="hasSaleBadge" :title="badge" :is-visible="true" />
+      <img :src="image" alt="" class="product-card__image" />
     </div>
 
     <div class="product-card__inner">
       <div class="product-card__prices">
         <div class="product-card__price">
-          <Typography tag="span" bold size="m">{{ props.price }}</Typography>
-          <div v-if="props.cardPrice">
+          <Typography tag="span" bold size="m">{{ price }}</Typography>
+          <div v-if="cardPrice">
             <Typography class="product-card__price-title" tag="span" size="xs">С картой</Typography>
           </div>
         </div>
-        <div v-if="props.cardPrice" class="product-card__price">
-          <Typography tag="span" size="s">{{ props.cardPrice }}₽</Typography>
+        <div v-if="cardPrice" class="product-card__price">
+          <Typography tag="span" size="s">{{ cardPrice }}₽</Typography>
           <Typography class="product-card__price-title" tag="span" size="xs">Обычная</Typography>
         </div>
       </div>
-      <Typography tag="p" size="s">{{ props.title }}</Typography>
+      <Typography tag="p" size="s">{{ title }}</Typography>
       <div class="product-card__rating">
-        <StarRating :rating="props.rating" />
+        <StarRating :rating="rating" />
       </div>
       <Button
         class="product-card__button"
