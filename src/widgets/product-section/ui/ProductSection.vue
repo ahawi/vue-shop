@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { Section } from '@/shared/ui'
-import { mockProductSections } from '../lib/mock-products'
+import { mockProductSections } from '../model/mock-products'
 import ProductCard from './ProductCard.vue'
 
 const props = defineProps<{

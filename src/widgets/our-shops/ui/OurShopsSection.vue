@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Button, Section } from '@/shared/ui'
 import YandexMap from './YandexMap.vue'
-import { mockYandexMap } from '../lib/mock-coordinates'
+import { mockYandexMap } from '../model/mock-coordinates'
 import { computed, ref } from 'vue'
 
 const currentCityId = ref(mockYandexMap[0]?.id)

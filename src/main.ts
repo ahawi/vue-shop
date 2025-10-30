@@ -6,10 +6,11 @@ import App from './app/App.vue'
 import router from './app/router'
 
 const app = createApp(App)
+const apiKey = import.meta.env.VITE_MAPS_KEY
 
 app.use(
   createYmaps({
-    apikey: '9f4f50cc-22b5-4a09-baec-7031c9c81673',
+    apikey: apiKey,
     version: '3.0',
     lang: 'ru_RU',
   }),
@@ -17,5 +18,4 @@ app.use(
 
 app.use(createPinia())
 app.use(router)
-
 app.mount('#app')

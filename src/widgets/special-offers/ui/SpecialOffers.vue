@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { mockSpecialOffers } from '../lib/mock-offers'
+import { mockSpecialOffers } from '../model/mock-offers'
 import SpecialOfferCard, { type SpecialOffer } from './SpecialOfferCard.vue'
 import { Section } from '@/shared/ui'
 

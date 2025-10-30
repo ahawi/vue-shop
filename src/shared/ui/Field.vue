@@ -102,21 +102,23 @@ watch(showDropdown, (value) => {
         @focus="showDropdown = true"
         autocomplete="off"
       />
-      <ul v-if="showDropdown" class="field__select-options">
-        <li v-for="option in filteredOptions" :key="option.id" @click="selectOption(option)">
-          <Typography
-            tag="span"
-            size="s"
-            :class="option.isCategory ? 'field__select-options--icon' : ''"
-          >
-            <span v-html="highlightMatch(option.title)"></span>
-            <template v-if="option.isCategory">
-              <Icon v-if="option.isCategory" type="menu" :width="24" :height="24" />
-            </template>
-          </Typography>
-        </li>
-        <li v-if="filteredOptions?.length === 0">Ничего не найдено</li>
-      </ul>
+      <transition name="dropdown-fade">
+        <ul v-if="showDropdown" class="field__select-options">
+          <li v-for="option in filteredOptions" :key="option.id" @click="selectOption(option)">
+            <Typography
+              tag="span"
+              size="s"
+              :class="option.isCategory ? 'field__select-options--icon' : ''"
+            >
+              <span v-html="highlightMatch(option.title)"></span>
+              <template v-if="option.isCategory">
+                <Icon v-if="option.isCategory" type="menu" :width="24" :height="24" />
+              </template>
+            </Typography>
+          </li>
+          <li v-if="filteredOptions?.length === 0">Ничего не найдено</li>
+        </ul></transition
+      >
     </div>
 
     <Icon v-if="rightIcon" v-bind="rightIcon" class="field__icon" />
@@ -201,7 +203,7 @@ watch(showDropdown, (value) => {
     cursor: pointer;
 
     &:focus {
-      border-bottom: 1px soid var(--main-surface);
+      border-bottom: none;
       border-bottom-left-radius: 0px;
       border-bottom-right-radius: 0px;
       outline: none;
@@ -216,7 +218,7 @@ watch(showDropdown, (value) => {
       background-color: var(--main-surface);
       width: 100%;
       border: 1px solid var(--main-secondary);
-      border-top: 1px solid transparent;
+      border-top: none;
       display: flex;
       flex-direction: column;
       gap: 10px;
@@ -224,7 +226,7 @@ watch(showDropdown, (value) => {
       border-bottom-left-radius: 4px;
       border-bottom-right-radius: 4px;
       box-shadow: var(--shadow-secondary-m);
-      transition: box-shadow 0.3s;
+      transition: all 0.3s;
 
       &--bold {
         font-weight: 600;
@@ -236,5 +238,16 @@ watch(showDropdown, (value) => {
       }
     }
   }
+}
+
+.dropdown-fade-enter-active,
+.dropdown-fade-leave-active {
+  transition: all 0.2s ease;
+}
+
+.dropdown-fade-enter-from,
+.dropdown-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-4px);
 }
 </style>

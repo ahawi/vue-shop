@@ -19,6 +19,7 @@ const categories = [
   { id: 'c2', title: 'Одежда' },
   { id: 'c3', title: 'Игрушки' },
 ]
+
 const selectedCity = ref('')
 </script>
 
@@ -47,6 +48,7 @@ const selectedCity = ref('')
           class="header__actions-button"
           >Каталог</Button
         >
+
         <Field
           :right-icon="{
             type: 'search',
