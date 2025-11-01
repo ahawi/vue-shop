@@ -1,6 +1,6 @@
-import type { ProductSection } from '@/shared/lib/types/product'
+import type { ProductSectionProps } from "@/entities/product";
 
-export const mockProductSections: ProductSection[] = [
+export const mockProductSections: ProductSectionProps[] = [
   {
     id: 'promotions',
     title: 'Акции',

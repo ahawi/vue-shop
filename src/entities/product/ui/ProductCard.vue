@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { Typography, Button, Icon, StarRating, Badge } from '@/shared/ui'
-import type { Product } from '@/shared/lib/types'
+import type { ProductProps } from '../model/types'
 import { useCartStore } from '@/app/stores/cart'
 import { useFavoriteStore } from '@/app/stores/favorite'
 import { computed } from 'vue'
 
-const props = defineProps<Product>()
+const props = defineProps<ProductProps>()
 
 const cartStore = useCartStore()
 const favoriteStore = useFavoriteStore()

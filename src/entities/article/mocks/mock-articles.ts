@@ -1,4 +1,4 @@
-import type { ArticleCardProps } from '../ui/ArticleCard.vue'
+import type { ArticleCardProps } from "@/entities/article";
 
 export const mockArticles: ArticleCardProps[] = [
   {

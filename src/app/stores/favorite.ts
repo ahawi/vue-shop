@@ -1,9 +1,9 @@
-import type { Product } from '@/shared/lib/types'
+import type { ProductProps } from "@/entities/product"
 import { defineStore } from 'pinia'
 
 export const useFavoriteStore = defineStore('favorites', {
   state: () => ({
-    items: [] as Product[],
+    items: [] as ProductProps[],
   }),
 
   getters: {
@@ -14,7 +14,7 @@ export const useFavoriteStore = defineStore('favorites', {
   },
 
   actions: {
-    addToFavorite(product: Product) {
+    addToFavorite(product: ProductProps) {
       if (!this.isInFavorites(product.id)) {
         this.items.push(product)
       }
@@ -22,7 +22,7 @@ export const useFavoriteStore = defineStore('favorites', {
     removeFromFavorite(productId: string) {
       this.items = this.items.filter((item) => item.id !== productId)
     },
-    toggleFavorite(product: Product) {
+    toggleFavorite(product: ProductProps) {
       if (this.isInFavorites(product.id)) {
         this.removeFromFavorite(product.id)
       } else {

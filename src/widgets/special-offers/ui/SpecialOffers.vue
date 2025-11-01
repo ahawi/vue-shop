@@ -1,11 +1,12 @@
 <script lang="ts" setup>
-import { mockSpecialOffers } from '../model/mock-offers'
-import SpecialOfferCard, { type SpecialOffer } from './SpecialOfferCard.vue'
+import { mockSpecialOffers } from '@/entities/offer/mocks/mock-offers'
+import { SpecialOfferCard } from '@/entities/offer'
+import type { SpecialOfferProps } from '@/entities/offer'
 import { Section } from '@/shared/ui'
 
 export interface SpecialOffers {
   title: string
-  offers: SpecialOffer[]
+  offers: SpecialOfferProps[]
 }
 </script>
 

@@ -1,17 +1,8 @@
 <script lang="ts" setup>
 import { Typography } from '@/shared/ui'
+import { type SpecialOfferProps } from '../model/types'
 
-export interface SpecialOffer {
-  id: string
-  title: string
-  description: string
-  image: string
-  backgroundColor: string
-  hasDecoration: boolean
-  hasImageShadow: boolean
-}
-
-const props = defineProps<SpecialOffer>()
+const props = defineProps<SpecialOfferProps>()
 </script>
 
 <template>

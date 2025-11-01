@@ -1,13 +1,6 @@
 <script lang="ts" setup>
 import { Typography, Button } from '@/shared/ui'
-
-export interface ArticleCardProps {
-  id: string
-  image: string
-  date: string
-  title: string
-  description: string
-}
+import type { ArticleCardProps } from '../model/types';
 
 const props = defineProps<ArticleCardProps>()
 </script>

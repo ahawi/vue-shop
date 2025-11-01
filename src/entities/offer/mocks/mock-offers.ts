@@ -1,6 +1,6 @@
-import type { SpecialOffer } from '../ui/SpecialOfferCard.vue'
+import type { SpecialOfferProps } from "@/entities/offer";
 
-export const mockSpecialOffers: SpecialOffer[] = [
+export const mockSpecialOffers: SpecialOfferProps[] = [
   {
     id: '1',
     title: 'Оформите карту «Северяночка»',

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { Section } from '@/shared/ui'
-import ArticleCard from './ArticleCard.vue'
-import { mockArticles } from '../model/mock-arcticles'
+import { ArticleCard } from '@/entities/article';
+import { mockArticles } from '@/entities/article/mocks/mock-articles';
 </script>
 
 <template>

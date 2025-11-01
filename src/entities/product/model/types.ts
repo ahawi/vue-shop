@@ -1,4 +1,4 @@
-export interface Product {
+export interface ProductProps {
   id: string
   title: string
   price: string
@@ -11,9 +11,9 @@ export interface Product {
   isFavorite?: boolean
 }
 
-export interface ProductSection {
+export interface ProductSectionProps {
   id: string
   title: string
   linkTitle: string
-  products: Product[]
+  products: ProductProps[]
 }
