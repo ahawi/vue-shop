@@ -1,11 +1,8 @@
 <script setup lang="ts">
-import { CatalogPage } from '@/pages/catalog'
-import { MainPage } from '@/pages/main'
 </script>
 
 <template>
-  <MainPage />
-  <CatalogPage />
+  <RouterView />
 </template>
 
 <style scoped></style>

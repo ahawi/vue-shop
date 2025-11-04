@@ -59,7 +59,7 @@ const props = defineProps<TextProps>()
 }
 
 .bold {
-  font-weight: bold;
+  font-weight: 600;
 }
 
 .tag--h1 {

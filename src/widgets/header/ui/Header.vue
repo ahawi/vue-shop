@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ROUTES_PATHS } from '@/app/config/routes'
 import { useCartStore } from '@/app/stores/cart'
 import { useFavoriteStore } from '@/app/stores/favorite'
 import { LogoMouthColor, LogoTextColor, LogoVariant, IconColor } from '@/shared/lib/types'
@@ -34,19 +35,21 @@ const selectedCity = ref('')
         />
       </a>
       <div class="header__actions">
-        <Button
-          :left-icon="{
-            type: 'menu',
-            textColor: IconColor.BLACK,
-            width: 24,
-            height: 24,
-          }"
-          background-color="secondary"
-          decoration="outline"
-          size="m"
-          :disabled="false"
-          class="header__actions-button"
-          >Каталог</Button
+        <RouterLink :to="ROUTES_PATHS.CATALOG">
+          <Button
+            :left-icon="{
+              type: 'menu',
+              textColor: IconColor.BLACK,
+              width: 24,
+              height: 24,
+            }"
+            background-color="secondary"
+            decoration="outline"
+            size="m"
+            :disabled="false"
+            class="header__actions-button"
+            >Каталог</Button
+          ></RouterLink
         >
 
         <Field
