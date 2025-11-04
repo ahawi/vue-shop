@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { mockCategories } from '@/entities/catalog/mocks/mock-categories'
 import { Icon } from '@/shared/ui'
 import { Typography } from '@/shared/ui'
 import { computed } from 'vue'
@@ -25,15 +26,10 @@ const breadcrumbs = computed<Breadcrumb[]>(() => {
     crumbs.push({ to: '/catalog', title: 'Каталог' })
 
     if (pathArray[1]) {
-      const categoryNames: Record<string, string> = {
-        milk: 'Молоко',
-        bread: 'Хлеб',
-        cheese: 'Сыр',
-      }
-
+      const category = mockCategories.find((c) => c.slug === pathArray[1])
       crumbs.push({
         to: `/catalog/${pathArray[1]}`,
-        title: categoryNames[pathArray[1]] || pathArray[1],
+        title: category?.title || pathArray[1],
       })
     }
   }

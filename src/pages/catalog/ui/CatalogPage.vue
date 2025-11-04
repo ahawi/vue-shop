@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { Typography } from '@/shared/ui'
 import { Header } from '@/widgets/header'
-import { CategorySection } from '@/widgets/category-section'
+import { CatalogSection } from '@/widgets/catalog-section'
 import { Breadcrumbs } from '@/widgets/breadcrumbs'
 import { Footer } from '@/widgets/footer'
 </script>
@@ -12,7 +12,7 @@ import { Footer } from '@/widgets/footer'
   <main class="main">
     <Breadcrumbs />
     <Typography tag="h1" size="xl" bold class="main__title">Каталог</Typography>
-    <CategorySection />
+    <CatalogSection />
   </main>
 
   <Footer />

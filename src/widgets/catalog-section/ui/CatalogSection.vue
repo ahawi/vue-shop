@@ -1,16 +1,17 @@
 <script lang="ts" setup>
-import { CategoryCard } from '@/entities/category'
-import { mockCategories } from '@/entities/category/mocks/mock-categories'
+import { CatalogCard } from '@/entities/catalog'
+import { mockCategories } from '@/entities/catalog/mocks/mock-categories'
 </script>
 
 <template>
   <div class="categories">
-    <CategoryCard
+    <CatalogCard
       :title="category.title"
       :image="category.image"
       :id="category.id"
       v-for="category in mockCategories"
       :key="category.id"
+      :slug="category.slug"
     />
   </div>
 </template>
