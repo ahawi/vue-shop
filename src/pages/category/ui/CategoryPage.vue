@@ -6,6 +6,7 @@ import { Footer } from '@/widgets/footer'
 import { useRoute } from 'vue-router'
 import { computed } from 'vue'
 import { mockCategories, type Catalog } from '@/entities/catalog/mocks/mock-categories'
+import { CategorySection } from '@/widgets/category-section'
 
 const route = useRoute()
 
@@ -22,6 +23,7 @@ const categoryTitle = computed(() => currentCategory.value?.title || '')
   <main class="main">
     <Breadcrumbs />
     <Typography tag="h1" size="xl" bold class="main__title">{{ categoryTitle }}</Typography>
+    <CategorySection />
   </main>
   <Footer />
 </template>

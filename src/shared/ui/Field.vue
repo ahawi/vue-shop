@@ -11,7 +11,7 @@ interface OptionProps {
 }
 
 interface FieldProps {
-  type?: 'text' | 'select'
+  type?: 'text' | 'select' | 'number'
   size: 'm' | 'l'
   leftIcon?: IconProps
   rightIcon?: IconProps
@@ -20,12 +20,16 @@ interface FieldProps {
   placeholder?: string
   options?: OptionProps[]
   categories?: OptionProps[]
+  modelValue?: string | number
+  min?: number
+  max?: number
 }
 
 const props = defineProps<FieldProps>()
 const emit = defineEmits(['update:modelValue'])
 
 const search = ref('')
+const inputValue = ref(props.modelValue || '')
 const showDropdown = ref(false)
 const selectedOption = ref<OptionProps | null>(null)
 
@@ -56,7 +60,7 @@ const selectOption = (option: OptionProps) => {
   emit('update:modelValue', option.id)
 }
 
-const hadleCloseSelect = (e: MouseEvent) => {
+const handleCloseSelect = (e: MouseEvent) => {
   const target = e.target as HTMLElement
   if (!target.closest('.field')) showDropdown.value = false
 }
@@ -67,11 +71,76 @@ const highlightMatch = (text: string) => {
   return text.replace(regex, '<span class="field__select-options--bold">$1</span>')
 }
 
+const handleNumberInput = (value: number) => {
+  const numValue = Number(value)
+  if (isNaN(numValue)) return
+
+  let constrainedVal = numValue
+  const minValue = props.min !== undefined ? props.min : 0
+
+  if (numValue < minValue) constrainedVal = minValue
+  if (props.max !== undefined && numValue > props.max) constrainedVal = props.max
+
+  if (constrainedVal !== numValue) {
+    inputValue.value = constrainedVal
+  } else {
+    emit('update:modelValue', constrainedVal)
+  }
+}
+
+const handleNumberChange = (event: Event) => {
+  if (props.type !== 'number') return
+
+  const target = event.target as HTMLInputElement
+  const value = Number(target.value)
+
+  if (!isNaN(value)) {
+    let constrainedVal = value
+    const minValue = props.min !== undefined ? props.min : 0
+
+    if (value < minValue) constrainedVal = minValue
+    if (props.max !== undefined && value > props.max) constrainedVal = props.max
+
+    if (constrainedVal !== value) {
+      target.value = constrainedVal.toString()
+      inputValue.value = constrainedVal
+      emit('update:modelValue', constrainedVal)
+    }
+  }
+}
+
 watch(showDropdown, (value) => {
   if (value) {
-    document.addEventListener('click', hadleCloseSelect)
+    document.addEventListener('click', handleCloseSelect)
   } else {
-    document.removeEventListener('click', hadleCloseSelect)
+    document.removeEventListener('click', handleCloseSelect)
+  }
+})
+
+watch(search, (val) => {
+  if (props.type !== 'number') emit('update:modelValue', val)
+})
+
+watch(
+  () => props.modelValue,
+  (value) => {
+    const type = props.type
+    if (type === 'number') {
+      inputValue.value = value !== undefined ? Number(value) : 0
+    } else {
+      inputValue.value = value !== undefined ? String(value) : ''
+      search.value = value !== undefined ? String(value) : ''
+    }
+  },
+  { immediate: true },
+)
+
+watch(inputValue, (value) => {
+  const type = props.type
+  if (type === 'number') {
+    handleNumberInput(Number(value))
+  } else {
+    emit('update:modelValue', value)
   }
 })
 </script>
@@ -91,6 +160,21 @@ watch(showDropdown, (value) => {
       id="input"
       :disabled="disabled"
       autocomplete="off"
+      v-model="search"
+    />
+
+    <input
+      v-if="type === 'number'"
+      :class="['field__input', `size--${size}`]"
+      :placeholder="placeholder"
+      type="number"
+      id="input"
+      :disabled="disabled"
+      autocomplete="off"
+      :min="min"
+      :max="max"
+      v-model.number="inputValue"
+      @change="handleNumberChange"
     />
 
     <div v-else>
