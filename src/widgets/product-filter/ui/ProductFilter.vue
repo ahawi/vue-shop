@@ -1,8 +1,12 @@
 <script lang="ts" setup>
-import { Button, Typography, Field } from '@/shared/ui'
+import { Button, Typography, Field, Icon } from '@/shared/ui'
 import { computed, ref, watch } from 'vue'
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/default.css'
+import { useFilterState, type SelectedCategory } from '../composables/useFilterState'
+import { useCategoryFilter } from '../composables/useCategoryFilter'
+import { usePriceRange } from '../composables/usePriceRange'
+import { useStockFilter } from '../composables/useStockFilter'
 
 interface RangeSliderProps {
   modelValue: [number, number]
@@ -11,60 +15,56 @@ interface RangeSliderProps {
 }
 
 const props = defineProps<RangeSliderProps>()
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'update:filters', 'apply:filters'])
 
-const range = computed({
-  get: () => props.modelValue,
-  set: (val: [number, number]) => {
-    emit('update:modelValue', val)
-  },
-})
+const categories: SelectedCategory[] = [
+  { id: 'milk', title: 'Молоко' },
+  { id: 'cream', title: 'Сливки' },
+  { id: 'egg', title: 'Яйцо' },
+]
 
-const minInput = ref(props.modelValue[0])
-const maxInput = ref(props.modelValue[1])
-
-watch(
-  () => props.modelValue,
-  (newVal) => {
-    minInput.value = newVal[0]
-    maxInput.value = newVal[1]
-  },
-  { immediate: true },
+const { filterState, appliedFilters, emitFilters, resetFilterState, applyFilters } = useFilterState(
+  props,
+  emit,
 )
 
-const updateMinValue = (value: number) => {
-  const numVal = Number(value)
-  if (isNaN(numVal)) return
+const { range, minInput, maxInput, updateMinValue, updateMaxValue, clearRange } = usePriceRange(
+  props,
+  emit,
+  filterState,
+  () => emitFilters('update:filters'),
+)
 
-  let constrainedMin = Math.max(props.min, Math.min(numVal, props.max))
+const { isCategorySelected, toggleCategory, removeCategory, removeCategoryById } =
+  useCategoryFilter(filterState, appliedFilters, emitFilters)
 
-  if (constrainedMin >= maxInput.value) {
-    constrainedMin = maxInput.value - 1
-  }
+const { toggleInStock, removeStockFilter } = useStockFilter(
+  filterState,
+  appliedFilters,
+  emitFilters,
+)
 
-  if (constrainedMin !== props.modelValue[0]) {
-    emit('update:modelValue', [constrainedMin, props.modelValue[1]])
-  }
+const clearAllFilters = () => {
+  resetFilterState()
 }
 
-const updateMaxValue = (value: number) => {
-  const numVal = Number(value)
-  if (isNaN(numVal)) return
-
-  let constrainedMax = Math.max(props.min, Math.min(numVal, props.max))
-
-  if (constrainedMax <= minInput.value) {
-    constrainedMax = minInput.value + 1
-  }
-
-  if (constrainedMax !== props.modelValue[1]) {
-    emit('update:modelValue', [props.modelValue[0], constrainedMax])
-  }
-}
-
-const clearRange = () => {
+const removePriceFilter = () => {
+  appliedFilters.value.filterPrice = [props.min, props.max]
+  filterState.value.filterPrice = [props.min, props.max]
   emit('update:modelValue', [props.min, props.max])
+  emitFilters('apply:filters')
+  emitFilters('update:filters')
 }
+
+defineExpose({
+  clearAllFilters,
+  removePriceFilter,
+  removeCategoryById,
+  removeStockFilter,
+  applyFilters,
+  filterState,
+  appliedFilters,
+})
 </script>
 
 <template>
@@ -120,29 +120,40 @@ const clearRange = () => {
         :process-style="{ backgroundColor: '#70C05B' }"
         :rail-style="{ backgroundColor: '#F3F2F1' }"
         :tooltip="'none'"
-        :min-range="30"
+        :min-range="20"
         range
         class="filter__range-slider"
       />
     </div>
     <ul class="filter__products">
-      <li class="filter__product">
-        <Typography tag="span" size="s">Молоко</Typography>
-      </li>
-      <li class="filter__product">
-        <Typography tag="span" size="s">Сливки</Typography>
-      </li>
-      <li class="filter__product">
-        <Typography tag="span" size="s">Яйцо</Typography>
+      <li
+        class="filter__product"
+        v-for="category in categories"
+        :key="category.id"
+        :class="{ 'filter__product--selected': isCategorySelected(category.id) }"
+        @click="toggleCategory(category)"
+      >
+        <Typography tag="span" size="s">{{ category.title }}</Typography>
+        <span v-if="isCategorySelected(category.id)" @click="removeCategory(category.id, $event)"
+          ><Icon type="close" :width="24" :height="24"></Icon
+        ></span>
       </li>
     </ul>
     <div class="filter__in-stock">
       <label class="filter__in-stock-label" for="checkbox">
-        <input type="checkbox" class="filter__in-stock-input" id="checkbox" />
+        <input
+          type="checkbox"
+          class="filter__in-stock-input"
+          id="checkbox"
+          @change="toggleInStock"
+          :checked="filterState.inStock"
+        />
         <Typography tag="span" size="s" class="filter__in-stock-inner">В наличии</Typography></label
       >
     </div>
-    <Button backgroundColor="primary" size="m" class="filter__apply-button">Применить</Button>
+    <Button backgroundColor="primary" size="m" class="filter__apply-button" @click="applyFilters"
+      >Применить</Button
+    >
   </div>
 </template>
 
@@ -207,6 +218,18 @@ const clearRange = () => {
     display: flex;
     flex-direction: column;
     gap: 30px;
+  }
+
+  &__product {
+    border: 1px solid transparent;
+    cursor: pointer;
+
+    &--selected {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--main-primary);
+    }
   }
 
   &__in-stock {
