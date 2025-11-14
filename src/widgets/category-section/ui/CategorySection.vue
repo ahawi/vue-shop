@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { Button } from '@/shared/ui'
 import { ProductCard } from '@/entities/product'
-import { mockProductSections } from '@/entities/product/mocks/mock-products'
 import { ProductFilter } from '@/widgets/product-filter'
 import { computed, ref } from 'vue'
+import { mockCategoryProducts } from '../mock-category-products'
 
 interface FiltersPayload {
   filterPrice: [number, number]
@@ -14,6 +14,21 @@ interface FiltersPayload {
 
 const priceMin = 0
 const priceMax = 200
+
+const step = 4
+const visibleCount = ref(step)
+
+const displayedProducts = computed(() => {
+  const products = mockCategoryProducts ?? []
+  return products.slice(0, visibleCount.value)
+})
+
+const showMore = () => {
+  const total = mockCategoryProducts.length ?? 0
+  if (visibleCount.value < total) {
+    visibleCount.value = Math.min(visibleCount.value + step, total)
+  }
+}
 
 const price = ref<[number, number]>([20, 150])
 const productFilter = ref<InstanceType<typeof ProductFilter> | null>(null)
@@ -29,6 +44,7 @@ const appliedFilters = ref<ActiveFilter[]>([])
 
 const updateAppliedFilters = (filters: FiltersPayload) => {
   appliedFilters.value = []
+  visibleCount.value = step
 
   if (filters.filterCategories && filters.filterCategories.length > 0) {
     filters.filterCategories.forEach((category: any) => {
@@ -98,6 +114,7 @@ const appliedFiltersCount = computed(() => appliedFilters.value.length)
     <div class="category-section__inner">
       <div class="category-section__filter">
         <ProductFilter
+
           v-model="price"
           :min="priceMin"
           :max="priceMax"
@@ -105,7 +122,12 @@ const appliedFiltersCount = computed(() => appliedFilters.value.length)
           @apply:filters="updateAppliedFilters"
         />
       </div>
-      <div class="category-section__main main">
+      <div
+        :class="[
+          appliedFiltersCount > 0 ? 'category-section__main' : 'category-section__main--no-filters',
+          'main',
+        ]"
+      >
         <div class="main__top-filters">
           <Button
             v-for="filter in appliedFilters"
@@ -135,11 +157,18 @@ const appliedFiltersCount = computed(() => appliedFilters.value.length)
           >
         </div>
         <div class="main__cards">
-          <ProductCard
-            v-for="product in mockProductSections[0]?.products"
-            :key="product.id"
-            v-bind="product"
-          />
+          <ProductCard v-for="product in displayedProducts" :key="product.id" v-bind="product" />
+        </div>
+        <div class="main__more">
+          <Button
+            v-if="visibleCount < (mockCategoryProducts.length ?? 0)"
+            backgroundColor="grayscale"
+            size="m"
+            class="main__more-button"
+            @click="showMore"
+          >
+            Показать ещё
+          </Button>
         </div>
       </div>
     </div>
@@ -147,6 +176,10 @@ const appliedFiltersCount = computed(() => appliedFilters.value.length)
 </template>
 
 <style lang="scss" scoped>
+.button {
+  padding-block: 4px;
+}
+
 .category-section {
   display: flex;
   flex-direction: column;
@@ -183,6 +216,10 @@ const appliedFiltersCount = computed(() => appliedFilters.value.length)
     display: flex;
     flex-direction: column;
     gap: 40px;
+
+    &--no-filters {
+      display: block;
+    }
   }
 }
 
@@ -198,9 +235,15 @@ const appliedFiltersCount = computed(() => appliedFilters.value.length)
     grid-template-columns: repeat(3, 1fr);
     gap: 40px;
   }
-}
 
-.button {
-  padding-block: 4px;
+  &__more {
+    display: flex;
+    justify-content: center;
+    margin-block: 40px;
+
+    &-button {
+      padding-block: 8px;
+    }
+  }
 }
 </style>

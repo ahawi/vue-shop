@@ -7,6 +7,8 @@ import { useFilterState, type SelectedCategory } from '../composables/useFilterS
 import { useCategoryFilter } from '../composables/useCategoryFilter'
 import { usePriceRange } from '../composables/usePriceRange'
 import { useStockFilter } from '../composables/useStockFilter'
+import { mockCategoryFilters } from '@/widgets/category-section/mock-category-products'
+import { useRoute } from 'vue-router'
 
 interface RangeSliderProps {
   modelValue: [number, number]
@@ -14,14 +16,16 @@ interface RangeSliderProps {
   min: number
 }
 
+const route = useRoute()
+const currentCategoryId = computed(() => route.params.category as string)
+
+const currentSubCategories = computed(() => {
+  const parent = mockCategoryFilters.find((cat) => cat.id === currentCategoryId.value)
+  return parent?.categories ?? []
+})
+
 const props = defineProps<RangeSliderProps>()
 const emit = defineEmits(['update:modelValue', 'update:filters', 'apply:filters'])
-
-const categories: SelectedCategory[] = [
-  { id: 'milk', title: 'Молоко' },
-  { id: 'cream', title: 'Сливки' },
-  { id: 'egg', title: 'Яйцо' },
-]
 
 const { filterState, appliedFilters, emitFilters, resetFilterState, applyFilters } = useFilterState(
   props,
@@ -55,6 +59,24 @@ const removePriceFilter = () => {
   emitFilters('apply:filters')
   emitFilters('update:filters')
 }
+
+watch(
+  mockCategoryFilters,
+  (updatedCategories) => {
+    const allowedIds = new Set(updatedCategories.map((category) => category.id))
+
+    filterState.value.filterCategories = filterState.value.filterCategories.filter((category) =>
+      allowedIds.has(category.id),
+    )
+
+    appliedFilters.value.filterCategories = appliedFilters.value.filterCategories.filter(
+      (category) => allowedIds.has(category.id),
+    )
+
+    emitFilters('update:filters')
+  },
+  { deep: true },
+)
 
 defineExpose({
   clearAllFilters,
@@ -128,7 +150,7 @@ defineExpose({
     <ul class="filter__products">
       <li
         class="filter__product"
-        v-for="category in categories"
+        v-for="category in currentSubCategories"
         :key="category.id"
         :class="{ 'filter__product--selected': isCategorySelected(category.id) }"
         @click="toggleCategory(category)"

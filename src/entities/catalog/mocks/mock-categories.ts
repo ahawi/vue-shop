@@ -14,7 +14,7 @@ export const mockCategories: Catalog[] = [
   },
   {
     id: '2',
-    slug: 'bread',
+    slug: 'bakery',
     title: 'Хлеб',
     image: '/categories/category_2.png',
   },
