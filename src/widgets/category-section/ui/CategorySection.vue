@@ -3,7 +3,7 @@ import { Button } from '@/shared/ui'
 import { ProductCard } from '@/entities/product'
 import { ProductFilter } from '@/widgets/product-filter'
 import { computed, onMounted, ref, watch } from 'vue'
-import { mockCategoryProducts } from '../mock-category-products'
+import { mockProducts } from '@/shared/lib/mocks/mock-products'
 import { useRoute } from 'vue-router'
 
 interface FiltersPayload {
@@ -29,7 +29,7 @@ onMounted(() => {
 const categoryProducts = computed(() => {
   if (!currentCategoryId.value) return []
 
-  return mockCategoryProducts.filter((product) =>
+  return mockProducts.filter((product) =>
     product.categoryIds.includes(currentCategoryId.value),
   )
 })

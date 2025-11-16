@@ -63,23 +63,25 @@ const addToFavorite = () => {
         />
       </Button>
       <Badge v-if="hasSaleBadge" :title="badge" :is-visible="true" />
-      <img :src="image" alt="" class="product-card__image" />
+      <div class="product-card__image">
+        <img :src="image" :alt="title" />
+      </div>
     </div>
 
     <div class="product-card__inner">
       <div class="product-card__prices">
         <div class="product-card__price">
           <Typography tag="span" bold size="m">{{ price }}</Typography>
-          <div v-if="cardPrice">
-            <Typography class="product-card__price-title" tag="span" size="xs">С картой</Typography>
-          </div>
+          <Typography v-if="cardPrice" class="product-card__price-title" tag="span" size="xs"
+            >С картой</Typography
+          >
         </div>
         <div v-if="cardPrice" class="product-card__price">
           <Typography tag="span" size="s">{{ cardPrice }}₽</Typography>
           <Typography class="product-card__price-title" tag="span" size="xs">Обычная</Typography>
         </div>
       </div>
-      <Typography tag="p" size="s">{{ title }}</Typography>
+      <Typography class="product-card__title" tag="p" size="s">{{ title }}</Typography>
       <div class="product-card__rating">
         <StarRating :rating="rating" />
       </div>
@@ -99,14 +101,12 @@ const addToFavorite = () => {
 <style lang="scss" scoped>
 .product-card {
   display: flex;
-  align-items: center;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   background-color: var(--main-surface);
   border-radius: 4px;
   width: 100%;
   box-shadow: var(--shadow-default-xs);
-  max-width: 272px;
   transition: all 0.3s;
   cursor: pointer;
 
@@ -167,6 +167,17 @@ const addToFavorite = () => {
     padding: 8px;
     gap: 8px;
     cursor: pointer;
+    flex: 1;
+  }
+
+  &__image {
+    height: 160px;
+    width: 100%;
+
+    & > img {
+      height: 100%;
+      margin: 10px auto;
+    }
   }
 
   &__prices {
@@ -179,10 +190,15 @@ const addToFavorite = () => {
   &__price {
     display: flex;
     flex-direction: column;
+    height: 40px;
 
     &-title {
       color: var(--grayscale-light);
     }
+  }
+
+  &__title {
+    height: 100%;
   }
 }
 

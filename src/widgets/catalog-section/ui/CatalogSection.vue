@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { CatalogCard } from '@/entities/catalog'
-import { mockCategories } from '@/entities/catalog/mocks/mock-categories'
+import { mockCategories } from '@/shared/lib/mocks/mock-categories';
 </script>
 
 <template>

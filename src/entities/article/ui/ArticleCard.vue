@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { Typography, Button } from '@/shared/ui'
-import type { ArticleCardProps } from '../model/types';
+import type { ArticleCardProps } from '../model/types'
 
 const props = defineProps<ArticleCardProps>()
 </script>
@@ -25,6 +25,7 @@ const props = defineProps<ArticleCardProps>()
   width: 376px;
   border-radius: 4px;
   cursor: pointer;
+  transition: all 0.3s;
 
   &:hover {
     box-shadow: var(--shadow-primary-m);

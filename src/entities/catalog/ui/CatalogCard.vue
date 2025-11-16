@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { Typography } from '@/shared/ui'
-import type { Catalog } from '../mocks/mock-categories'
-import { mockCategories } from '../mocks/mock-categories'
+import type { Catalog } from '@/shared/lib/mocks/mock-categories';
+
 
 const props = defineProps<Catalog>()
 </script>

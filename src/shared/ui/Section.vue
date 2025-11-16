@@ -5,7 +5,7 @@ import { Button, Typography } from '@/shared/ui'
 export interface SectionProps {
   title: string
   linkTitle?: string
-  display: 'grid' | 'flex'
+  display?: 'grid' | 'flex'
 }
 
 const props = defineProps<SectionProps>()
@@ -33,8 +33,10 @@ const props = defineProps<SectionProps>()
 
 <style lang="scss" scoped>
 .section {
-  &:not(:first-child) {
-    margin-top: 120px;
+  margin-bottom: 120px;
+
+  &:has(.swiper) {
+    margin-bottom: 80px;
   }
 }
 

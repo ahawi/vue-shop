@@ -12,14 +12,14 @@ import { Footer } from '@/widgets/footer'
   <Header />
   <PromoBar />
   <main class="main">
-    <ProductSection id="promotions" />
-    <ProductSection id="newProducts" />
-    <ProductSection id="buyBefore" />
+    <ProductSection title="Акции" link-title="Все акции" :filter-type="'sale'" />
+    <ProductSection title="Новинки" link-title="Все новинки" :filter-type="'new'" />
+    <ProductSection title="Покупали раньше" link-title="Все покупки" :filter-type="'buy-before'" />
     <SpecialOffers />
     <OurShopsSections />
     <ArticlesSection />
   </main>
-  <Footer/>
+  <Footer />
 </template>
 
 <style lang="scss" scoped>

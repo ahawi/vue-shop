@@ -7,7 +7,7 @@ import { useFilterState, type SelectedCategory } from '../composables/useFilterS
 import { useCategoryFilter } from '../composables/useCategoryFilter'
 import { usePriceRange } from '../composables/usePriceRange'
 import { useStockFilter } from '../composables/useStockFilter'
-import { mockCategoryFilters } from '@/widgets/category-section/mock-category-products'
+import { mockCategoryFilters } from '@/shared/lib/mocks/mock-products'
 import { useRoute } from 'vue-router'
 
 interface RangeSliderProps {

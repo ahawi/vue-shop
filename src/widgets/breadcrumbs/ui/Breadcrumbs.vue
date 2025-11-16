@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { mockCategories } from '@/entities/catalog/mocks/mock-categories'
+import { mockCategories } from '@/shared/lib/mocks/mock-categories'
 import { Icon } from '@/shared/ui'
 import { Typography } from '@/shared/ui'
 import { computed } from 'vue'

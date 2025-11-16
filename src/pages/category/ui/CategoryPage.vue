@@ -5,7 +5,7 @@ import { Breadcrumbs } from '@/widgets/breadcrumbs'
 import { Footer } from '@/widgets/footer'
 import { useRoute } from 'vue-router'
 import { computed } from 'vue'
-import { mockCategories, type Catalog } from '@/entities/catalog/mocks/mock-categories'
+import { mockCategories, type Catalog } from '@/shared/lib/mocks/mock-categories'
 import { CategorySection } from '@/widgets/category-section'
 
 const route = useRoute()
