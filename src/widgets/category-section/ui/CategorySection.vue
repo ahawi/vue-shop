@@ -2,8 +2,9 @@
 import { Button } from '@/shared/ui'
 import { ProductCard } from '@/entities/product'
 import { ProductFilter } from '@/widgets/product-filter'
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { mockCategoryProducts } from '../mock-category-products'
+import { useRoute } from 'vue-router'
 
 interface FiltersPayload {
   filterPrice: [number, number]
@@ -18,13 +19,28 @@ const priceMax = 200
 const step = 4
 const visibleCount = ref(step)
 
+const route = useRoute()
+const currentCategoryId = ref('')
+
+onMounted(() => {
+  currentCategoryId.value = route.params.category as string
+})
+
+const categoryProducts = computed(() => {
+  if (!currentCategoryId.value) return []
+
+  return mockCategoryProducts.filter((product) =>
+    product.categoryIds.includes(currentCategoryId.value),
+  )
+})
+
 const displayedProducts = computed(() => {
-  const products = mockCategoryProducts ?? []
+  const products = categoryProducts.value ?? []
   return products.slice(0, visibleCount.value)
 })
 
 const showMore = () => {
-  const total = mockCategoryProducts.length ?? 0
+  const total = categoryProducts.value.length ?? 0
   if (visibleCount.value < total) {
     visibleCount.value = Math.min(visibleCount.value + step, total)
   }
@@ -96,6 +112,17 @@ const clearAllFilters = () => {
 }
 
 const appliedFiltersCount = computed(() => appliedFilters.value.length)
+
+watch(
+  () => route.params.category,
+  (newCategoryId) => {
+    if (newCategoryId) {
+      currentCategoryId.value = newCategoryId as string
+      visibleCount.value = step
+      clearAllFilters()
+    }
+  },
+)
 </script>
 
 <template>
@@ -114,7 +141,6 @@ const appliedFiltersCount = computed(() => appliedFilters.value.length)
     <div class="category-section__inner">
       <div class="category-section__filter">
         <ProductFilter
-
           v-model="price"
           :min="priceMin"
           :max="priceMax"
@@ -161,7 +187,7 @@ const appliedFiltersCount = computed(() => appliedFilters.value.length)
         </div>
         <div class="main__more">
           <Button
-            v-if="visibleCount < (mockCategoryProducts.length ?? 0)"
+            v-if="visibleCount < (categoryProducts.length ?? 0)"
             backgroundColor="grayscale"
             size="m"
             class="main__more-button"

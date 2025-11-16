@@ -30,10 +30,10 @@ export const mockCategories: Catalog[] = [
     title: 'Замороженные продукты',
     image: '/categories/category_4.png',
   },
-  { id: '5', slug: 'frozen-food', title: 'drinks', image: '/categories/category_5.png' },
+  { id: '5', slug: 'drinks', title: 'Напитки', image: '/categories/category_5.png' },
   {
     id: '6',
-    slug: 'сonfectionery-products',
+    slug: 'sweets',
     title: 'Кондитерские изделия',
     image: '/categories/category_6.png',
   },
