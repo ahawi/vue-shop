@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { CatalogCard } from '@/entities/catalog'
-import { mockCategories } from '@/shared/lib/mocks/mock-categories';
+import { mockCategory } from '@/shared/lib/mocks/mock-products';
 </script>
 
 <template>
@@ -9,9 +9,8 @@ import { mockCategories } from '@/shared/lib/mocks/mock-categories';
       :title="category.title"
       :image="category.image"
       :id="category.id"
-      v-for="category in mockCategories"
+      v-for="category in mockCategory"
       :key="category.id"
-      :slug="category.slug"
     />
   </div>
 </template>

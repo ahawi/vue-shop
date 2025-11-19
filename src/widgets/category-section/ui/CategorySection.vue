@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { Button } from '@/shared/ui'
+import { Button, Typography } from '@/shared/ui'
 import { ProductCard } from '@/entities/product'
 import { ProductFilter } from '@/widgets/product-filter'
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { mockProducts } from '@/shared/lib/mocks/mock-products'
 import { useRoute } from 'vue-router'
 
@@ -13,40 +13,126 @@ interface FiltersPayload {
   hasActiveFilters: boolean
 }
 
-const priceMin = 0
-const priceMax = 200
+const categoryProducts = computed(() => {
+  if (!currentCategoryId.value) return []
+  return mockProducts.filter((product) => product.categoryIds.includes(currentCategoryId.value))
+})
 
-const step = 4
+const initialPriceRange = () => {
+  const prices = categoryProducts.value.map((product) =>
+    parseFloat(product.price.replace(',', '.')),
+  )
+  return {
+    min: Math.min(...prices),
+    max: Math.max(...prices),
+  }
+}
+
+const priceRange = ref({ min: 0, max: 0 })
+const priceMin = ref(0)
+const priceMax = ref(10000)
+
+const step = 6
 const visibleCount = ref(step)
 
 const route = useRoute()
 const currentCategoryId = ref('')
 
+const updatePriceRange = () => {
+  const range = initialPriceRange()
+  priceRange.value = range
+  priceMin.value = range.min
+  priceMax.value = range.max
+}
+
 onMounted(() => {
   currentCategoryId.value = route.params.category as string
+  updatePriceRange()
 })
 
-const categoryProducts = computed(() => {
-  if (!currentCategoryId.value) return []
+const tempPrice = ref<[number, number]>([priceMin.value, priceMax.value])
 
-  return mockProducts.filter((product) =>
-    product.categoryIds.includes(currentCategoryId.value),
-  )
+const appliedFiltersState = ref<FiltersPayload>({
+  filterPrice: [priceMin.value, priceMax.value],
+  filterCategories: [],
+  inStock: false,
+  hasActiveFilters: false,
+})
+
+watch(
+  () => route.params.category,
+  (newCategoryId) => {
+    if (newCategoryId) {
+      currentCategoryId.value = newCategoryId as string
+      nextTick(() => {
+        updatePriceRange()
+        appliedFiltersState.value.filterPrice = [priceMin.value, priceMax.value]
+        tempPrice.value = [priceMin.value, priceMax.value]
+        visibleCount.value = step
+        clearAllFilters()
+      })
+    }
+  },
+  { immediate: true },
+)
+
+watch(
+  [priceMin, priceMax],
+  ([min, max]) => {
+    if (min !== 0 || max !== 200) {
+      appliedFiltersState.value.filterPrice = [min, max]
+      tempPrice.value = [min, max]
+    }
+  },
+  { immediate: true },
+)
+
+const filteredProducts = computed(() => {
+  let products = categoryProducts.value
+
+  if (appliedFiltersState.value.filterCategories.length > 0) {
+    const selectedCategoryIds = appliedFiltersState.value.filterCategories.map(
+      (category) => category.id,
+    )
+    products = products.filter((product) =>
+      product.categoryIds.some((categoryId) => selectedCategoryIds.includes(categoryId)),
+    )
+  }
+
+  const [minPrice, maxPrice] = appliedFiltersState.value.filterPrice
+  products = products.filter((product) => {
+    const productPrice = parseFloat(product.price.replace(',', '.'))
+    return productPrice >= minPrice && productPrice <= maxPrice
+  })
+
+  if (appliedFiltersState.value.inStock) {
+    products = products.filter((product) => product.inStock)
+  }
+
+  return products
 })
 
 const displayedProducts = computed(() => {
-  const products = categoryProducts.value ?? []
+  const products = filteredProducts.value ?? []
   return products.slice(0, visibleCount.value)
 })
 
 const showMore = () => {
-  const total = categoryProducts.value.length ?? 0
+  const total = filteredProducts.value.length ?? 0
   if (visibleCount.value < total) {
     visibleCount.value = Math.min(visibleCount.value + step, total)
   }
 }
 
-const price = ref<[number, number]>([20, 150])
+const price = computed<[number, number]>({
+  get() {
+    return tempPrice.value
+  },
+  set(value: [number, number]) {
+    tempPrice.value = value
+  },
+})
+
 const productFilter = ref<InstanceType<typeof ProductFilter> | null>(null)
 
 interface ActiveFilter {
@@ -59,6 +145,7 @@ interface ActiveFilter {
 const appliedFilters = ref<ActiveFilter[]>([])
 
 const updateAppliedFilters = (filters: FiltersPayload) => {
+  appliedFiltersState.value = { ...filters }
   appliedFilters.value = []
   visibleCount.value = step
 
@@ -73,7 +160,10 @@ const updateAppliedFilters = (filters: FiltersPayload) => {
     })
   }
 
-  if (filters.filterPrice && (filters.filterPrice[0] !== 0 || filters.filterPrice[1] !== 200)) {
+  if (
+    filters.filterPrice &&
+    (filters.filterPrice[0] !== priceMin.value || filters.filterPrice[1] !== priceMax.value)
+  ) {
     appliedFilters.value.push({
       type: 'price',
       id: 'price-range',
@@ -109,25 +199,16 @@ const clearAllFilters = () => {
   if (productFilter.value) {
     productFilter.value.clearAllFilters()
   }
+  appliedFiltersState.value.filterPrice = [priceMin.value, priceMax.value]
+  tempPrice.value = [priceMin.value, priceMax.value]
 }
 
 const appliedFiltersCount = computed(() => appliedFilters.value.length)
-
-watch(
-  () => route.params.category,
-  (newCategoryId) => {
-    if (newCategoryId) {
-      currentCategoryId.value = newCategoryId as string
-      visibleCount.value = step
-      clearAllFilters()
-    }
-  },
-)
 </script>
 
 <template>
   <div class="category-section">
-    <div class="category-section__top-actions">
+    <!-- <div class="category-section__top-actions">
       <Button backgroundColor="grayscale" size="s" class="category-section__top-actions-button"
         >Товары нашего производства</Button
       >
@@ -137,7 +218,7 @@ watch(
       <Button backgroundColor="grayscale" size="s" class="category-section__top-actions-button"
         >Без ГМО</Button
       >
-    </div>
+    </div> -->
     <div class="category-section__inner">
       <div class="category-section__filter">
         <ProductFilter
@@ -182,12 +263,16 @@ watch(
             >Очистить фильтры</Button
           >
         </div>
+        <div v-if="displayedProducts.length < 1" class="main__nothing">
+          <Typography tag="span" size="l">Ничего не найдено :(</Typography>
+        </div>
+
         <div class="main__cards">
           <ProductCard v-for="product in displayedProducts" :key="product.id" v-bind="product" />
         </div>
         <div class="main__more">
           <Button
-            v-if="visibleCount < (categoryProducts.length ?? 0)"
+            v-if="visibleCount < (filteredProducts.length ?? 0)"
             backgroundColor="grayscale"
             size="m"
             class="main__more-button"
@@ -242,6 +327,7 @@ watch(
     display: flex;
     flex-direction: column;
     gap: 40px;
+    flex: 1;
 
     &--no-filters {
       display: block;
@@ -254,6 +340,12 @@ watch(
     display: flex;
     flex-wrap: wrap;
     gap: 24px;
+  }
+
+  &__nothing {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   &__cards {

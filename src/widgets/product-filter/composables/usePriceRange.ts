@@ -35,32 +35,52 @@ export function usePriceRange(
     { immediate: true },
   )
 
-  const updateMinValue = (value: number) => {
+  const updateMinValue = (value: number | string) => {
+    if (value === '' || value === null || value === undefined) {
+      minInput.value = props.modelValue[0]
+      return
+    }
+
     const numValue = Number(value)
-    if (isNaN(numValue)) return
+    if (isNaN(numValue) || numValue < props.min) {
+      minInput.value = props.modelValue[0]
+      return
+    }
 
     let constrainedMin = Math.max(props.min, Math.min(numValue, props.max))
 
-    if (constrainedMin >= maxInput.value) {
-      constrainedMin = maxInput.value - 1
+    if (constrainedMin >= props.modelValue[1]) {
+      constrainedMin = Math.max(props.min, props.modelValue[1] - 1)
     }
 
-    if (constrainedMin !== props.modelValue[0]) {
+    minInput.value = constrainedMin
+
+    if (constrainedMin !== props.modelValue[0] || constrainedMin !== minInput.value) {
       emit('update:modelValue', [constrainedMin, props.modelValue[1]])
     }
   }
 
-  const updateMaxValue = (value: number) => {
+  const updateMaxValue = (value: number | string) => {
+    if (value === '' || value === null || value === undefined) {
+      maxInput.value = props.modelValue[1]
+      return
+    }
+
     const numValue = Number(value)
-    if (isNaN(numValue)) return
+    if (isNaN(numValue) || numValue > props.max) {
+      maxInput.value = props.modelValue[1]
+      return
+    }
 
     let constrainedMax = Math.max(props.min, Math.min(numValue, props.max))
 
-    if (constrainedMax <= minInput.value) {
-      constrainedMax = minInput.value + 1
+    if (constrainedMax <= props.modelValue[0]) {
+      constrainedMax = Math.min(props.max, props.modelValue[0] + 1)
     }
 
-    if (constrainedMax !== props.modelValue[1]) {
+    maxInput.value = constrainedMax
+
+    if (constrainedMax !== props.modelValue[1] || constrainedMax !== maxInput.value) {
       emit('update:modelValue', [props.modelValue[0], constrainedMax])
     }
   }

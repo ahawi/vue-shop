@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import { Typography } from '@/shared/ui'
-import type { Catalog } from '@/shared/lib/mocks/mock-categories';
+import type { Category } from '@/shared/lib/mocks/mock-products';
 
 
-const props = defineProps<Catalog>()
+const props = defineProps<Category>()
 </script>
 
 <template>
-  <RouterLink :to="`/catalog/${props.slug}`" class="card">
+  <RouterLink :to="`/catalog/${props.id}`" class="card">
     <Typography tag="span" size="m" bold class="card__title">{{ props.title }}</Typography>
     <div class="card__gradient"></div>
     <img :src="image" alt="" class="card__image" />

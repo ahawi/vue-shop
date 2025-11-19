@@ -7,7 +7,7 @@ import { useFilterState, type SelectedCategory } from '../composables/useFilterS
 import { useCategoryFilter } from '../composables/useCategoryFilter'
 import { usePriceRange } from '../composables/usePriceRange'
 import { useStockFilter } from '../composables/useStockFilter'
-import { mockCategoryFilters } from '@/shared/lib/mocks/mock-products'
+import { mockCategory } from '@/shared/lib/mocks/mock-products'
 import { useRoute } from 'vue-router'
 
 interface RangeSliderProps {
@@ -20,12 +20,24 @@ const route = useRoute()
 const currentCategoryId = computed(() => route.params.category as string)
 
 const currentSubCategories = computed(() => {
-  const parent = mockCategoryFilters.find((cat) => cat.id === currentCategoryId.value)
+  const parent = mockCategory.find((cat) => cat.id === currentCategoryId.value)
   return parent?.categories ?? []
 })
 
 const props = defineProps<RangeSliderProps>()
 const emit = defineEmits(['update:modelValue', 'update:filters', 'apply:filters'])
+
+const hasFilters = computed(() => {
+  const isPriceFilterChange =
+    appliedFilters.value.filterPrice[0] !== props.min ||
+    appliedFilters.value.filterPrice[1] !== props.max
+
+  const isCategoryFilterChange = appliedFilters.value.filterCategories.length > 0
+
+  const hasInStockFilter = appliedFilters.value.inStock === true
+
+  return isCategoryFilterChange || isPriceFilterChange || hasInStockFilter
+})
 
 const { filterState, appliedFilters, emitFilters, resetFilterState, applyFilters } = useFilterState(
   props,
@@ -60,24 +72,6 @@ const removePriceFilter = () => {
   emitFilters('update:filters')
 }
 
-watch(
-  mockCategoryFilters,
-  (updatedCategories) => {
-    const allowedIds = new Set(updatedCategories.map((category) => category.id))
-
-    filterState.value.filterCategories = filterState.value.filterCategories.filter((category) =>
-      allowedIds.has(category.id),
-    )
-
-    appliedFilters.value.filterCategories = appliedFilters.value.filterCategories.filter(
-      (category) => allowedIds.has(category.id),
-    )
-
-    emitFilters('update:filters')
-  },
-  { deep: true },
-)
-
 defineExpose({
   clearAllFilters,
   removePriceFilter,
@@ -100,6 +94,7 @@ defineExpose({
           size="s"
           class="filter__clear-button"
           @click="clearRange"
+          :disabled="!hasFilters"
           >Очистить</Button
         >
       </div>
@@ -107,7 +102,6 @@ defineExpose({
         <Field
           size="m"
           type="number"
-          placeholder="1"
           class="filter__field"
           :modelValue="minInput"
           @update:modelValue="updateMinValue"
@@ -118,7 +112,6 @@ defineExpose({
         <Field
           size="m"
           type="number"
-          placeholder="100"
           class="filter__field"
           :modelValue="maxInput"
           @update:modelValue="updateMaxValue"
@@ -131,6 +124,8 @@ defineExpose({
         :min="min"
         :max="max"
         :contained="true"
+        :interval="0.01"
+        :min-range="20"
         :dot-size="22"
         :dot-style="{
           backgroundColor: '#70C05B',
@@ -142,7 +137,6 @@ defineExpose({
         :process-style="{ backgroundColor: '#70C05B' }"
         :rail-style="{ backgroundColor: '#F3F2F1' }"
         :tooltip="'none'"
-        :min-range="20"
         range
         class="filter__range-slider"
       />
@@ -215,6 +209,23 @@ defineExpose({
     &:active {
       background-color: var(--pallete-success);
       color: var(--main-on-secondary);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      background-color: var(--grayscale-lightest);
+      color: var(--grayscale-hardest);
+
+      &:hover {
+        background-color: var(--grayscale-lightest);
+        color: var(--grayscale-hardest);
+      }
+
+      &:active {
+        background-color: var(--grayscale-lightest);
+        color: var(--grayscale-hardest);
+      }
     }
   }
 

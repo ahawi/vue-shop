@@ -5,9 +5,10 @@ export interface InnerCategory {
   title: string
 }
 
-export interface CategoryFilter {
+export interface Category {
   id: string
   title: string
+  image: string
   categories?: InnerCategory[]
 }
 
@@ -16,10 +17,11 @@ export interface CategoryProduct extends ProductProps {
   inStock: boolean
 }
 
-export const mockCategoryFilters: CategoryFilter[] = [
+export const mockCategory: Category[] = [
   {
     id: 'milk-cheese-egg',
     title: 'Молоко, сыр, яйца',
+    image: '/categories/milk-cheese-egg.png',
     categories: [
       { id: 'milk', title: 'Молоко' },
       { id: 'egg', title: 'Яйца' },
@@ -32,6 +34,7 @@ export const mockCategoryFilters: CategoryFilter[] = [
   {
     id: 'bakery',
     title: 'Выпечка',
+    image: '/categories/bakery.png',
     categories: [
       { id: 'bread', title: 'Хлеб' },
       { id: 'pizza', title: 'Пицца' },
@@ -41,6 +44,7 @@ export const mockCategoryFilters: CategoryFilter[] = [
   {
     id: 'meat-poultry-sausage',
     title: 'Мясные изделия',
+    image: '/categories/meat-poultry-sausage.png',
     categories: [
       { id: 'sausage', title: 'Колбаса' },
       { id: 'sausages', title: 'Сосиски' },
@@ -52,6 +56,7 @@ export const mockCategoryFilters: CategoryFilter[] = [
   {
     id: 'sweets',
     title: 'Сладости',
+    image: '/categories/sweets.png',
     categories: [
       { id: 'chocolate', title: 'Шоколад' },
       { id: 'cookie', title: 'Печенье' },
@@ -59,6 +64,7 @@ export const mockCategoryFilters: CategoryFilter[] = [
   },
   {
     id: 'drinks',
+    image: '/categories/drinks.png',
     title: 'Напитки',
     categories: [
       { id: 'juice', title: 'Соки' },

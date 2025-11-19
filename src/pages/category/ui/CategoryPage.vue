@@ -5,14 +5,14 @@ import { Breadcrumbs } from '@/widgets/breadcrumbs'
 import { Footer } from '@/widgets/footer'
 import { useRoute } from 'vue-router'
 import { computed } from 'vue'
-import { mockCategories, type Catalog } from '@/shared/lib/mocks/mock-categories'
+import { mockProducts, type Category } from '@/shared/lib/mocks/mock-products'
 import { CategorySection } from '@/widgets/category-section'
 
 const route = useRoute()
 
-const currentCategory = computed<Catalog | undefined>(() => {
+const currentCategory = computed(() => {
   const currentCategorySlug = route.params.category as string
-  return mockCategories.find((c) => c.slug === currentCategorySlug)
+  return mockProducts.find((c) => c.id === currentCategorySlug)
 })
 
 const categoryTitle = computed(() => currentCategory.value?.title || '')
