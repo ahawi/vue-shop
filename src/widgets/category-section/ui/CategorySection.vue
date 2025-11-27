@@ -1,16 +1,30 @@
 <script lang="ts" setup>
 import { Button, Typography } from '@/shared/ui'
-import { ProductCard } from '@/entities/product'
+import { ProductCard, type ProductProps } from '@/entities/product'
 import { ProductFilter } from '@/widgets/product-filter'
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
-import { mockProducts } from '@/shared/lib/mocks/mock-products'
+import { mockProducts, type CategoryProduct } from '@/shared/lib/mocks/mock-products'
 import { useRoute } from 'vue-router'
+import router from '@/app/router'
+import { useAddToCart } from '@/features/add-to-cart/useAddToCart'
+import { useToggleFavorite } from '@/features/toggle-favorite/useToggleFavorite'
 
 interface FiltersPayload {
   filterPrice: [number, number]
   filterCategories: { id: string; title: string }[]
   inStock: boolean
   hasActiveFilters: boolean
+}
+
+const goToProductPage = (product: CategoryProduct) => {
+  router.push(`/catalog/${product.categoryIds[0]}/${product.id}`)
+}
+
+const addToCart = useAddToCart()
+const { toggleFavorite } = useToggleFavorite()
+
+const onProductToggleFavorite = (product: ProductProps) => {
+  toggleFavorite(product)
 }
 
 const categoryProducts = computed(() => {
@@ -268,7 +282,14 @@ const appliedFiltersCount = computed(() => appliedFilters.value.length)
         </div>
 
         <div class="main__cards">
-          <ProductCard v-for="product in displayedProducts" :key="product.id" v-bind="product" />
+          <ProductCard
+            v-for="product in displayedProducts"
+            :key="product.id"
+            v-bind="product"
+            @click="goToProductPage(product)"
+            @add-to-cart="addToCart(product)"
+            @toggle-favorite="onProductToggleFavorite"
+          />
         </div>
         <div class="main__more">
           <Button

@@ -1,10 +1,13 @@
 <script lang="ts" setup>
 import { Section } from '@/shared/ui'
-import { mockProducts } from '@/shared/lib/mocks/mock-products'
-import { ProductCard } from '@/entities/product'
-import { computed, watchEffect } from 'vue'
+import { mockProducts, type CategoryProduct } from '@/shared/lib/mocks/mock-products'
+import { ProductCard, type ProductProps } from '@/entities/product'
+import { computed } from 'vue'
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/vue'
+import router from '@/app/router'
+import { useAddToCart } from '@/features/add-to-cart/useAddToCart'
+import { useToggleFavorite } from '@/features/toggle-favorite/useToggleFavorite'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
@@ -15,6 +18,13 @@ const props = defineProps<{
   linkTitle: string
   filterType: 'sale' | 'new' | 'buy-before' | 'none'
 }>()
+
+const goToProductPage = (product: CategoryProduct) => {
+  router.push(`/catalog/${product.categoryIds[0]}/${product.id}`)
+}
+
+const addToCart = useAddToCart()
+const { toggleFavorite } = useToggleFavorite()
 
 const filteredType = computed(() => {
   let result: typeof mockProducts
@@ -52,7 +62,11 @@ const modules = [Navigation, Pagination, Scrollbar, A11y]
       class="products-swiper"
     >
       <SwiperSlide v-for="product in filteredType" :key="product.id" class="product-slide">
-        <ProductCard v-bind="product" />
+        <ProductCard
+          @click="goToProductPage(product)"
+          v-bind="product"
+          @add-to-cart="addToCart(product)"
+        />
       </SwiperSlide>
     </Swiper>
   </Section>

@@ -1,15 +1,15 @@
 <script lang="ts" setup>
-import { CatalogCard } from '@/entities/catalog'
-import { mockCategory } from '@/shared/lib/mocks/mock-products';
+import { CategoryCard } from '@/entities/category'
+import { mockCategory } from '@/shared/lib/mocks/mock-products'
 </script>
 
 <template>
   <div class="categories">
-    <CatalogCard
+    <CategoryCard
+      v-for="category in mockCategory"
       :title="category.title"
       :image="category.image"
       :id="category.id"
-      v-for="category in mockCategory"
       :key="category.id"
     />
   </div>

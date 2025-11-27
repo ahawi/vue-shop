@@ -1,4 +1,4 @@
-import type { ProductProps } from "@/entities/product"
+import type { ProductProps } from '@/entities/product'
 import { defineStore } from 'pinia'
 
 export const useFavoriteStore = defineStore('favorites', {
@@ -33,4 +33,6 @@ export const useFavoriteStore = defineStore('favorites', {
       this.items = []
     },
   },
+
+  persist: true,
 })

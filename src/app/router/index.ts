@@ -3,6 +3,7 @@ import { MainPage } from '@/pages/main'
 import { CatalogPage } from '@/pages/catalog'
 import { ROUTES_PATHS } from '../config/routes'
 import { CategoryPage } from '@/pages/category'
+import { ProductPage } from '@/pages/product'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -23,6 +24,12 @@ const router = createRouter({
       path: ROUTES_PATHS.CATEGORY,
       name: 'category',
       component: CategoryPage,
+      meta: { title: '' },
+    },
+    {
+      path: ROUTES_PATHS.PRODUCT,
+      name: 'product',
+      component: ProductPage,
       meta: { title: '' },
     },
   ],

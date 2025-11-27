@@ -6,4 +6,5 @@ export const ROUTES_PATHS = {
   CART: '/cart',
   PROFILE: '/profile',
   CATEGORY: '/catalog/:category',
+  PRODUCT: '/catalog/:category/:productId',
 }

@@ -140,7 +140,7 @@ const selectedCity = ref('')
   top: 0;
   left: 0;
   height: 72px;
-  z-index: 2;
+  z-index: 10;
 
   &__container {
     max-width: 1208px;

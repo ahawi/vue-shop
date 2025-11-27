@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { mockCategory } from '@/shared/lib/mocks/mock-products'
+import { mockCategory, mockProducts } from '@/shared/lib/mocks/mock-products'
 import { Icon } from '@/shared/ui'
 import { Typography } from '@/shared/ui'
 import { computed } from 'vue'
@@ -31,6 +31,14 @@ const breadcrumbs = computed<Breadcrumb[]>(() => {
         to: `/catalog/${pathArray[1]}`,
         title: category?.title || pathArray[1],
       })
+
+      if (pathArray[2]) {
+        const product = mockProducts.find((p) => p.id === pathArray[2])
+        crumbs.push({
+          to: route.path,
+          title: product?.title || pathArray[2],
+        })
+      }
     }
   }
 

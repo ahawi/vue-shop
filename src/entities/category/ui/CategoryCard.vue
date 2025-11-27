@@ -2,7 +2,6 @@
 import { Typography } from '@/shared/ui'
 import type { Category } from '@/shared/lib/mocks/mock-products';
 
-
 const props = defineProps<Category>()
 </script>
 

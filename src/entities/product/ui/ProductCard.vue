@@ -1,45 +1,23 @@
 <script setup lang="ts">
 import { Typography, Button, Icon, StarRating, Badge } from '@/shared/ui'
 import type { ProductProps } from '../model/types'
-import { useCartStore } from '@/app/stores/cart'
-import { useFavoriteStore } from '@/app/stores/favorite'
+import { useToggleFavorite } from '@/features/toggle-favorite/useToggleFavorite'
 import { computed } from 'vue'
 
 const props = defineProps<ProductProps>()
+const emit = defineEmits(['add-to-cart', 'toggle-favorite'])
 
-const cartStore = useCartStore()
-const favoriteStore = useFavoriteStore()
+const { toggleFavorite, isFavorite } = useToggleFavorite()
 
-const normalizePrice = () => {
-  const priceWithDot = props.price.replace(',', '.')
-  return parseFloat(priceWithDot)
+const isProductFavorite = computed(() => isFavorite(props.id))
+
+const onAddToCart = (event: MouseEvent) => {
+  event.stopPropagation()
+  emit('add-to-cart', props)
 }
-
-const addToCart = () => {
-  cartStore.addToCart({
-    id: props.id,
-    title: props.title,
-    price: normalizePrice(),
-    image: props.image,
-  })
-}
-
-const isFavorite = computed(() => {
-  return favoriteStore.isInFavorites(props.id)
-})
-
-const toggleFavorite = () => {
-  favoriteStore.toggleFavorite(props)
-}
-
-const addToFavorite = () => {
-  favoriteStore.addToFavorite({
-    id: props.id,
-    title: props.title,
-    price: props.price,
-    rating: props.rating,
-    image: props.image,
-  })
+const onToggleFavorite = (event: MouseEvent) => {
+  event.stopPropagation()
+  toggleFavorite(props)
 }
 </script>
 
@@ -47,18 +25,18 @@ const addToFavorite = () => {
   <div class="product-card">
     <div class="product-card__header">
       <Button
-        :class="['product-card__favorite', { 'product-card__favorite--active': isFavorite }]"
-        @click="toggleFavorite"
+        :class="['product-card__favorite', { 'product-card__favorite--active': isProductFavorite }]"
+        @click="onToggleFavorite"
       >
         <Icon
           type="favorite"
           :width="24"
           :height="24"
-          :fill="isFavorite ? 'currentColor' : 'none'"
+          :fill="isProductFavorite ? 'currentColor' : 'none'"
           stroke="currentColor"
           :class="[
             'product-card__favorite-icon',
-            { 'product-card__favorite-icon--active': isFavorite },
+            { 'product-card__favorite-icon--active': isProductFavorite },
           ]"
         />
       </Button>
@@ -91,7 +69,7 @@ const addToFavorite = () => {
         decoration="outline"
         size="m"
         :disabled="false"
-        @click="addToCart"
+        @click="onAddToCart"
         >В корзину</Button
       >
     </div>
