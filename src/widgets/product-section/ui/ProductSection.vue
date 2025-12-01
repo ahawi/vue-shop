@@ -1,13 +1,12 @@
 <script lang="ts" setup>
 import { Section } from '@/shared/ui'
 import { mockProducts, type CategoryProduct } from '@/shared/lib/mocks/mock-products'
-import { ProductCard, type ProductProps } from '@/entities/product'
+import { ProductCard } from '@/entities/product'
 import { computed } from 'vue'
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import router from '@/app/router'
 import { useAddToCart } from '@/features/add-to-cart/useAddToCart'
-import { useToggleFavorite } from '@/features/toggle-favorite/useToggleFavorite'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
@@ -24,7 +23,6 @@ const goToProductPage = (product: CategoryProduct) => {
 }
 
 const addToCart = useAddToCart()
-const { toggleFavorite } = useToggleFavorite()
 
 const filteredType = computed(() => {
   let result: typeof mockProducts

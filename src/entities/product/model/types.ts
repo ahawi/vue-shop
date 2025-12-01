@@ -9,6 +9,7 @@ export interface ProductProps {
   hasCardPrice?: boolean
   hasSaleBadge?: boolean
   isFavorite?: boolean
+  brand?: string
 }
 
 export interface ProductSectionProps {
