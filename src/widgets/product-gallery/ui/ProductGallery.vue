@@ -83,6 +83,7 @@ const product = computed(() => {
     max-width: 504px;
     width: 100%;
     height: 100%;
+    cursor: pointer;
 
     &--small {
       width: 64px !important;
@@ -92,6 +93,7 @@ const product = computed(() => {
       align-items: center;
       border-radius: 4px;
       box-shadow: var(--shadow-default-xs) !important;
+      cursor: pointer;
     }
   }
 }

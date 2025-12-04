@@ -2,9 +2,17 @@
 import { Header } from '@/widgets/header'
 import { Footer } from '@/widgets/footer'
 import { Breadcrumbs } from '@/widgets/breadcrumbs'
-import { ProductGallery } from '@/widgets/product-gallery'
-import { ProductInfo } from '@/widgets/product-info'
-import { ProductSimilar } from '@/widgets/product-similar'
+import { Typography } from '@/shared/ui'
+import { mockProducts } from '@/shared/lib/mocks/mock-products'
+import { useRoute } from 'vue-router'
+import { computed } from 'vue'
+import { ProductDetails } from '@/widgets/product-details'
+
+const route = useRoute()
+
+const product = computed(() => {
+  return mockProducts.find((product) => product.id === route.params.id)
+})
 </script>
 
 <template>
@@ -12,11 +20,8 @@ import { ProductSimilar } from '@/widgets/product-similar'
 
   <main class="container">
     <Breadcrumbs />
-    <div class="product__main">
-      <ProductGallery />
-      <ProductInfo />
-      <ProductSimilar />
-    </div>
+    <Typography tag="h4" bold size="s" class="product__title">{{ product?.title }}</Typography>
+    <ProductDetails />
   </main>
   <Footer />
 </template>
@@ -29,8 +34,9 @@ import { ProductSimilar } from '@/widgets/product-similar'
   margin-bottom: 80px;
 }
 
-.product__main {
-  display: flex;
-  gap: 40px;
+.product {
+  &__title {
+    margin-block: 24px 16px;
+  }
 }
 </style>

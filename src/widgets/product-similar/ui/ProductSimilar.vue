@@ -67,6 +67,15 @@ const similarProducts = computed(() => {
     display: flex;
     flex-direction: column;
     box-shadow: var(--shadow-default-xs);
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: border 0.3s;
+    border-radius: 4px;
+
+    &:hover {
+      transition: border 0.3s;
+      border: 1px solid var(--main-primary);
+    }
 
     &-image {
       height: 57px;

@@ -10,6 +10,7 @@ export interface ProductProps {
   hasSaleBadge?: boolean
   isFavorite?: boolean
   brand?: string
+  weight?: string
 }
 
 export interface ProductSectionProps {

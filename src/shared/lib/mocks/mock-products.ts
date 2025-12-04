@@ -86,6 +86,7 @@ export const mockProducts: CategoryProduct[] = [
     inStock: true,
     categoryIds: ['milk-cheese-egg', 'milk'],
     brand: 'Сарафаново',
+    weight: '970 мл',
   },
   {
     id: 'moloko-pitevoe-ultrapasterizovannoe-1.5-pr-st-970ml',
@@ -96,6 +97,7 @@ export const mockProducts: CategoryProduct[] = [
     inStock: true,
     categoryIds: ['milk-cheese-egg', 'milk'],
     brand: 'Пр!ст',
+    weight: '970 мл',
   },
   {
     id: 'moloko-prostokvashino-pitevoe-pasterizovannoe-3.2-1.4l',
@@ -106,6 +108,7 @@ export const mockProducts: CategoryProduct[] = [
     inStock: true,
     categoryIds: ['milk-cheese-egg', 'milk'],
     brand: 'Простоквашино',
+    weight: '1.4 л',
   },
   {
     id: 'moloko-domik-v-derevne-ultrapasterizovannoe-bezlaktoznoe-1.8-950g',
@@ -120,6 +123,7 @@ export const mockProducts: CategoryProduct[] = [
     hasCardPrice: true,
     hasSaleBadge: true,
     brand: 'Домик в деревне',
+    weight: '950 г',
   },
 
   //яйца
@@ -132,6 +136,7 @@ export const mockProducts: CategoryProduct[] = [
     inStock: true,
     categoryIds: ['milk-cheese-egg', 'egg'],
     brand: 'Зелёная Линия',
+    weight: '10 шт',
   },
   {
     id: 'yajco-kurinoe-stolovoe-s1-market-perekryostok-10sht',
@@ -146,6 +151,7 @@ export const mockProducts: CategoryProduct[] = [
     hasCardPrice: true,
     hasSaleBadge: true,
     brand: 'Перекресток',
+    weight: '10 шт',
   },
   {
     id: 'yajco-kurinoe-pishevoe-stolovoe-c0-market-perekryostok-10sht',
@@ -160,6 +166,7 @@ export const mockProducts: CategoryProduct[] = [
     hasCardPrice: true,
     hasSaleBadge: true,
     brand: 'Перекресток',
+    weight: '10 шт',
   },
 
   //сливки
@@ -172,6 +179,7 @@ export const mockProducts: CategoryProduct[] = [
     inStock: true,
     categoryIds: ['milk-cheese-egg', 'cream'],
     brand: 'Пр!ст',
+    weight: '195 мл',
   },
   {
     id: 'slivki-vkusnoteevo-ultrapasterizovannye-10-450g',
@@ -186,6 +194,7 @@ export const mockProducts: CategoryProduct[] = [
     hasCardPrice: true,
     hasSaleBadge: true,
     brand: 'Вкуснотеево',
+    weight: '450 г',
   },
   {
     id: 'slivki-parmalat-chef-pitevye-ultrapasterizovannye-11-500g',
@@ -200,6 +209,7 @@ export const mockProducts: CategoryProduct[] = [
     hasCardPrice: true,
     hasSaleBadge: true,
     brand: 'Parmalat',
+    weight: '500 г',
   },
   {
     id: 'slivki-ehrmann-pitevye-ultrapasterizovannye-dlya-kofe-10-10h10g',
@@ -210,6 +220,7 @@ export const mockProducts: CategoryProduct[] = [
     inStock: true,
     categoryIds: ['milk-cheese-egg', 'cream'],
     brand: 'Ehrmann',
+    weight: '10 шт',
   },
 
   //творог
@@ -222,6 +233,7 @@ export const mockProducts: CategoryProduct[] = [
     inStock: true,
     categoryIds: ['milk-cheese-egg', 'cottage-cheese'],
     brand: 'Село Зелёно',
+    weight: '500 г',
   },
   {
     id: 'tvorog-brest-litovsk-5-180g',
@@ -236,6 +248,7 @@ export const mockProducts: CategoryProduct[] = [
     hasCardPrice: true,
     hasSaleBadge: true,
     brand: 'Брест-Литовск',
+    weight: '180 г',
   },
   {
     id: 'tvorog-5-zelyonaya-liniya-400g',
@@ -246,6 +259,7 @@ export const mockProducts: CategoryProduct[] = [
     inStock: true,
     categoryIds: ['milk-cheese-egg', 'cottage-cheese'],
     brand: 'Зелёная Линия',
+    weight: '400 г',
   },
   {
     id: 'tvorog-iskrenne-vash-5-180g',
@@ -256,6 +270,7 @@ export const mockProducts: CategoryProduct[] = [
     inStock: true,
     categoryIds: ['milk-cheese-egg', 'cottage-cheese'],
     brand: 'Искренне Ваш',
+    weight: '180 г',
   },
 
   //йогурт
@@ -272,6 +287,7 @@ export const mockProducts: CategoryProduct[] = [
     hasCardPrice: true,
     hasSaleBadge: true,
     brand: 'Даниссимо',
+    weight: '105 г',
   },
   {
     id: 'jogurt-epica-vishnya-chereshnya-4.8-130g',
@@ -282,6 +298,7 @@ export const mockProducts: CategoryProduct[] = [
     inStock: true,
     categoryIds: ['milk-cheese-egg', 'yoghurt'],
     brand: 'Epica',
+    weight: '130 г',
   },
   {
     id: 'biojogurt-aktibio-s-vishnej-obogashennyj-bifidobakteriyami-2.9-130g',
@@ -292,6 +309,7 @@ export const mockProducts: CategoryProduct[] = [
     inStock: true,
     categoryIds: ['milk-cheese-egg', 'yoghurt'],
     brand: 'Активиа',
+    weight: '130 г',
   },
 
   //десерты
@@ -308,6 +326,7 @@ export const mockProducts: CategoryProduct[] = [
     hasCardPrice: true,
     hasSaleBadge: true,
     brand: 'Cocon',
+    weight: '420 г',
   },
   {
     id: 'pirozhnoe-kinder-maxi-king-orehi-karamel-35g',
@@ -318,6 +337,7 @@ export const mockProducts: CategoryProduct[] = [
     inStock: true,
     categoryIds: ['milk-cheese-egg', 'dessert'],
     brand: 'Kinder',
+    weight: '35 г',
   },
 
   //хлеб
@@ -330,6 +350,7 @@ export const mockProducts: CategoryProduct[] = [
     inStock: true,
     categoryIds: ['bakery', 'bread'],
     brand: 'Коломенское',
+    weight: '320 г',
   },
   {
     id: 'bulochki-bimbo-iz-pshenichnoj-muki-s-kunzhutom-240g',
@@ -340,6 +361,7 @@ export const mockProducts: CategoryProduct[] = [
     inStock: true,
     categoryIds: ['bakery', 'bread'],
     brand: 'Bimbo',
+    weight: '240 г',
   },
   {
     id: 'hleb-cheremushki-kukuruznyj-narezannyj-v-upakovke-300g',
@@ -350,6 +372,7 @@ export const mockProducts: CategoryProduct[] = [
     inStock: true,
     categoryIds: ['bakery', 'bread'],
     brand: 'Черемушки',
+    weight: '300 г',
   },
 
   //пицца
@@ -366,6 +389,7 @@ export const mockProducts: CategoryProduct[] = [
     hasCardPrice: true,
     hasSaleBadge: true,
     brand: 'Перекресток',
+    weight: '300 г',
   },
   {
     id: 'picca-bbq-kusok-120g',
@@ -376,6 +400,7 @@ export const mockProducts: CategoryProduct[] = [
     inStock: true,
     categoryIds: ['bakery', 'pizza'],
     brand: 'Перекресток',
+    weight: '120 г',
   },
   {
     id: 'picca-pepperoni-920g',
@@ -386,6 +411,7 @@ export const mockProducts: CategoryProduct[] = [
     inStock: true,
     categoryIds: ['bakery', 'pizza'],
     brand: 'Перекресток',
+    weight: '920 г',
   },
 
   //булочки
@@ -402,6 +428,7 @@ export const mockProducts: CategoryProduct[] = [
     hasCardPrice: true,
     hasSaleBadge: true,
     brand: 'Коломенское',
+    weight: '200 г',
   },
   {
     id: 'bulochka-date-s-shokoladnoj-nachinkoj-70g',
@@ -412,6 +439,7 @@ export const mockProducts: CategoryProduct[] = [
     inStock: true,
     categoryIds: ['bakery', 'bun'],
     brand: 'Date',
+    weight: '70 г',
   },
   {
     id: 'slojka-hlebnyj-dom-sladkaya-klubnika-55g',
@@ -422,6 +450,7 @@ export const mockProducts: CategoryProduct[] = [
     inStock: true,
     categoryIds: ['bakery', 'bun'],
     brand: 'Хлебный Дом',
+    weight: '55 г',
   },
   {
     id: 'slojka-master-pirogov-s-syrom-70g',
@@ -432,6 +461,7 @@ export const mockProducts: CategoryProduct[] = [
     inStock: true,
     categoryIds: ['bakery', 'bun'],
     brand: 'Мастер Пироговъ',
+    weight: '70 г',
   },
 
   //колбаса
@@ -448,6 +478,7 @@ export const mockProducts: CategoryProduct[] = [
     hasCardPrice: true,
     hasSaleBadge: true,
     brand: 'Вязанка',
+    weight: '370 г',
   },
   {
     id: 'kolbasa-varyonaya-klinskij-doktorskaya-190g',
@@ -458,6 +489,7 @@ export const mockProducts: CategoryProduct[] = [
     inStock: true,
     categoryIds: ['meat-poultry-sausage', 'sausage'],
     brand: 'Клинский',
+    weight: '190 г',
   },
 
   //сосиски
@@ -474,6 +506,7 @@ export const mockProducts: CategoryProduct[] = [
     hasCardPrice: true,
     hasSaleBadge: true,
     brand: 'Папа Может',
+    weight: '410 г',
   },
   {
     id: 'sosiski-klinskij-klinskie-varyonye-kategorii-b-405g',
@@ -484,6 +517,7 @@ export const mockProducts: CategoryProduct[] = [
     inStock: true,
     categoryIds: ['meat-poultry-sausage', 'sausages'],
     brand: 'Клинский',
+    weight: '405 г',
   },
   {
     id: 'sosiski-okraina-doktorskie-varyonye-300g',
@@ -498,6 +532,7 @@ export const mockProducts: CategoryProduct[] = [
     hasCardPrice: true,
     hasSaleBadge: true,
     brand: 'Окраина',
+    weight: '300 г',
   },
 
   //шашлык
@@ -540,6 +575,7 @@ export const mockProducts: CategoryProduct[] = [
     inStock: true,
     categoryIds: ['meat-poultry-sausage', 'poultry-meat'],
     brand: 'Троекурово',
+    weight: '750 г',
   },
   {
     id: 'file-grudki-indejki',
@@ -566,6 +602,7 @@ export const mockProducts: CategoryProduct[] = [
     hasCardPrice: true,
     hasSaleBadge: true,
     brand: 'Мираторг',
+    weight: '260 г',
   },
   {
     id: 'stejk-govyazhij-miratorg-pikanya-black-angus-bez-kosti-ohlazhdyonnyj-325g',
@@ -576,6 +613,7 @@ export const mockProducts: CategoryProduct[] = [
     inStock: true,
     categoryIds: ['meat-poultry-sausage', 'beef'],
     brand: 'Мираторг',
+    weight: '325 г',
   },
 
   //шоколад
@@ -592,6 +630,7 @@ export const mockProducts: CategoryProduct[] = [
     hasCardPrice: true,
     hasSaleBadge: true,
     brand: 'Milka',
+    weight: '80 г',
   },
   {
     id: 'shokolad-molochnyj-kinder-chocolate-s-molochnoj-nachinkoj-100g',
@@ -602,6 +641,7 @@ export const mockProducts: CategoryProduct[] = [
     inStock: true,
     categoryIds: ['sweets', 'chocolate'],
     brand: 'Kinder',
+    weight: '100 г',
   },
   {
     id: 'shokolad-milka-molochnyj-s-celnym-fundukom-80g',
@@ -616,6 +656,7 @@ export const mockProducts: CategoryProduct[] = [
     hasCardPrice: true,
     hasSaleBadge: true,
     brand: 'Milka',
+    weight: '80 г',
   },
   {
     id: 'shokolad-molochnyj-kinder-chocolate-country-so-zlakami-23.5g',
@@ -626,6 +667,7 @@ export const mockProducts: CategoryProduct[] = [
     inStock: true,
     categoryIds: ['sweets', 'chocolate'],
     brand: 'Kinder',
+    weight: '23.5 г',
   },
 
   //печенье
@@ -638,6 +680,7 @@ export const mockProducts: CategoryProduct[] = [
     inStock: true,
     categoryIds: ['sweets', 'cookie'],
     brand: 'Milka',
+    weight: '126 г',
   },
 
   //сок
@@ -650,6 +693,7 @@ export const mockProducts: CategoryProduct[] = [
     inStock: true,
     categoryIds: ['drinks', 'juice'],
     brand: 'J7',
+    weight: '970 мл',
   },
 
   //вода
@@ -666,6 +710,7 @@ export const mockProducts: CategoryProduct[] = [
     hasCardPrice: true,
     hasSaleBadge: true,
     brand: 'Святой источник',
+    weight: '1.5 л',
   },
   {
     id: 'voda-shishkin-les-pitevaya-negazirovannaya-5l',
@@ -676,6 +721,7 @@ export const mockProducts: CategoryProduct[] = [
     inStock: true,
     categoryIds: ['drinks', 'water'],
     brand: 'Шишкин лес',
+    weight: '5 л',
   },
   {
     id: 'voda-essentuki-4-mineralnaya-prirodnaya-pitevaya-lechebno-stolovaya-gazirovannaya-1l',
@@ -686,6 +732,7 @@ export const mockProducts: CategoryProduct[] = [
     inStock: true,
     categoryIds: ['drinks', 'water'],
     brand: 'Ессентуки',
+    weight: '1 л',
   },
 
   //сода
@@ -702,6 +749,7 @@ export const mockProducts: CategoryProduct[] = [
     hasCardPrice: true,
     hasSaleBadge: true,
     brand: 'Coca-Cola',
+    weight: '1 л',
   },
   {
     id: 'napitok-gazirovannyj-natahtari-fejhoa-500ml',
@@ -716,6 +764,7 @@ export const mockProducts: CategoryProduct[] = [
     hasCardPrice: true,
     hasSaleBadge: true,
     brand: 'Натахтари',
+    weight: '500 мл',
   },
   {
     id: 'napitok-gazirovannyj-dr.pepper-330ml',
@@ -726,6 +775,7 @@ export const mockProducts: CategoryProduct[] = [
     inStock: true,
     categoryIds: ['drinks', 'soda'],
     brand: 'Dr.Pepper',
+    weight: '330 мл',
   },
   {
     id: 'napitok-gazirovannyj-volchok-s-sokom-persika-450ml',
@@ -736,6 +786,7 @@ export const mockProducts: CategoryProduct[] = [
     inStock: true,
     categoryIds: ['drinks', 'soda'],
     brand: 'Волчок',
+    weight: '450 мл',
   },
 
   //чай
@@ -748,6 +799,7 @@ export const mockProducts: CategoryProduct[] = [
     inStock: true,
     categoryIds: ['drinks', 'tea'],
     brand: 'Greenfield',
+    weight: '25 шт',
   },
   {
     id: 'chaj-greenfield-zolotoj-cejlon-chyornyj-v-paketikah-100h2g',
@@ -762,5 +814,6 @@ export const mockProducts: CategoryProduct[] = [
     hasCardPrice: true,
     hasSaleBadge: true,
     brand: 'Greenfield',
+    weight: '100 шт',
   },
 ]
