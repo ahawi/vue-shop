@@ -11,6 +11,7 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
+import SwiperProducts from '@/shared/ui/SwiperProducts.vue'
 
 const props = defineProps<{
   title: string
@@ -41,7 +42,7 @@ const filteredType = computed(() => {
       result = mockProducts
   }
 
-  return [...result].slice(0, 16)
+  return [...result].slice(0, 8)
 })
 
 const modules = [Navigation, Pagination, Scrollbar, A11y]
@@ -49,24 +50,13 @@ const modules = [Navigation, Pagination, Scrollbar, A11y]
 
 <template>
   <Section v-if="filteredType.length" :title="title" :link-title="linkTitle" class="section">
-    <Swiper
-      :modules="modules"
-      :space-between="40"
+    <SwiperProducts
+      :products="filteredType"
       :slides-per-view="4"
-      :slides-per-group="4"
-      :speed="700"
-      :pagination="{ clickable: true }"
-      :centered-slides="false"
-      class="products-swiper"
-    >
-      <SwiperSlide v-for="product in filteredType" :key="product.id" class="product-slide">
-        <ProductCard
-          @click="goToProductPage(product)"
-          v-bind="product"
-          @add-to-cart="addToCart(product)"
-        />
-      </SwiperSlide>
-    </Swiper>
+      :space-between="40"
+      @click:product="goToProductPage"
+      @add-to-cart="addToCart"
+    />
   </Section>
 </template>
 
@@ -74,19 +64,5 @@ const modules = [Navigation, Pagination, Scrollbar, A11y]
 .section {
   display: flex;
   flex-direction: column;
-}
-
-.products-swiper {
-  width: 100%;
-  padding-bottom: 40px;
-}
-
-.product-slide {
-  height: auto;
-  display: flex;
-}
-
-:deep(.swiper-pagination-bullet-active) {
-  background-color: var(--main-primary);
 }
 </style>

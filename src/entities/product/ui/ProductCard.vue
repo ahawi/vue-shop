@@ -19,6 +19,8 @@ const onToggleFavorite = (event: MouseEvent) => {
   event.stopPropagation()
   toggleFavorite(props)
 }
+
+
 </script>
 
 <template>

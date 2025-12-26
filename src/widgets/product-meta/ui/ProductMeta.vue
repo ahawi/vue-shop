@@ -4,11 +4,40 @@ import { Button, StarRating, Typography } from '@/shared/ui'
 import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useToggleFavorite } from '@/features/toggle-favorite/useToggleFavorite'
+import { mockReviews } from '@/widgets/reviews-section/mock/mock-reviews'
 
 const route = useRoute()
 
 const product = computed(() => {
   return mockProducts.find((product) => product.id === route.params.id)
+})
+
+const productReviews = computed(() => {
+  return mockReviews.filter((review) => review.productId === product.value?.id)
+})
+
+const getReviewWord = (count: number) => {
+  const lastDigit = count % 10
+  const lastTwoDigits = count % 100
+
+  if (lastTwoDigits >= 11 && lastTwoDigits <= 14) {
+    return 'отзывов'
+  }
+
+  if (lastDigit === 1) {
+    return 'отзыв'
+  }
+
+  if (lastDigit >= 2 && lastDigit <= 4) {
+    return 'отзыва'
+  }
+
+  return 'отзывов'
+}
+
+const reviewsText = computed(() => {
+  const count = productReviews.value.length
+  return `${count} ${getReviewWord(count)}`
 })
 
 const { toggleFavorite, isFavorite } = useToggleFavorite()
@@ -45,8 +74,6 @@ const copyShareLink = async () => {
     console.error(err)
   }
 }
-
-
 </script>
 
 <template>
@@ -54,7 +81,7 @@ const copyShareLink = async () => {
     <Typography tag="span" size="xs" class="product-meta__art">арт. 371431</Typography>
     <div class="product-meta__rating">
       <StarRating :rating="Number(product?.rating)" />
-      <Typography tag="span" size="xs">3 отзыва</Typography>
+      <Typography tag="span" size="xs">{{ reviewsText }}</Typography>
     </div>
 
     <Button

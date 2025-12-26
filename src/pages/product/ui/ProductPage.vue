@@ -7,6 +7,8 @@ import { mockProducts } from '@/shared/lib/mocks/mock-products'
 import { useRoute } from 'vue-router'
 import { computed } from 'vue'
 import { ProductDetails } from '@/widgets/product-details'
+import { BoughtTogether } from '@/widgets/bought-together'
+import { ReviewsSection, ReviewsStats } from '@/widgets/reviews-section'
 
 const route = useRoute()
 
@@ -22,6 +24,8 @@ const product = computed(() => {
     <Breadcrumbs />
     <Typography tag="h4" bold size="s" class="product__title">{{ product?.title }}</Typography>
     <ProductDetails />
+    <BoughtTogether />
+    <ReviewsSection />
   </main>
   <Footer />
 </template>
