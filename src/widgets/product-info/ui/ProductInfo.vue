@@ -43,6 +43,7 @@ const handleAddToCart = () => {
 
     <div class="product-info__actions">
       <Button
+        v-if="product?.inStock"
         :left-icon="{ type: 'cart', width: 32, height: 32 }"
         size="l"
         background-color="primary"
@@ -51,7 +52,10 @@ const handleAddToCart = () => {
         @click="handleAddToCart"
         >В корзину</Button
       >
-      <div class="product-info__actions-bonus">
+      <Button v-else size="l" class="product-info__actions-button-sold" disabled
+        >Нет в наличии</Button
+      >
+      <div class="product-info__actions-bonus" v-if="product?.inStock">
         <svg
           width="24"
           height="24"
@@ -90,7 +94,10 @@ const handleAddToCart = () => {
             fill="currentColor"
           />
         </svg>
-        <Typography tag="span" size="xs">Уведомить о снижении цены</Typography>
+        <Typography tag="span" size="xs" v-if="product?.inStock"
+          >Уведомить о снижении цены</Typography
+        >
+        <Typography tag="span" size="xs" v-else>Уведомить о наличии</Typography>
       </Button>
     </div>
 
@@ -168,6 +175,18 @@ const handleAddToCart = () => {
       &:hover {
         border-color: var(--main-secondary);
         color: var(--main-secondary);
+      }
+
+      &-sold {
+        background-color: transparent;
+        width: 100%;
+        justify-content: space-between;
+        padding: 11px 16px;
+
+        :deep(.button__text) {
+          flex: 1;
+          font-weight: 300;
+        }
       }
     }
 

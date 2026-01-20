@@ -2,12 +2,13 @@
 import { Button, Typography } from '@/shared/ui'
 import { ProductCard, type ProductProps } from '@/entities/product'
 import { ProductFilter } from '@/widgets/product-filter'
-import { computed, nextTick, onMounted, ref, watch } from 'vue'
-import { mockProducts } from '@/shared/lib/mocks/mock-products'
+import { computed, onMounted, ref, watch } from 'vue'
+import { mockCategory } from '@/shared/lib/mocks/mock-products'
 import { useRoute } from 'vue-router'
 import router from '@/app/router'
 import { useAddToCart } from '@/features/add-to-cart/useAddToCart'
 import { useToggleFavorite } from '@/features/toggle-favorite/useToggleFavorite'
+import { useFavoriteStore } from '@/app/stores/favorite'
 
 interface FiltersPayload {
   filterPrice: [number, number]
@@ -22,14 +23,27 @@ const goToProductPage = (product: ProductProps) => {
 
 const addToCart = useAddToCart()
 const { toggleFavorite } = useToggleFavorite()
+const favoriteStore = useFavoriteStore()
+
+const favoriteRootCategories = computed(() => {
+  const ids = new Set<string>()
+
+  for (const p of favoriteStore.items as any[]) {
+    const rootId = p?.categoryIds?.[0]
+    if (rootId) ids.add(rootId)
+  }
+
+  return mockCategory
+    .filter((cat) => ids.has(cat.id))
+    .map((cat) => ({ id: cat.id, title: cat.title }))
+})
 
 const onProductToggleFavorite = (product: ProductProps) => {
   toggleFavorite(product)
 }
 
 const categoryProducts = computed(() => {
-  if (!currentCategoryId.value) return []
-  return mockProducts.filter((product) => product.categoryIds.includes(currentCategoryId.value))
+  return favoriteStore.items as ProductProps[]
 })
 
 const initialPriceRange = () => {
@@ -74,20 +88,14 @@ const appliedFiltersState = ref<FiltersPayload>({
 })
 
 watch(
-  () => route.params.category,
-  (newCategoryId) => {
-    if (newCategoryId) {
-      currentCategoryId.value = newCategoryId as string
-      nextTick(() => {
-        updatePriceRange()
-        appliedFiltersState.value.filterPrice = [priceMin.value, priceMax.value]
-        tempPrice.value = [priceMin.value, priceMax.value]
-        visibleCount.value = step
-        clearAllFilters()
-      })
-    }
+  () => favoriteStore.items,
+  () => {
+    updatePriceRange()
+    appliedFiltersState.value.filterPrice = [priceMin.value, priceMax.value]
+    tempPrice.value = [priceMin.value, priceMax.value]
+    visibleCount.value = step
   },
-  { immediate: true },
+  { deep: true },
 )
 
 watch(
@@ -228,6 +236,7 @@ const appliedFiltersCount = computed(() => appliedFilters.value.length)
           v-model="price"
           :min="priceMin"
           :max="priceMax"
+          :categories="favoriteRootCategories"
           ref="productFilter"
           @apply:filters="updateAppliedFilters"
         />

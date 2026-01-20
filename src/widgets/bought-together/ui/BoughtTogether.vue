@@ -1,11 +1,12 @@
 <script lang="ts" setup>
 import { useAddToCart } from '@/features/add-to-cart/useAddToCart'
-import { mockProducts, type CategoryProduct } from '@/shared/lib/mocks/mock-products'
+import { mockProducts } from '@/shared/lib/mocks/mock-products'
 import { getBoughtTogether } from '@/shared/lib/utils/bought-together'
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Section } from '@/shared/ui'
 import SwiperProducts from '@/shared/ui/SwiperProducts.vue'
+import type { ProductProps } from '@/entities/product'
 
 const route = useRoute()
 const router = useRouter()
@@ -14,7 +15,7 @@ const currentProduct = computed(() => {
   return mockProducts.find((product) => product.id === route.params.id)
 })
 
-const goToProductPage = (product: CategoryProduct) => {
+const goToProductPage = (product: ProductProps) => {
   router.push(`/catalog/${product.categoryIds[0]}/${product.id}`)
 }
 

@@ -5,11 +5,10 @@ import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
-import type { CategoryProduct } from '../lib/mocks/mock-products'
-import { ProductCard } from '@/entities/product'
+import { ProductCard, type ProductProps } from '@/entities/product'
 
 const props = defineProps<{
-  products: CategoryProduct[]
+  products: ProductProps[]
   swiperOptions?: {
     spaceBetween?: number
     slidesPerView?: number
@@ -18,8 +17,8 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  'click:product': [product: CategoryProduct]
-  'add-to-cart': [product: CategoryProduct]
+  'click:product': [product: ProductProps]
+  'add-to-cart': [product: ProductProps]
 }>()
 
 const modules = [Navigation, Pagination, Scrollbar, A11y]

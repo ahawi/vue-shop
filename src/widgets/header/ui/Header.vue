@@ -72,23 +72,25 @@ const selectedCity = ref('')
       </div>
 
       <div class="header__controls">
-        <Button
-          :top-icon="{
-            type: 'favorite',
-            textColor: IconColor.BLACK,
-            fill: 'none',
-            width: 24,
-            height: 24,
-          }"
-          class="header__control"
+        <RouterLink :to="ROUTES_PATHS.FAVORITES">
+          <Button
+            :top-icon="{
+              type: 'favorite',
+              textColor: IconColor.BLACK,
+              fill: 'none',
+              width: 24,
+              height: 24,
+            }"
+            class="header__control"
+          >
+            <div v-if="favoriteStore.totalFavorites > 0" class="header__badge">
+              <Typography tag="span" size="xs">{{
+                favoriteStore.totalFavorites.toString()
+              }}</Typography>
+            </div>
+            <Typography tag="p" size="xs">Избранное</Typography>
+          </Button></RouterLink
         >
-          <div v-if="favoriteStore.totalFavorites > 0" class="header__badge">
-            <Typography tag="span" size="xs">{{
-              favoriteStore.totalFavorites.toString()
-            }}</Typography>
-          </div>
-          <Typography tag="p" size="xs">Избранное</Typography>
-        </Button>
         <Button
           :top-icon="{
             type: 'order',

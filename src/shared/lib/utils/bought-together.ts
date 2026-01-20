@@ -1,4 +1,5 @@
-import { type CategoryProduct, mockCategory, mockProducts } from '../mocks/mock-products'
+import type { ProductProps } from '@/entities/product'
+import { mockProducts } from '../mocks/mock-products'
 
 interface BoughtWithCategory {
   currentCategoryId: string
@@ -88,7 +89,7 @@ export const boughtWithCategories: BoughtWithCategory[] = [
   },
 ]
 
-export const getBoughtTogether = (product: CategoryProduct) => {
+export const getBoughtTogether = (product: ProductProps) => {
   const allProducts = mockProducts
   const currentCategory = product.categoryIds[1]
 

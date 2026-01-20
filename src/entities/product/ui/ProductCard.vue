@@ -19,8 +19,6 @@ const onToggleFavorite = (event: MouseEvent) => {
   event.stopPropagation()
   toggleFavorite(props)
 }
-
-
 </script>
 
 <template>
@@ -66,6 +64,7 @@ const onToggleFavorite = (event: MouseEvent) => {
         <StarRating :rating="rating" />
       </div>
       <Button
+        v-if="inStock"
         class="product-card__button"
         background-color="secondary"
         decoration="outline"
@@ -73,6 +72,9 @@ const onToggleFavorite = (event: MouseEvent) => {
         :disabled="false"
         @click="onAddToCart"
         >В корзину</Button
+      >
+      <Button v-else class="product-card__button-sold" background-color="grayscale" size="m"
+        >Нет в наличии</Button
       >
     </div>
   </div>
@@ -98,6 +100,10 @@ const onToggleFavorite = (event: MouseEvent) => {
   &__button {
     &:hover {
       background-color: var(--main-primary);
+    }
+
+    &-sold {
+      background-color: transparent;
     }
   }
 

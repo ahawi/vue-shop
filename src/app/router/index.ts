@@ -4,6 +4,7 @@ import { CatalogPage } from '@/pages/catalog'
 import { ROUTES_PATHS } from '../config/routes'
 import { CategoryPage } from '@/pages/category'
 import { ProductPage } from '@/pages/product'
+import { FavoritePage } from '@/pages/favorite'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -31,6 +32,12 @@ const router = createRouter({
       name: 'product',
       component: ProductPage,
       meta: { title: '' },
+    },
+    {
+      path: ROUTES_PATHS.FAVORITES,
+      name: 'favorites',
+      component: FavoritePage,
+      meta: { title: 'Избранное' },
     },
   ],
 })

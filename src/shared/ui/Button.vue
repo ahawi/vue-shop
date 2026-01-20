@@ -85,7 +85,7 @@ const toggleDecorationOnHover = computed(() => {
 
   &.disabled {
     cursor: auto;
-    cursor: not-allowed;
+    cursor: default;
   }
 }
 
@@ -121,7 +121,7 @@ const toggleDecorationOnHover = computed(() => {
   &.disabled {
     color: var(--main-secondary);
     background-color: var(--secondary-muted);
-    cursor: not-allowed;
+    cursor: default;
   }
 }
 
@@ -144,7 +144,7 @@ const toggleDecorationOnHover = computed(() => {
   &.disabled {
     color: var(--main-primary);
     background-color: var(--primary-muted);
-    cursor: not-allowed;
+    cursor: default;
   }
 }
 
@@ -167,7 +167,7 @@ const toggleDecorationOnHover = computed(() => {
   &.disabled {
     color: var(--grayscale-light);
     background-color: var(--main-surface);
-    cursor: not-allowed;
+    cursor: default;
   }
 }
 
@@ -190,7 +190,7 @@ const toggleDecorationOnHover = computed(() => {
   &.disabled {
     color: var(--pallete-error);
     background-color: var(--error-muted);
-    cursor: not-allowed;
+    cursor: default;
   }
 }
 

@@ -1,4 +1,4 @@
-import type { ProductProps } from '@/entities/product'
+import type { ProductProps } from "@/entities/product"
 
 export interface InnerCategory {
   id: string
@@ -10,11 +10,6 @@ export interface Category {
   title: string
   image: string
   categories?: InnerCategory[]
-}
-
-export interface CategoryProduct extends ProductProps {
-  categoryIds: string[]
-  inStock: boolean
 }
 
 export const mockCategory: Category[] = [
@@ -75,7 +70,7 @@ export const mockCategory: Category[] = [
   },
 ]
 
-export const mockProducts: CategoryProduct[] = [
+export const mockProducts: ProductProps[] = [
   // молоко
   {
     id: 'moloko-detskoe-ultrapasterizovannoe-3.2-sarafanovo-970ml',
@@ -133,7 +128,7 @@ export const mockProducts: CategoryProduct[] = [
     price: '124,99',
     rating: 5,
     image: `/products/milk-cheese-egg/egg/yajco-kurinoe-aktivita-s1-s-selenom-i-jodom-zelyonaya-liniya-10sht.webp`,
-    inStock: true,
+    inStock: false,
     categoryIds: ['milk-cheese-egg', 'egg'],
     brand: 'Зелёная Линия',
     weight: '10 шт',
@@ -243,7 +238,7 @@ export const mockProducts: CategoryProduct[] = [
     badge: '-11%',
     rating: 5,
     image: `/products/milk-cheese-egg/cottage-cheese/tvorog-brest-litovsk-5-180g.webp`,
-    inStock: true,
+    inStock: false,
     categoryIds: ['milk-cheese-egg', 'cottage-cheese'],
     hasCardPrice: true,
     hasSaleBadge: true,
@@ -282,7 +277,7 @@ export const mockProducts: CategoryProduct[] = [
     badge: '-17%',
     rating: 5,
     image: `/products/milk-cheese-egg/yoghurt/jogurt-danissimo-fantaziya-s-hrustyashimi-shokoladnymi-sharikami-6.9-105g.webp`,
-    inStock: true,
+    inStock: false,
     categoryIds: ['milk-cheese-egg', 'yoghurt'],
     hasCardPrice: true,
     hasSaleBadge: true,
@@ -321,7 +316,7 @@ export const mockProducts: CategoryProduct[] = [
     badge: '-12%',
     rating: 4.5,
     image: `/products/milk-cheese-egg/dessert/puding-cocon-mango-s-naturalnymi-fruktami-420g.webp`,
-    inStock: true,
+    inStock: false,
     categoryIds: ['milk-cheese-egg', 'dessert'],
     hasCardPrice: true,
     hasSaleBadge: true,
@@ -436,7 +431,7 @@ export const mockProducts: CategoryProduct[] = [
     price: '144,99',
     rating: 4,
     image: `/products/bakery/bun/bulochka-date-s-shokoladnoj-nachinkoj-70g.webp`,
-    inStock: true,
+    inStock: false,
     categoryIds: ['bakery', 'bun'],
     brand: 'Date',
     weight: '70 г',
@@ -544,7 +539,7 @@ export const mockProducts: CategoryProduct[] = [
     badge: '-14%',
     rating: 5,
     image: `/products/meat-poultry-sausage/barbecue/shashlyk-kstati-o-ptichkah-kurinyj-klassicheskij.webp`,
-    inStock: true,
+    inStock: false,
     categoryIds: ['meat-poultry-sausage', 'barbecue'],
     hasCardPrice: true,
     hasSaleBadge: true,
@@ -638,7 +633,7 @@ export const mockProducts: CategoryProduct[] = [
     price: '211,99',
     rating: 5,
     image: `/products/sweets/chocolate/shokolad-molochnyj-kinder-chocolate-s-molochnoj-nachinkoj-100g.webp`,
-    inStock: true,
+    inStock: false,
     categoryIds: ['sweets', 'chocolate'],
     brand: 'Kinder',
     weight: '100 г',
@@ -729,7 +724,7 @@ export const mockProducts: CategoryProduct[] = [
     price: '114,90',
     rating: 5,
     image: `/products/drinks/water/voda-essentuki-4-mineralnaya-prirodnaya-pitevaya-lechebno-stolovaya-gazirovannaya-1l.webp`,
-    inStock: true,
+    inStock: false,
     categoryIds: ['drinks', 'water'],
     brand: 'Ессентуки',
     weight: '1 л',
@@ -809,7 +804,7 @@ export const mockProducts: CategoryProduct[] = [
     badge: '-23%',
     rating: 5,
     image: `/products/drinks/tea/chaj-greenfield-zolotoj-cejlon-chyornyj-v-paketikah-100h2g.webp`,
-    inStock: true,
+    inStock: false,
     categoryIds: ['drinks', 'tea'],
     hasCardPrice: true,
     hasSaleBadge: true,

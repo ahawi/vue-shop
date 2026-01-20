@@ -1,10 +1,8 @@
 <script lang="ts" setup>
 import { Section } from '@/shared/ui'
-import { mockProducts, type CategoryProduct } from '@/shared/lib/mocks/mock-products'
-import { ProductCard } from '@/entities/product'
+import { mockProducts } from '@/shared/lib/mocks/mock-products'
 import { computed } from 'vue'
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules'
-import { Swiper, SwiperSlide } from 'swiper/vue'
 import router from '@/app/router'
 import { useAddToCart } from '@/features/add-to-cart/useAddToCart'
 import 'swiper/css'
@@ -12,6 +10,7 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
 import SwiperProducts from '@/shared/ui/SwiperProducts.vue'
+import type { ProductProps } from '@/entities/product'
 
 const props = defineProps<{
   title: string
@@ -19,7 +18,7 @@ const props = defineProps<{
   filterType: 'sale' | 'new' | 'buy-before' | 'none'
 }>()
 
-const goToProductPage = (product: CategoryProduct) => {
+const goToProductPage = (product: ProductProps) => {
   router.push(`/catalog/${product.categoryIds[0]}/${product.id}`)
 }
 

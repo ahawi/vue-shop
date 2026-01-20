@@ -18,7 +18,7 @@ const productReviews = computed(() => {
 </script>
 
 <template>
-  <div class="reviews-list">
+  <div class="reviews-list" v-if="productReviews.length > 0">
     <div class="review" v-for="review in productReviews" :key="review.reviewId">
       <div class="review__user">
         <Icon type="review-user" :width="36" :height="36" />
@@ -28,10 +28,10 @@ const productReviews = computed(() => {
         <StarRating :rating="review.rating" />
         <Typography tag="span" size="xs">{{ review.date }}</Typography>
       </div>
-
       <Typography tag="p" size="s">{{ review.message }}</Typography>
     </div>
   </div>
+  <div v-else class="reviews-list"><Typography tag="span" size="l">На этот товар еще не оставили отзывы</Typography></div>
 </template>
 
 <style lang="scss" scoped>

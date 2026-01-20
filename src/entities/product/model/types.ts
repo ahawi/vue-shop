@@ -11,6 +11,8 @@ export interface ProductProps {
   isFavorite?: boolean
   brand?: string
   weight?: string
+  inStock: boolean
+  categoryIds: string[]
 }
 
 export interface ProductSectionProps {

@@ -14,14 +14,22 @@ interface RangeSliderProps {
   modelValue: [number, number]
   max: number
   min: number
+  categories?: SelectedCategory[]
 }
 
 const route = useRoute()
 const currentCategoryId = computed(() => route.params.category as string)
 
+const isFavoritesPage = computed(() => route.name === 'favorites')
+
 const currentSubCategories = computed(() => {
   const parent = mockCategory.find((cat) => cat.id === currentCategoryId.value)
   return parent?.categories ?? []
+})
+
+const categoryOptions = computed<SelectedCategory[]>(() => {
+  if (props.categories && props.categories.length > 0) return props.categories
+  return currentSubCategories.value
 })
 
 const props = defineProps<RangeSliderProps>()
@@ -144,7 +152,7 @@ defineExpose({
     <ul class="filter__products">
       <li
         class="filter__product"
-        v-for="category in currentSubCategories"
+        v-for="category in categoryOptions"
         :key="category.id"
         :class="{ 'filter__product--selected': isCategorySelected(category.id) }"
         @click="toggleCategory(category)"

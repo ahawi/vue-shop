@@ -8,7 +8,8 @@ import { useRoute } from 'vue-router'
 import { computed } from 'vue'
 import { ProductDetails } from '@/widgets/product-details'
 import { BoughtTogether } from '@/widgets/bought-together'
-import { ReviewsSection, ReviewsStats } from '@/widgets/reviews-section'
+import { ReviewsSection } from '@/widgets/reviews-section'
+import { ProductSection } from '@/widgets/product-section'
 
 const route = useRoute()
 
@@ -26,6 +27,7 @@ const product = computed(() => {
     <ProductDetails />
     <BoughtTogether />
     <ReviewsSection />
+    <ProductSection title="Акции" link-title="Все акции" :filter-type="'sale'" />
   </main>
   <Footer />
 </template>

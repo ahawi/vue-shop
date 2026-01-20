@@ -40,6 +40,8 @@ const breadcrumbs = computed<Breadcrumb[]>(() => {
         })
       }
     }
+  } else if (pathArray[0] === 'favorites') {
+    crumbs.push({ to: '/favorites', title: 'Избранное' })
   }
 
   return crumbs
