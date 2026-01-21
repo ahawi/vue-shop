@@ -5,23 +5,11 @@ import { useFavoriteStore } from '@/app/stores/favorite'
 import { LogoMouthColor, LogoTextColor, LogoVariant, IconColor } from '@/shared/lib/types'
 import { Button, Logo, Field, Typography } from '@/shared/ui'
 import { ref } from 'vue'
+import HeaderSearch from './HeaderSearch.vue'
 
 const cartStore = useCartStore()
 const favoriteStore = useFavoriteStore()
 
-const products = [
-  { id: 'p1', title: 'Телефон' },
-  { id: 'p2', title: 'Футболка' },
-  { id: 'p3', title: 'Мяч' },
-]
-
-const categories = [
-  { id: 'c1', title: 'Электроника' },
-  { id: 'c2', title: 'Одежда' },
-  { id: 'c3', title: 'Игрушки' },
-]
-
-const selectedCity = ref('')
 </script>
 
 <template>
@@ -52,23 +40,18 @@ const selectedCity = ref('')
           ></RouterLink
         >
 
-        <Field
-          :right-icon="{
-            type: 'search',
-            textColor: IconColor.BLACK,
-            width: 24,
-            height: 24,
-          }"
-          :label="false"
-          :disabled="false"
-          type="select"
-          placeholder="Найти товар"
-          size="m"
-          class="header__search"
-          :options="products"
-          :categories="categories"
-          v-model="selectedCity"
-        ></Field>
+        <div class="header__search">
+          <HeaderSearch
+            :right-icon="{
+              type: 'search',
+              textColor: IconColor.BLACK,
+              width: 24,
+              height: 24,
+            }"
+            placeholder="Найти товар"
+            size="m"
+          />
+        </div>
       </div>
 
       <div class="header__controls">

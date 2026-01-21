@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { Button, Typography, Field, Icon } from '@/shared/ui'
-import { computed, ref, watch } from 'vue'
+import { computed } from 'vue'
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/default.css'
 import { useFilterState, type SelectedCategory } from '../composables/useFilterState'
