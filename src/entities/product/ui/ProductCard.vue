@@ -40,7 +40,7 @@ const onToggleFavorite = (event: MouseEvent) => {
           ]"
         />
       </Button>
-      <Badge v-if="hasSaleBadge" :title="badge" :is-visible="true" />
+      <Badge v-if="discount" :title="discount" :is-visible="true" />
       <div class="product-card__image">
         <img :src="image" :alt="title" />
       </div>

@@ -11,7 +11,7 @@ const props = defineProps<TextProps>()
 <template>
   <component
     :is="tag"
-    :class="['typography', size ? `text-size--${size}` : 'm', bold ? 'bold' : '', `tag--${tag}`]"
+    :class="['typography', size ? `text-size--${size}` : 'text-size--m', bold ? 'bold' : '', `tag--${tag}`]"
     ><slot></slot
   ></component>
 </template>

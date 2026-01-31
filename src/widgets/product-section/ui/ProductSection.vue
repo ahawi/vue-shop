@@ -29,7 +29,7 @@ const filteredType = computed(() => {
 
   switch (props.filterType) {
     case 'sale':
-      result = mockProducts.filter((product) => product.hasSaleBadge)
+      result = mockProducts.filter((product) => product.discount)
       break
     case 'new':
       result = mockProducts.filter((product) => product.rating < 5)

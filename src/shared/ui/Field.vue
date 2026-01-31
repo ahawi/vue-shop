@@ -84,6 +84,7 @@ watch(
       id="input"
       :disabled="disabled"
       autocomplete="off"
+      @change="handleInput"
     />
 
     <input

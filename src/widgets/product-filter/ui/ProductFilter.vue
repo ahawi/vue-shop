@@ -20,8 +20,6 @@ interface RangeSliderProps {
 const route = useRoute()
 const currentCategoryId = computed(() => route.params.category as string)
 
-const isFavoritesPage = computed(() => route.name === 'favorites')
-
 const currentSubCategories = computed(() => {
   const parent = mockCategory.find((cat) => cat.id === currentCategoryId.value)
   return parent?.categories ?? []

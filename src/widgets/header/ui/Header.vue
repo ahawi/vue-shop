@@ -3,13 +3,16 @@ import { ROUTES_PATHS } from '@/app/config/routes'
 import { useCartStore } from '@/app/stores/cart'
 import { useFavoriteStore } from '@/app/stores/favorite'
 import { LogoMouthColor, LogoTextColor, LogoVariant, IconColor } from '@/shared/lib/types'
-import { Button, Logo, Field, Typography } from '@/shared/ui'
-import { ref } from 'vue'
+import { Button, Logo, Typography } from '@/shared/ui'
 import HeaderSearch from './HeaderSearch.vue'
+import { computed } from 'vue'
 
 const cartStore = useCartStore()
 const favoriteStore = useFavoriteStore()
 
+const totalItems = computed(() => {
+  return cartStore.totalItems
+})
 </script>
 
 <template>
@@ -85,19 +88,21 @@ const favoriteStore = useFavoriteStore()
         >
           <Typography tag="p" size="xs">Заказы</Typography>
         </Button>
-        <Button
-          :top-icon="{
-            type: 'cart',
-            textColor: IconColor.BLACK,
-            width: 24,
-            height: 24,
-          }"
-          class="header__control"
-          ><div v-if="cartStore.totalItems > 0" class="header__badge">
-            <Typography tag="span" size="xs">{{ cartStore.totalItems.toString() }}</Typography>
-          </div>
-          <Typography tag="p" size="xs">Корзина</Typography>
-        </Button>
+        <RouterLink :to="ROUTES_PATHS.CART">
+          <Button
+            :top-icon="{
+              type: 'cart',
+              textColor: IconColor.BLACK,
+              width: 24,
+              height: 24,
+            }"
+            class="header__control"
+            ><div v-if="cartStore.totalItems > 0" class="header__badge">
+              <Typography tag="span" size="xs">{{ totalItems.toString() }}</Typography>
+            </div>
+            <Typography tag="p" size="xs">Корзина</Typography>
+          </Button></RouterLink
+        >
       </div>
 
       <Button

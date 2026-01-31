@@ -36,9 +36,4 @@ const badgePosition = computed(() => ({
   position: absolute;
   margin: 10px;
 }
-
-.position {
-  &-top {
-  }
-}
 </style>

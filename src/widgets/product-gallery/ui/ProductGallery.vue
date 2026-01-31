@@ -27,8 +27,8 @@ const product = computed(() => {
 <template>
   <div class="product__gallery">
     <Badge
-      v-if="product?.hasSaleBadge"
-      :title="product.badge"
+      v-if="product?.discount"
+      :title="product.discount"
       :is-visible="true"
       class="product__gallery-badge"
       position-top="10px"

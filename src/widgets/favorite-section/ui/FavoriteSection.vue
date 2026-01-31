@@ -231,7 +231,7 @@ const appliedFiltersCount = computed(() => appliedFilters.value.length)
 <template>
   <div class="category-section">
     <div class="category-section__inner">
-      <div class="category-section__filter">
+      <div class="category-section__filter" v-if="favoriteStore.totalFavorites > 0">
         <ProductFilter
           v-model="price"
           :min="priceMin"
