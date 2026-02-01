@@ -22,12 +22,16 @@ const handleAddToCart = () => {
 <template>
   <div class="product-info">
     <div class="product-info__prices">
-      <div v-if="product?.cardPrice" class="product-info__price">
-        <Typography tag="span" size="l">{{ product?.cardPrice }} ₽</Typography>
-        <Typography class="product-info__price-title" tag="span" size="xs">Обычная цена</Typography>
-      </div>
       <div class="product-info__price">
-        <Typography tag="h3" bold size="m">{{ product?.price }} ₽</Typography>
+        <Typography tag="span" :size="product?.cardPrice ? 'l' : 'xl'" :bold="!product?.cardPrice"
+          >{{ product?.price }} ₽</Typography
+        >
+        <Typography v-if="product?.cardPrice" class="product-info__price-title" tag="span" size="xs"
+          >Обычная цена</Typography
+        >
+      </div>
+      <div class="product-info__price" v-if="product?.cardPrice">
+        <Typography tag="h3" size="m" bold>{{ product?.cardPrice }} ₽</Typography>
         <Typography class="product-info__price-title" tag="span" size="xs">
           {{ product?.cardPrice ? 'С картой Северяночки' : 'Обычная цена' }}
           <Icon

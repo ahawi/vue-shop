@@ -4,9 +4,10 @@ import { Header } from '@/widgets/header'
 import { Breadcrumbs } from '@/widgets/breadcrumbs'
 import { Footer } from '@/widgets/footer'
 import { CartHeader } from '@/widgets/cart-header'
-import CartItems from '@/widgets/cart-items/ui/CartItems.vue'
+import { CartItems } from '@/widgets/cart-items'
 import { useCartStore } from '@/app/stores/cart'
 import { computed } from 'vue'
+import { CartSummary } from '@/widgets/cart-summary'
 
 const cartStore = useCartStore()
 
@@ -25,9 +26,14 @@ const totalItems = computed(() => {
         <Typography tag="span" size="s">{{ totalItems.toString() }}</Typography>
       </div>
     </div>
-    <div class="cart__main">
-      <CartHeader />
-      <CartItems />
+    <div class="cart__content">
+      <div class="cart__main">
+        <CartHeader />
+        <CartItems />
+      </div>
+      <div class="cart__summary">
+        <CartSummary />
+      </div>
     </div>
   </main>
   <Footer />
@@ -46,10 +52,17 @@ const totalItems = computed(() => {
     position: relative;
   }
 
+  &__content {
+    display: flex;
+    justify-content: space-between;
+  }
+
   &__main {
     display: flex;
     flex-direction: column;
     gap: 24px;
+    max-width: 876px;
+    width: 100%;
   }
 
   &__badge {
@@ -61,6 +74,11 @@ const totalItems = computed(() => {
     line-height: 1;
     padding: 4px 8px;
     border-radius: 4px;
+  }
+
+  &__summary {
+    max-width: 272px;
+    width: 100%;
   }
 }
 </style>

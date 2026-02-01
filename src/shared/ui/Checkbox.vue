@@ -27,7 +27,7 @@ const handleChange = (event: Event) => {
 
 <template>
   <div class="checkbox">
-    <label for="checkbox" class="checkbox__label" :size="size">
+    <label class="checkbox__label" :size="size">
       <input
         :class="[
           'checkbox__input',

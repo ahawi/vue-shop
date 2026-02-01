@@ -48,15 +48,15 @@ const onToggleFavorite = (event: MouseEvent) => {
 
     <div class="product-card__inner">
       <div class="product-card__prices">
+        <div v-if="cardPrice" class="product-card__price">
+          <Typography tag="span" size="s">{{ cardPrice }}₽</Typography>
+          <Typography class="product-card__price-title" tag="span" size="xs">С картой</Typography>
+        </div>
         <div class="product-card__price">
           <Typography tag="span" bold size="m">{{ price }}</Typography>
           <Typography v-if="cardPrice" class="product-card__price-title" tag="span" size="xs"
-            >С картой</Typography
+            >Обычная</Typography
           >
-        </div>
-        <div v-if="cardPrice" class="product-card__price">
-          <Typography tag="span" size="s">{{ cardPrice }}₽</Typography>
-          <Typography class="product-card__price-title" tag="span" size="xs">Обычная</Typography>
         </div>
       </div>
       <Typography class="product-card__title" tag="p" size="s">{{ title }}</Typography>

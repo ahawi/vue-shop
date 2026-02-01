@@ -18,12 +18,14 @@ export interface CartItem {
 export interface CartState {
   items: CartItem[]
   appliedBonus: number
+  userBonus: number
 }
 
 export const useCartStore = defineStore('cart', {
   state: (): CartState => ({
     items: [],
     appliedBonus: 0,
+    userBonus: 200,
   }),
 
   getters: {
@@ -31,35 +33,30 @@ export const useCartStore = defineStore('cart', {
     totalQuantity: (state) => state.items.reduce((sum, item) => sum + item.quantity, 0),
     selectedItems: (state) => state.items.filter((item) => item.selected),
     selectedItemsCount: (state) => state.items.filter((item) => item.selected).length,
-    subTotal: (state) =>
-      state.items.reduce((sum, item) => {
-        const price = item.cardPrice || item.price
-        return sum + price * item.quantity
-      }, 0),
-    totalDiscount: (state) =>
-      state.items.reduce((sum, item) => {
-        if (item.price) {
-          const actualPrice = item.cardPrice || item.price
-          return sum + (item.price - actualPrice) * item.quantity
-        }
-        return sum
-      }, 0),
-    totalPrice: (state) => {
-      const subtotal = state.items.reduce((sum, item) => {
-        const price = item.cardPrice || item.price
-        return sum + price * item.quantity
-      }, 0)
 
-      return Math.max(0, subtotal - state.appliedBonus)
+    originalSubtotal(): number {
+      return this.items.reduce((sum, item) => sum + item.price * item.quantity, 0)
     },
 
-    bonusEarned: (state) => {
-      const subtotal = state.items.reduce((sum, item) => {
-        const price = item.cardPrice || item.price
+    subtotalWithCard(): number {
+      return this.items.reduce((sum, item) => {
+        const price = item.cardPrice ?? item.price
         return sum + price * item.quantity
       }, 0)
+    },
 
-      return Math.floor(subtotal / 50)
+    cardDiscount(): number {
+      return this.originalSubtotal - this.subtotalWithCard
+    },
+
+    totalPrice(): string {
+      const subtotalWithCard = this.subtotalWithCard
+      return Math.max(0, subtotalWithCard - this.appliedBonus).toFixed(2)
+    },
+
+    bonusEarned(): number {
+      const amountForBonus = this.subtotalWithCard - this.appliedBonus
+      return Math.floor(amountForBonus / 50)
     },
 
     allSelected: (state) => {
@@ -71,13 +68,13 @@ export const useCartStore = defineStore('cart', {
       return state.items.some((item) => !item.inStock)
     },
 
-    isMinOrderReached: (state) => {
-      const subtotal = state.items.reduce((sum, item) => {
-        const price = item.cardPrice || item.price
-        return sum + price * item.quantity
-      }, 0)
+    isMinOrderReached(): boolean {
+      return this.subtotalWithCard >= 1000
+    },
 
-      return subtotal >= 1000
+    maxBonusApplicable(): number {
+      const maxFromOrder = this.subtotalWithCard / 2
+      return Math.min(maxFromOrder, this.userBonus)
     },
   },
 
@@ -183,8 +180,11 @@ export const useCartStore = defineStore('cart', {
     },
 
     applyBonus(amount: number) {
-      const maxApplicable = this.subTotal / 2
-      this.appliedBonus = maxApplicable
+      this.appliedBonus = Math.min(amount, this.maxBonusApplicable)
+    },
+
+    applyAllBonus() {
+      this.appliedBonus = this.maxBonusApplicable
     },
 
     removeBonus() {

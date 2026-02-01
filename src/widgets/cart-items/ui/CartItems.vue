@@ -36,5 +36,6 @@ const toggleItemSelect = (itemId: string) => {
 .cart-items {
   display: grid;
   gap: 24px;
+  width: 100%;
 }
 </style>

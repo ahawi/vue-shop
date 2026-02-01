@@ -5,7 +5,6 @@ import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
-const router = useRouter()
 
 const currentProduct = computed(() => {
   return mockProducts.find((product) => product.id === route.params.id)
@@ -37,7 +36,7 @@ const similarProducts = computed(() => {
       >
         <img :src="product.image" :alt="product.title" class="product-similar__card-image" />
         <Typography tag="span" bold size="m" class="product-similar__card-price">{{
-          product.price
+          product.cardPrice ? product.cardPrice : product.price
         }}</Typography>
       </div>
     </div>
@@ -80,6 +79,7 @@ const similarProducts = computed(() => {
     &-image {
       height: 57px;
       align-self: center;
+      padding-top: 10px;
     }
 
     &-price {

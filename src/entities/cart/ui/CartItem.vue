@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Badge, Checkbox, Typography } from '@/shared/ui'
-import type { CartItem } from '@/app/stores/cart'
+import { useCartStore, type CartItem } from '@/app/stores/cart'
 import QuantitySelector from '@/features/quantity-selector/QuantitySelector.vue'
 import { computed } from 'vue'
 import router from '@/app/router'
@@ -28,9 +28,17 @@ const goToProductPage = (event: MouseEvent) => {
   }
 }
 
-const itemTotal = computed(() => {
-  const price = props.item.cardPrice || props.item.price
+const totalPrice = computed(() => {
+  const price = props.item.price ?? props.item.cardPrice
   return (price * props.item.quantity).toFixed(2)
+})
+
+const totalPriceWithoutCard = computed(() => {
+  if (props.item.cardPrice) return (props.item.cardPrice * props.item.quantity).toFixed(2)
+})
+
+const shouldShowWithoutCard = computed(() => {
+  return props.item.cardPrice !== undefined
 })
 
 const updateQuantity = (quantity: number) => {
@@ -84,7 +92,16 @@ const toggleSelect = () => {
 
     <div class="cart-item__actions" v-if="item.inStock">
       <QuantitySelector :value="item.quantity" :min="0" :max="10" @change="updateQuantity" />
-      <Typography tag="span" size="m" bold class="cart-item__total">{{ itemTotal }} ₽</Typography>
+      <div class="cart-item__total">
+        <Typography tag="span" size="m" bold>{{ totalPrice }} ₽</Typography>
+        <Typography
+          tag="span"
+          size="s"
+          class="cart-item__total-before-discount"
+          v-if="shouldShowWithoutCard"
+          >{{ totalPriceWithoutCard }} ₽</Typography
+        >
+      </div>
     </div>
 
     <div v-else class="cart-item__out-of-stock">
@@ -102,6 +119,8 @@ const toggleSelect = () => {
   padding: 10px;
   cursor: pointer;
   transition: all 0.2s ease;
+  gap: 16px;
+  width: 100%;
 
   &:hover {
     box-shadow: var(--shadow-primary-m);
@@ -157,6 +176,18 @@ const toggleSelect = () => {
     max-width: 250px;
     width: 100%;
     justify-content: space-between;
+  }
+
+  &__total {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: end;
+
+    &-before-discount {
+      color: var(--grayscale-hard);
+      text-decoration: line-through;
+    }
   }
 
   &__out-of-stock {
