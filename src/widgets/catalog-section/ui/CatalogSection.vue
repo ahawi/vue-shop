@@ -19,7 +19,6 @@ import { mockCategory } from '@/shared/lib/mocks/mock-products'
 .categories {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(4, 1fr);
   gap: 40px;
 }
 

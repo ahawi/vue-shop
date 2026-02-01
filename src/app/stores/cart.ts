@@ -109,7 +109,7 @@ export const useCartStore = defineStore('cart', {
           price: normalizePrice(product.price),
           discount: product.discount ? normalizeDiscount(product.discount) : undefined,
           quantity: 1,
-          selected: true,
+          selected: false,
           cardPrice: product.cardPrice ? normalizePrice(product.cardPrice) : undefined,
           image: product.image,
           inStock: product.inStock,
