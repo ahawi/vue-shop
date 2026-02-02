@@ -5,10 +5,17 @@ import { useFavoriteStore } from '@/app/stores/favorite'
 import { LogoMouthColor, LogoTextColor, LogoVariant, IconColor } from '@/shared/lib/types'
 import { Button, Logo, Typography } from '@/shared/ui'
 import HeaderSearch from './HeaderSearch.vue'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 const cartStore = useCartStore()
 const favoriteStore = useFavoriteStore()
+
+const route = useRoute()
+
+const isFavoritesPage = computed(() => route.name === 'favorites')
+const isCartPage = computed(() => route.name === 'cart')
+const isOrdersPage = computed(() => route.name === 'orders')
 
 const totalItems = computed(() => {
   return cartStore.totalItems
@@ -67,7 +74,7 @@ const totalItems = computed(() => {
               width: 24,
               height: 24,
             }"
-            class="header__control"
+            :class="['header__control', { 'header__control--active': isFavoritesPage }]"
           >
             <div v-if="favoriteStore.totalFavorites > 0" class="header__badge">
               <Typography tag="span" size="xs">{{
@@ -77,17 +84,19 @@ const totalItems = computed(() => {
             <Typography tag="p" size="xs">Избранное</Typography>
           </Button></RouterLink
         >
-        <Button
-          :top-icon="{
-            type: 'order',
-            textColor: IconColor.BLACK,
-            width: 24,
-            height: 24,
-          }"
-          class="header__control"
+        <RouterLink :to="ROUTES_PATHS.ORDERS">
+          <Button
+            :top-icon="{
+              type: 'order',
+              textColor: IconColor.BLACK,
+              width: 24,
+              height: 24,
+            }"
+            :class="['header__control', { 'header__control--active': isOrdersPage }]"
+          >
+            <Typography tag="p" size="xs">Заказы</Typography>
+          </Button></RouterLink
         >
-          <Typography tag="p" size="xs">Заказы</Typography>
-        </Button>
         <RouterLink :to="ROUTES_PATHS.CART">
           <Button
             :top-icon="{
@@ -96,7 +105,7 @@ const totalItems = computed(() => {
               width: 24,
               height: 24,
             }"
-            class="header__control"
+            :class="['header__control', { 'header__control--active': isCartPage }]"
             ><div v-if="cartStore.totalItems > 0" class="header__badge">
               <Typography tag="span" size="xs">{{ totalItems.toString() }}</Typography>
             </div>
@@ -182,8 +191,16 @@ const totalItems = computed(() => {
     position: relative;
     width: 65px;
 
-    &:hover {
+    &:not(.header__control--active):hover {
       color: var(--main-secondary);
+    }
+
+    &--active {
+      color: var(--main-primary);
+
+      &:hover {
+        color: var(--main-primary);
+      }
     }
   }
 

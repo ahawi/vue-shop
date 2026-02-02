@@ -6,6 +6,7 @@ import { CategoryPage } from '@/pages/category'
 import { ProductPage } from '@/pages/product'
 import { FavoritePage } from '@/pages/favorite'
 import { CartPage } from '@/pages/cart'
+import { OrdersPage } from '@/pages/orders'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -45,6 +46,12 @@ const router = createRouter({
       name: 'cart',
       component: CartPage,
       meta: { title: 'Корзина' },
+    },
+    {
+      path: ROUTES_PATHS.ORDERS,
+      name: 'orders',
+      component: OrdersPage,
+      meta: { title: 'Заказы' },
     },
   ],
 })

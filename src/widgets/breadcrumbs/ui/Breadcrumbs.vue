@@ -44,6 +44,8 @@ const breadcrumbs = computed<Breadcrumb[]>(() => {
     crumbs.push({ to: '/favorites', title: 'Избранное' })
   } else if (pathArray[0] === 'cart') {
     crumbs.push({ to: '/cart', title: 'Корзина' })
+  } else {
+    crumbs.push({ to: '/orders', title: 'Заказы' })
   }
 
   return crumbs
