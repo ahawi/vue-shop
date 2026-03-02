@@ -1,1 +1,1 @@
-export {default as OrdersPage} from './ui/OrdersPage.vue'
+export * from './config'

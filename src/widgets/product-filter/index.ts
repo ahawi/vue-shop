@@ -1,1 +1,1 @@
-export { default as ProductFilter } from './ui/ProductFilter.vue'
+export * from './ui'

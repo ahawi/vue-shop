@@ -1,1 +1,1 @@
-export {default as FavoritePage} from './ui/FavoritePage.vue'
+export * from './config'

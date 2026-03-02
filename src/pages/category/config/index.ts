@@ -1,0 +1,3 @@
+import { CATEGORY_ROUTE, CATEGORY_LINK } from './route'
+
+export { CATEGORY_ROUTE, CATEGORY_LINK }

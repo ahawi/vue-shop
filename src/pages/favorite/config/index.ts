@@ -1,0 +1,3 @@
+import { FAVORITES_ROUTE, FAVORITES_LINK } from './route'
+
+export { FAVORITES_ROUTE, FAVORITES_LINK }

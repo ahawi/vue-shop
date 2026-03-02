@@ -1,1 +1,1 @@
-export { default as ProductGallery } from './ui/ProductGallery.vue'
+export * from './ui'

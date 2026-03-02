@@ -1,1 +1,1 @@
-export { default as Breadcrumbs } from './ui/Breadcrumbs.vue'
+export * from './ui'

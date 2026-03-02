@@ -1,1 +1,1 @@
-export { default as CartSummary } from './ui/CartSummary.vue'
+export * from './ui'

@@ -1,1 +1,1 @@
-export {default as FavoriteSection} from './ui/FavoriteSection.vue'
+export * from './ui'

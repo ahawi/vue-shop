@@ -1,1 +1,1 @@
-export { default as ProductSection } from './ui/ProductSection.vue'
+export * from './ui'
