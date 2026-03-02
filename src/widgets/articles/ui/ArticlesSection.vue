@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Section } from '@/shared/ui'
+import { Section } from '@/shared/ui/section';
 import { ArticleCard } from '@/entities/article';
 import { mockArticles } from '@/entities/article/mocks/mock-articles';
 </script>

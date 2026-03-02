@@ -1,17 +1,32 @@
 <script setup lang="ts">
-import { ROUTES_PATHS } from '@/app/config/routes'
-import { useCartStore } from '@/app/stores/cart'
-import { useFavoriteStore } from '@/app/stores/favorite'
+import { useCartStore } from '@/entities/cart/model/cart'
+import { useFavoritesStore } from '@/features/favorite/model/favorite'
 import { LogoMouthColor, LogoTextColor, LogoVariant, IconColor } from '@/shared/lib/types'
-import { Button, Logo, Typography } from '@/shared/ui'
-import HeaderSearch from './HeaderSearch.vue'
-import { computed, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { Button } from '@/shared/ui/button'
+import { Logo } from '@/shared/ui/logo'
+import { Typography } from '@/shared/ui/typography'
+import { HeaderSearch } from '@/features/search'
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+import { CATALOG_LINK } from '@/pages/catalog/config'
+import { FAVORITES_LINK } from '@/pages/favorite'
+import { ORDERS_LINK } from '@/pages/orders'
+import { CART_LINK } from '@/pages/cart'
+import { MAIN_LINK } from '@/shared/config'
+import { storeToRefs } from 'pinia'
 
 const cartStore = useCartStore()
-const favoriteStore = useFavoriteStore()
+const { totalFavorites } = storeToRefs(useFavoritesStore())
 
 const route = useRoute()
+
+const LINKS = {
+  main: { to: MAIN_LINK, name: 'Главная' },
+  catalog: { to: CATALOG_LINK, name: 'Каталог' },
+  favorites: { to: FAVORITES_LINK, name: 'Избранное' },
+  orders: { to: ORDERS_LINK, name: 'Заказы' },
+  cart: { to: CART_LINK, name: 'Заказы' }
+}
 
 const isFavoritesPage = computed(() => route.name === 'favorites')
 const isCartPage = computed(() => route.name === 'cart')
@@ -25,28 +40,29 @@ const totalItems = computed(() => {
 <template>
   <header class="header">
     <div class="header__container">
-      <a href="/" class="header__logo">
-        <Logo
-          :variant="LogoVariant.TEXT"
-          :mouth-color="LogoMouthColor.ORANGE"
-          :color="LogoTextColor.BLACK"
-        />
-      </a>
+      <RouterLink :to="LINKS.main.to">
+        <Button>
+          <Logo
+            :variant="LogoVariant.TEXT"
+            :mouth-color="LogoMouthColor.ORANGE"
+            :color="LogoTextColor.BLACK"
+        /></Button>
+      </RouterLink>
       <div class="header__actions">
-        <RouterLink :to="ROUTES_PATHS.CATALOG">
+        <RouterLink :to="LINKS.catalog.to">
           <Button
             :left-icon="{
               type: 'menu',
               textColor: IconColor.BLACK,
               width: 24,
-              height: 24,
+              height: 24
             }"
             background-color="secondary"
             decoration="outline"
             size="m"
             :disabled="false"
             class="header__actions-button"
-            >Каталог</Button
+            >{{ LINKS.catalog.name }}</Button
           ></RouterLink
         >
 
@@ -56,60 +72,79 @@ const totalItems = computed(() => {
               type: 'search',
               textColor: IconColor.BLACK,
               width: 24,
-              height: 24,
+              height: 24
             }"
             placeholder="Найти товар"
-            size="m"
-          />
+            size="m" />
         </div>
       </div>
 
       <div class="header__controls">
-        <RouterLink :to="ROUTES_PATHS.FAVORITES">
+        <RouterLink :to="LINKS.favorites.to">
           <Button
             :top-icon="{
               type: 'favorite',
               textColor: IconColor.BLACK,
               fill: 'none',
               width: 24,
-              height: 24,
+              height: 24
             }"
-            :class="['header__control', { 'header__control--active': isFavoritesPage }]"
-          >
-            <div v-if="favoriteStore.totalFavorites > 0" class="header__badge">
-              <Typography tag="span" size="xs">{{
-                favoriteStore.totalFavorites.toString()
-              }}</Typography>
+            :class="['header__control', { 'header__control--active': isFavoritesPage }]">
+            <div
+              v-if="totalFavorites > 0"
+              class="header__badge">
+              <Typography
+                tag="span"
+                size="xs"
+                >{{ totalFavorites.toString() }}</Typography
+              >
             </div>
-            <Typography tag="p" size="xs">Избранное</Typography>
+            <Typography
+              tag="p"
+              size="xs"
+              >{{ LINKS.favorites.name }}</Typography
+            >
           </Button></RouterLink
         >
-        <RouterLink :to="ROUTES_PATHS.ORDERS">
+        <RouterLink :to="LINKS.orders.to">
           <Button
             :top-icon="{
               type: 'order',
               textColor: IconColor.BLACK,
               width: 24,
-              height: 24,
+              height: 24
             }"
-            :class="['header__control', { 'header__control--active': isOrdersPage }]"
-          >
-            <Typography tag="p" size="xs">Заказы</Typography>
+            :class="['header__control', { 'header__control--active': isOrdersPage }]">
+            <Typography
+              tag="p"
+              size="xs"
+              >{{ LINKS.orders.name }}</Typography
+            >
           </Button></RouterLink
         >
-        <RouterLink :to="ROUTES_PATHS.CART">
+        <RouterLink :to="LINKS.cart.to">
           <Button
             :top-icon="{
               type: 'cart',
               textColor: IconColor.BLACK,
               width: 24,
-              height: 24,
+              height: 24
             }"
             :class="['header__control', { 'header__control--active': isCartPage }]"
-            ><div v-if="cartStore.totalItems > 0" class="header__badge">
-              <Typography tag="span" size="xs">{{ totalItems.toString() }}</Typography>
+            ><div
+              v-if="cartStore.totalItems > 0"
+              class="header__badge">
+              <Typography
+                tag="span"
+                size="xs"
+                >{{ totalItems.toString() }}</Typography
+              >
             </div>
-            <Typography tag="p" size="xs">Корзина</Typography>
+            <Typography
+              tag="p"
+              size="xs"
+              >{{ LINKS.cart.name }}</Typography
+            >
           </Button></RouterLink
         >
       </div>
@@ -121,10 +156,13 @@ const totalItems = computed(() => {
           type: 'arrow-down',
           textColor: IconColor.BLACK,
           width: 24,
-          height: 24,
-        }"
-      >
-        <Typography tag="span" size="s">Алексей</Typography></Button
+          height: 24
+        }">
+        <Typography
+          tag="span"
+          size="s"
+          >Алексей</Typography
+        ></Button
       >
     </div>
   </header>

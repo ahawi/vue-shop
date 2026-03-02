@@ -2,7 +2,7 @@
 import { Header } from '@/widgets/header'
 import { Footer } from '@/widgets/footer'
 import { Breadcrumbs } from '@/widgets/breadcrumbs'
-import { Typography } from '@/shared/ui'
+import { Typography } from '@/shared/ui/typography'
 import { mockProducts } from '@/shared/lib/mocks/mock-products'
 import { useRoute } from 'vue-router'
 import { computed } from 'vue'
@@ -23,11 +23,20 @@ const product = computed(() => {
 
   <main class="container">
     <Breadcrumbs />
-    <Typography tag="h4" bold size="s" class="product__title">{{ product?.title }}</Typography>
+    <Typography
+      tag="h4"
+      bold
+      size="s"
+      class="product__title"
+      >{{ product?.title }}</Typography
+    >
     <ProductDetails />
     <BoughtTogether />
     <ReviewsSection />
-    <ProductSection title="Акции" link-title="Все акции" :filter-type="'sale'" />
+    <ProductSection
+      title="Акции"
+      link-title="Все акции"
+      :filter-type="'sale'" />
   </main>
   <Footer />
 </template>

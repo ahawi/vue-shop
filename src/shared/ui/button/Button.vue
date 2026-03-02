@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
-import Typography from './Typography.vue'
-import Icon, { type IconProps } from './Icon.vue'
+import { Typography } from '../typography'
+import { Icon } from '../icon'
+import type { IconProps } from '../icon'
 
 interface ButtonProps {
   leftIcon?: IconProps
@@ -47,20 +48,25 @@ const toggleDecorationOnHover = computed(() => {
       size || '',
       disabled ? 'disabled' : '',
       toggleDecorationOnHover,
-      topIcon ? 'zero-padding' : '',
+      topIcon ? 'zero-padding' : ''
     ]"
     @mouseenter="isHovered = true"
-    @mouseleave="isHovered = false"
-  >
-    <Icon v-if="leftIcon" v-bind="leftIcon" />
-    <Icon v-if="topIcon" v-bind="topIcon" />
+    @mouseleave="isHovered = false">
+    <Icon
+      v-if="leftIcon"
+      v-bind="leftIcon" />
+    <Icon
+      v-if="topIcon"
+      v-bind="topIcon" />
     <Typography
       tag="p"
       :size="buttonTextSize()"
       :class="['button__text', topIcon ? 'zero-padding' : '']"
       ><slot></slot
     ></Typography>
-    <Icon v-if="rightIcon" v-bind="rightIcon" />
+    <Icon
+      v-if="rightIcon"
+      v-bind="rightIcon" />
   </button>
 </template>
 

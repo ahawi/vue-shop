@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { IconColor } from '@/shared/lib/types'
-import { Button, Typography } from '@/shared/ui'
+import { Button } from '../button'
+import { Typography } from '../typography'
 
 export interface SectionProps {
   title: string
@@ -14,7 +15,12 @@ const props = defineProps<SectionProps>()
 <template>
   <div class="section">
     <div class="section__header">
-      <Typography tag="h3" bold size="m">{{ title }}</Typography>
+      <Typography
+        tag="h3"
+        bold
+        size="m"
+        >{{ title }}</Typography
+      >
       <Button
         v-if="linkTitle"
         :rightIcon="{ type: 'arrow-left', textColor: IconColor.BLACK, width: 24, height: 24 }"

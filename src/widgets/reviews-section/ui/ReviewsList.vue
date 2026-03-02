@@ -1,9 +1,10 @@
 <script lang="ts" setup>
-import { Icon, StarRating } from '@/shared/ui'
+import { Icon } from '@/shared/ui/icon'
+import { StarRating } from '@/shared/ui/star-rating'
+import { Typography } from '@/shared/ui/typography'
 import { mockProducts } from '@/shared/lib/mocks/mock-products'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { Typography } from '@/shared/ui'
 import { mockReviews } from '../mock/mock-reviews'
 
 const route = useRoute()
@@ -18,20 +19,48 @@ const productReviews = computed(() => {
 </script>
 
 <template>
-  <div class="reviews-list" v-if="productReviews.length > 0">
-    <div class="review" v-for="review in productReviews" :key="review.reviewId">
+  <div
+    class="reviews-list"
+    v-if="productReviews.length > 0">
+    <div
+      class="review"
+      v-for="review in productReviews"
+      :key="review.reviewId">
       <div class="review__user">
-        <Icon type="review-user" :width="36" :height="36" />
-        <Typography tag="span" size="m">{{ review.author }}</Typography>
+        <Icon
+          type="review-user"
+          :width="36"
+          :height="36" />
+        <Typography
+          tag="span"
+          size="m"
+          >{{ review.author }}</Typography
+        >
       </div>
       <div class="review__rating-date">
         <StarRating :rating="review.rating" />
-        <Typography tag="span" size="xs">{{ review.date }}</Typography>
+        <Typography
+          tag="span"
+          size="xs"
+          >{{ review.date }}</Typography
+        >
       </div>
-      <Typography tag="p" size="s">{{ review.message }}</Typography>
+      <Typography
+        tag="p"
+        size="s"
+        >{{ review.message }}</Typography
+      >
     </div>
   </div>
-  <div v-else class="reviews-list"><Typography tag="span" size="l">На этот товар еще не оставили отзывы</Typography></div>
+  <div
+    v-else
+    class="reviews-list">
+    <Typography
+      tag="span"
+      size="l"
+      >На этот товар еще не оставили отзывы</Typography
+    >
+  </div>
 </template>
 
 <style lang="scss" scoped>

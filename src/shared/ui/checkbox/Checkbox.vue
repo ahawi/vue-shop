@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Typography } from '.'
+import { Typography } from '../typography';
 
 interface CheckboxProps {
   size?: 's' | 'm' | 'l' | 'xl'

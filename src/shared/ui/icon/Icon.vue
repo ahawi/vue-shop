@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { IconColor } from '../lib/types'
+import type { IconColor } from '@/shared/lib/types';
 
 export interface IconProps {
   type:

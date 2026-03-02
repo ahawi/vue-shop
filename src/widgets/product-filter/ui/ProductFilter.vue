@@ -1,5 +1,8 @@
 <script lang="ts" setup>
-import { Button, Typography, Field, Icon } from '@/shared/ui'
+import { Button } from '@/shared/ui/button'
+import { Typography } from '@/shared/ui/typography'
+import { Field } from '@/shared/ui/field'
+import { Icon } from '@/shared/ui/icon'
 import { computed } from 'vue'
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/default.css'
@@ -47,14 +50,14 @@ const hasFilters = computed(() => {
 
 const { filterState, appliedFilters, emitFilters, resetFilterState, applyFilters } = useFilterState(
   props,
-  emit,
+  emit
 )
 
 const { range, minInput, maxInput, updateMinValue, updateMaxValue, clearRange } = usePriceRange(
   props,
   emit,
   filterState,
-  () => emitFilters('update:filters'),
+  () => emitFilters('update:filters')
 )
 
 const { isCategorySelected, toggleCategory, removeCategory, removeCategoryById } =
@@ -63,7 +66,7 @@ const { isCategorySelected, toggleCategory, removeCategory, removeCategoryById }
 const { toggleInStock, removeStockFilter } = useStockFilter(
   filterState,
   appliedFilters,
-  emitFilters,
+  emitFilters
 )
 
 const clearAllFilters = () => {
@@ -85,16 +88,27 @@ defineExpose({
   removeStockFilter,
   applyFilters,
   filterState,
-  appliedFilters,
+  appliedFilters
 })
 </script>
 
 <template>
   <div class="filter">
-    <Typography tag="span" size="s" bold class="filter__title">Фильтр</Typography>
+    <Typography
+      tag="span"
+      size="s"
+      bold
+      class="filter__title"
+      >Фильтр</Typography
+    >
     <div class="filter__price">
       <div class="filter__price-top">
-        <Typography tag="span" size="s" class="filter__price-title">Цена</Typography>
+        <Typography
+          tag="span"
+          size="s"
+          class="filter__price-title"
+          >Цена</Typography
+        >
         <Button
           backgroundColor="grayscale"
           size="s"
@@ -112,8 +126,7 @@ defineExpose({
           :modelValue="minInput"
           @update:modelValue="updateMinValue"
           :min="min"
-          :max="max"
-        />
+          :max="max" />
         <span></span>
         <Field
           size="m"
@@ -122,8 +135,7 @@ defineExpose({
           :modelValue="maxInput"
           @update:modelValue="updateMaxValue"
           :min="min"
-          :max="max"
-        />
+          :max="max" />
       </div>
       <vue-slider
         v-model="range"
@@ -136,7 +148,7 @@ defineExpose({
         :dot-style="{
           backgroundColor: '#70C05B',
           border: '1px solid #FFFFFF',
-          boxShadow: '2px 4px 8px 0px rgba(112, 192, 91, 0.2)',
+          boxShadow: '2px 4px 8px 0px rgba(112, 192, 91, 0.2)'
         }"
         :height="5"
         :enable-cross="false"
@@ -144,8 +156,7 @@ defineExpose({
         :rail-style="{ backgroundColor: '#F3F2F1' }"
         :tooltip="'none'"
         range
-        class="filter__range-slider"
-      />
+        class="filter__range-slider" />
     </div>
     <ul class="filter__products">
       <li
@@ -153,27 +164,45 @@ defineExpose({
         v-for="category in categoryOptions"
         :key="category.id"
         :class="{ 'filter__product--selected': isCategorySelected(category.id) }"
-        @click="toggleCategory(category)"
-      >
-        <Typography tag="span" size="s">{{ category.title }}</Typography>
-        <span v-if="isCategorySelected(category.id)" @click="removeCategory(category.id, $event)"
-          ><Icon type="close" :width="24" :height="24"></Icon
+        @click="toggleCategory(category)">
+        <Typography
+          tag="span"
+          size="s"
+          >{{ category.title }}</Typography
+        >
+        <span
+          v-if="isCategorySelected(category.id)"
+          @click="removeCategory(category.id, $event)"
+          ><Icon
+            type="close"
+            :width="24"
+            :height="24"></Icon
         ></span>
       </li>
     </ul>
     <div class="filter__in-stock">
-      <label class="filter__in-stock-label" for="checkbox">
+      <label
+        class="filter__in-stock-label"
+        for="checkbox">
         <input
           type="checkbox"
           class="filter__in-stock-input"
           id="checkbox"
           @change="toggleInStock"
-          :checked="filterState.inStock"
-        />
-        <Typography tag="span" size="s" class="filter__in-stock-inner">В наличии</Typography></label
+          :checked="filterState.inStock" />
+        <Typography
+          tag="span"
+          size="s"
+          class="filter__in-stock-inner"
+          >В наличии</Typography
+        ></label
       >
     </div>
-    <Button backgroundColor="primary" size="m" class="filter__apply-button" @click="applyFilters"
+    <Button
+      backgroundColor="primary"
+      size="m"
+      class="filter__apply-button"
+      @click="applyFilters"
       >Применить</Button
     >
   </div>

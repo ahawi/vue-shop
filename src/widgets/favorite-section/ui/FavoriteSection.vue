@@ -1,14 +1,21 @@
 <script lang="ts" setup>
-import { Button, Typography } from '@/shared/ui'
+import { Button } from '@/shared/ui/button'
+import { Typography } from '@/shared/ui/typography'
 import { ProductCard, type ProductProps } from '@/entities/product'
 import { ProductFilter } from '@/widgets/product-filter'
 import { computed, onMounted, ref, watch } from 'vue'
 import { mockCategory } from '@/shared/lib/mocks/mock-products'
 import { useRoute } from 'vue-router'
-import router from '@/app/router'
-import { useAddToCart } from '@/features/add-to-cart/useAddToCart'
-import { useToggleFavorite } from '@/features/toggle-favorite/useToggleFavorite'
-import { useFavoriteStore } from '@/app/stores/favorite'
+import { router } from '@/app/router'
+import { useToggleFavorite } from '@/features/toggle-favorite/model/useToggleFavorite'
+import { useFavoritesStore } from '@/features/favorite/model/favorite'
+import { CATALOG_LINK } from '@/pages/catalog/config'
+import { storeToRefs } from 'pinia'
+import { useCartStore } from '@/entities/cart/model/cart'
+
+const { itemIds, totalFavorites } = storeToRefs(useFavoritesStore())
+const { isFavorite, addToFavorites, removeFromFavorites, toggleFavorite, resetFavorites } =
+  useFavoritesStore()
 
 interface FiltersPayload {
   filterPrice: [number, number]
@@ -18,17 +25,16 @@ interface FiltersPayload {
 }
 
 const goToProductPage = (product: ProductProps) => {
-  router.push(`/catalog/${product.categoryIds[0]}/${product.id}`)
+  router.push(`${CATALOG_LINK}/${product.categoryIds[0]}/${product.id}`)
 }
 
-const addToCart = useAddToCart()
-const { toggleFavorite } = useToggleFavorite()
-const favoriteStore = useFavoriteStore()
+const { addToCart } = useCartStore()
+const { toggleFavoriteItem } = useToggleFavorite()
 
 const favoriteRootCategories = computed(() => {
   const ids = new Set<string>()
 
-  for (const p of favoriteStore.items as any[]) {
+  for (const p of itemIds) {
     const rootId = p?.categoryIds?.[0]
     if (rootId) ids.add(rootId)
   }
@@ -39,20 +45,20 @@ const favoriteRootCategories = computed(() => {
 })
 
 const onProductToggleFavorite = (product: ProductProps) => {
-  toggleFavorite(product)
+  toggleFavorite(product.id)
 }
 
 const categoryProducts = computed(() => {
-  return favoriteStore.items as ProductProps[]
+  return itemIds
 })
 
 const initialPriceRange = () => {
   const prices = categoryProducts.value.map((product) =>
-    parseFloat(product.price.replace(',', '.')),
+    parseFloat(product.price.replace(',', '.'))
   )
   return {
     min: Math.min(...prices),
-    max: Math.max(...prices),
+    max: Math.max(...prices)
   }
 }
 
@@ -84,18 +90,18 @@ const appliedFiltersState = ref<FiltersPayload>({
   filterPrice: [priceMin.value, priceMax.value],
   filterCategories: [],
   inStock: false,
-  hasActiveFilters: false,
+  hasActiveFilters: false
 })
 
 watch(
-  () => favoriteStore.items,
+  () => itemIds,
   () => {
     updatePriceRange()
     appliedFiltersState.value.filterPrice = [priceMin.value, priceMax.value]
     tempPrice.value = [priceMin.value, priceMax.value]
     visibleCount.value = step
   },
-  { deep: true },
+  { deep: true }
 )
 
 watch(
@@ -106,7 +112,7 @@ watch(
       tempPrice.value = [min, max]
     }
   },
-  { immediate: true },
+  { immediate: true }
 )
 
 const filteredProducts = computed(() => {
@@ -114,10 +120,10 @@ const filteredProducts = computed(() => {
 
   if (appliedFiltersState.value.filterCategories.length > 0) {
     const selectedCategoryIds = appliedFiltersState.value.filterCategories.map(
-      (category) => category.id,
+      (category) => category.id
     )
     products = products.filter((product) =>
-      product.categoryIds.some((categoryId) => selectedCategoryIds.includes(categoryId)),
+      product.categoryIds.some((categoryId) => selectedCategoryIds.includes(categoryId))
     )
   }
 
@@ -152,7 +158,7 @@ const price = computed<[number, number]>({
   },
   set(value: [number, number]) {
     tempPrice.value = value
-  },
+  }
 })
 
 const productFilter = ref<InstanceType<typeof ProductFilter> | null>(null)
@@ -177,7 +183,7 @@ const updateAppliedFilters = (filters: FiltersPayload) => {
         type: 'category',
         id: `category-${category.id}`,
         title: category.title,
-        value: category.id,
+        value: category.id
       })
     })
   }
@@ -190,7 +196,7 @@ const updateAppliedFilters = (filters: FiltersPayload) => {
       type: 'price',
       id: 'price-range',
       title: `Цена от ${filters.filterPrice[0]} до ${filters.filterPrice[1]}`,
-      value: filters.filterPrice,
+      value: filters.filterPrice
     })
   }
 
@@ -199,7 +205,7 @@ const updateAppliedFilters = (filters: FiltersPayload) => {
       type: 'stock',
       id: 'in-stock',
       title: 'В наличии',
-      value: true,
+      value: true
     })
   }
 }
@@ -231,22 +237,22 @@ const appliedFiltersCount = computed(() => appliedFilters.value.length)
 <template>
   <div class="category-section">
     <div class="category-section__inner">
-      <div class="category-section__filter" v-if="favoriteStore.totalFavorites > 0">
+      <div
+        class="category-section__filter"
+        v-if="totalFavorites > 0">
         <ProductFilter
           v-model="price"
           :min="priceMin"
           :max="priceMax"
           :categories="favoriteRootCategories"
           ref="productFilter"
-          @apply:filters="updateAppliedFilters"
-        />
+          @apply:filters="updateAppliedFilters" />
       </div>
       <div
         :class="[
           appliedFiltersCount > 0 ? 'category-section__main' : 'category-section__main--no-filters',
-          'main',
-        ]"
-      >
+          'main'
+        ]">
         <div class="main__top-filters">
           <Button
             v-for="filter in appliedFilters"
@@ -256,7 +262,7 @@ const appliedFiltersCount = computed(() => appliedFilters.value.length)
             :right-icon="{
               type: 'close',
               width: 24,
-              height: 24,
+              height: 24
             }"
             @click="removeFilter(filter.id)"
             >{{ filter.title }}</Button
@@ -266,7 +272,7 @@ const appliedFiltersCount = computed(() => appliedFilters.value.length)
             :right-icon="{
               type: 'close',
               width: 24,
-              height: 24,
+              height: 24
             }"
             backgroundColor="grayscale"
             size="s"
@@ -275,8 +281,14 @@ const appliedFiltersCount = computed(() => appliedFilters.value.length)
             >Очистить фильтры</Button
           >
         </div>
-        <div v-if="displayedProducts.length < 1" class="main__nothing">
-          <Typography tag="span" size="l">Ничего не найдено :(</Typography>
+        <div
+          v-if="displayedProducts.length < 1"
+          class="main__nothing">
+          <Typography
+            tag="span"
+            size="l"
+            >Ничего не найдено :(</Typography
+          >
         </div>
 
         <div class="main__cards">
@@ -286,8 +298,7 @@ const appliedFiltersCount = computed(() => appliedFilters.value.length)
             v-bind="product"
             @click="goToProductPage(product)"
             @add-to-cart="addToCart(product)"
-            @toggle-favorite="onProductToggleFavorite"
-          />
+            @toggle-favorite="onProductToggleFavorite" />
         </div>
         <div class="main__more">
           <Button
@@ -295,8 +306,7 @@ const appliedFiltersCount = computed(() => appliedFilters.value.length)
             backgroundColor="grayscale"
             size="m"
             class="main__more-button"
-            @click="showMore"
-          >
+            @click="showMore">
             Показать ещё
           </Button>
         </div>

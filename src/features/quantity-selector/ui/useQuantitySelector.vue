@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
-import { Button, Typography } from '@/shared/ui'
+import { Button } from '@/shared/ui/button'
+import { Typography } from '@/shared/ui/typography'
 
 interface Props {
   value: number
@@ -10,7 +11,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   min: 0,
-  max: 10,
+  max: 10
 })
 
 const emit = defineEmits<{
@@ -41,7 +42,7 @@ watch(
   () => props.value,
   (newValue) => {
     internalValue.value = newValue
-  },
+  }
 )
 </script>
 
@@ -57,17 +58,20 @@ watch(
         height="24"
         viewBox="0 0 24 24"
         fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
+        xmlns="http://www.w3.org/2000/svg">
         <path
           fill-rule="evenodd"
           clip-rule="evenodd"
           d="M4.5 12C4.5 11.7239 4.72386 11.5 5 11.5H19C19.2761 11.5 19.5 11.7239 19.5 12C19.5 12.2761 19.2761 12.5 19 12.5H5C4.72386 12.5 4.5 12.2761 4.5 12Z"
-          fill="white"
-        />
+          fill="white" />
       </svg>
     </Button>
-    <Typography tag="p" size="s" class="quantity-selector__total">{{ internalValue }}</Typography>
+    <Typography
+      tag="p"
+      size="s"
+      class="quantity-selector__total"
+      >{{ internalValue }}</Typography
+    >
     <Button
       background-color="secondary"
       size="m"
@@ -78,20 +82,17 @@ watch(
         height="24"
         viewBox="0 0 24 24"
         fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
+        xmlns="http://www.w3.org/2000/svg">
         <path
           fill-rule="evenodd"
           clip-rule="evenodd"
           d="M12 4.5C12.2761 4.5 12.5 4.72386 12.5 5V19C12.5 19.2761 12.2761 19.5 12 19.5C11.7239 19.5 11.5 19.2761 11.5 19V5C11.5 4.72386 11.7239 4.5 12 4.5Z"
-          fill="white"
-        />
+          fill="white" />
         <path
           fill-rule="evenodd"
           clip-rule="evenodd"
           d="M4.5 12C4.5 11.7239 4.72386 11.5 5 11.5H19C19.2761 11.5 19.5 11.7239 19.5 12C19.5 12.2761 19.2761 12.5 19 12.5H5C4.72386 12.5 4.5 12.2761 4.5 12Z"
-          fill="white"
-        />
+          fill="white" />
       </svg>
     </Button>
   </div>

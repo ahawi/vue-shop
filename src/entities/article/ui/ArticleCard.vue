@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { Typography, Button } from '@/shared/ui'
+import { Typography } from '@/shared/ui/typography'
+import { Button } from '@/shared/ui/button'
 import type { ArticleCardProps } from '../model/types'
 
 const props = defineProps<ArticleCardProps>()
@@ -7,12 +8,34 @@ const props = defineProps<ArticleCardProps>()
 
 <template>
   <div class="article-card">
-    <img class="article-card__image" :src="image" :alt="title" />
+    <img
+      class="article-card__image"
+      :src="image"
+      :alt="title" />
     <div class="article-card__text">
-      <Typography tag="span" size="xs" class="article-card__date">{{ date }}</Typography>
-      <Typography tag="h5" size="xs" bold>{{ title }}</Typography
-      ><Typography tag="p" size="s" class="article-card__description">{{ description }}</Typography>
-      <Button size="m" background-color="secondary" class="article-card__button">Подробнее</Button>
+      <Typography
+        tag="span"
+        size="xs"
+        class="article-card__date"
+        >{{ date }}</Typography
+      >
+      <Typography
+        tag="h5"
+        size="xs"
+        bold
+        >{{ title }}</Typography
+      ><Typography
+        tag="p"
+        size="s"
+        class="article-card__description"
+        >{{ description }}</Typography
+      >
+      <Button
+        size="m"
+        background-color="secondary"
+        class="article-card__button"
+        >Подробнее</Button
+      >
     </div>
   </div>
 </template>

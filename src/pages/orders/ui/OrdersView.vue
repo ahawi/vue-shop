@@ -1,17 +1,21 @@
 <script lang="ts" setup>
-import { Typography } from '@/shared/ui'
+import { Typography } from '@/shared/ui/typography'
 import { Header } from '@/widgets/header'
 import { Breadcrumbs } from '@/widgets/breadcrumbs'
 import { Footer } from '@/widgets/footer'
-import { FavoriteSection } from '@/widgets/favorite-section'
 </script>
 
 <template>
   <Header />
   <main class="main">
     <Breadcrumbs />
-    <Typography tag="h1" size="xl" bold class="main__title">Избранное</Typography>
-    <FavoriteSection />
+    <Typography
+      tag="h1"
+      size="xl"
+      bold
+      class="main__title"
+      >Заказы</Typography
+    >
   </main>
   <Footer />
 </template>

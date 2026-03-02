@@ -1,7 +1,9 @@
 <script lang="ts" setup>
+import { CART_LINK, CART_ROUTE } from '@/pages/cart'
+import { ORDERS_LINK, ORDERS_ROUTE } from '@/pages/orders'
 import { mockCategory, mockProducts } from '@/shared/lib/mocks/mock-products'
-import { Icon } from '@/shared/ui'
-import { Typography } from '@/shared/ui'
+import { Icon } from '@/shared/ui/icon'
+import { Typography } from '@/shared/ui/typography'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -29,23 +31,23 @@ const breadcrumbs = computed<Breadcrumb[]>(() => {
       const category = mockCategory.find((c) => c.id === pathArray[1])
       crumbs.push({
         to: `/catalog/${pathArray[1]}`,
-        title: category?.title || pathArray[1],
+        title: category?.title || pathArray[1]
       })
 
       if (pathArray[2]) {
         const product = mockProducts.find((p) => p.id === pathArray[2])
         crumbs.push({
           to: route.path,
-          title: product?.title || pathArray[2],
+          title: product?.title || pathArray[2]
         })
       }
     }
   } else if (pathArray[0] === 'favorites') {
     crumbs.push({ to: '/favorites', title: 'Избранное' })
   } else if (pathArray[0] === 'cart') {
-    crumbs.push({ to: '/cart', title: 'Корзина' })
+    crumbs.push({ to: CART_ROUTE.path, title: 'Корзина' })
   } else {
-    crumbs.push({ to: '/orders', title: 'Заказы' })
+    crumbs.push({ to: ORDERS_ROUTE.path, title: 'Заказы' })
   }
 
   return crumbs
@@ -53,24 +55,42 @@ const breadcrumbs = computed<Breadcrumb[]>(() => {
 </script>
 
 <template>
-  <nav v-if="breadcrumbs.length" class="breadcrumbs">
+  <nav
+    v-if="breadcrumbs.length"
+    class="breadcrumbs">
     <ol class="breadcrumbs__list">
       <li
         v-for="(crumb, i) in breadcrumbs"
         :key="i"
         :class="[
           'breadcrumbs__item',
-          { 'breadcrumbs__item--active': i === breadcrumbs.length - 1 },
-        ]"
-      >
-        <RouterLink v-if="i !== breadcrumbs.length - 1" :to="crumb.to">
-          <Typography tag="span" size="xs" class="breadcrumbs__link">{{ crumb.title }}</Typography>
+          { 'breadcrumbs__item--active': i === breadcrumbs.length - 1 }
+        ]">
+        <RouterLink
+          v-if="i !== breadcrumbs.length - 1"
+          :to="crumb.to">
+          <Typography
+            tag="span"
+            size="xs"
+            class="breadcrumbs__link"
+            >{{ crumb.title }}</Typography
+          >
         </RouterLink>
 
-        <Typography tag="span" size="xs" v-else>{{ crumb.title }}</Typography>
+        <Typography
+          tag="span"
+          size="xs"
+          v-else
+          >{{ crumb.title }}</Typography
+        >
 
-        <span v-if="i !== breadcrumbs.length - 1" class="breadcrumbs__separator">
-          <Icon type="arrow-right" :width="24" :height="24" />
+        <span
+          v-if="i !== breadcrumbs.length - 1"
+          class="breadcrumbs__separator">
+          <Icon
+            type="arrow-right"
+            :width="24"
+            :height="24" />
         </span>
       </li>
     </ol>

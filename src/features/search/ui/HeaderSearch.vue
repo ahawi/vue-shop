@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 import { mockCategory, mockProducts } from '@/shared/lib/mocks/mock-products'
-import type { IconProps } from '@/shared/ui/Icon.vue'
+import type { IconProps } from '@/shared/ui/icon'
 import { computed, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import { Typography, Icon } from '@/shared/ui'
+import { Typography } from '@/shared/ui/typography'
+import { Icon } from '@/shared/ui/icon'
 
 interface SearchProps {
   placeholder?: string
@@ -22,7 +23,7 @@ export interface SearchOption {
 const props = withDefaults(defineProps<SearchProps>(), {
   placeholder: 'Найти товар',
   size: 'm',
-  disabled: false,
+  disabled: false
 })
 
 const router = useRouter()
@@ -38,7 +39,7 @@ const searchOptions = computed<SearchOption[]>(() => {
       id: product.id,
       title: product.title,
       type: 'product',
-      path: `/catalog/${product.categoryIds[0]}/${product.id}`,
+      path: `/catalog/${product.categoryIds[0]}/${product.id}`
     })
   })
 
@@ -47,7 +48,7 @@ const searchOptions = computed<SearchOption[]>(() => {
       id: category.id,
       title: category.title,
       type: 'category',
-      path: `/catalog/${category.id}`,
+      path: `/catalog/${category.id}`
     })
   })
 
@@ -98,7 +99,10 @@ watch(showDropdown, (value) => {
 <template>
   <div class="header-search">
     <div class="header-search__field">
-      <Icon v-if="rightIcon" v-bind="rightIcon" class="header-search__right-icon" />
+      <Icon
+        v-if="rightIcon"
+        v-bind="rightIcon"
+        class="header-search__right-icon" />
       <input
         class="header-search__input"
         type="text"
@@ -106,26 +110,25 @@ watch(showDropdown, (value) => {
         :disabled="disabled"
         v-model="searchQuery"
         @focus="showDropdown = true"
-        autocomplete="off"
-      />
+        autocomplete="off" />
 
       <Icon
         v-if="!rightIcon"
         type="search"
         :width="24"
         :height="24"
-        class="header-search__search-icon"
-      />
+        class="header-search__search-icon" />
     </div>
 
     <transition name="dropdown-fade">
-      <div v-if="showDropdown && filteredOptions.length > 0" class="header-search__dropdown">
+      <div
+        v-if="showDropdown && filteredOptions.length > 0"
+        class="header-search__dropdown">
         <div
           v-for="option in filteredOptions"
           :key="`${option.type}-${option.id}`"
           class="header-search__option"
-          @click="selectOption(option)"
-        >
+          @click="selectOption(option)">
           <div class="header-search__option-content">
             <div class="header-search__option-title">
               <span v-html="highlightMatch(option.title)"></span>
@@ -138,9 +141,12 @@ watch(showDropdown, (value) => {
     <transition name="dropdown-fade">
       <div
         v-if="showDropdown && searchQuery && filteredOptions.length === 0"
-        class="header-search__no-results"
-      >
-        <Typography tag="p" size="s">Ничего не найдено</Typography>
+        class="header-search__no-results">
+        <Typography
+          tag="p"
+          size="s"
+          >Ничего не найдено</Typography
+        >
       </div>
     </transition>
   </div>

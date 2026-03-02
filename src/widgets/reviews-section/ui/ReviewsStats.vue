@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import { StarRating } from '@/shared/ui'
+import { StarRating } from '@/shared/ui/star-rating'
 import { mockProducts } from '@/shared/lib/mocks/mock-products'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { Typography } from '@/shared/ui'
+import { Typography } from '@/shared/ui/typography'
 import { mockReviews } from '../mock/mock-reviews'
 
 const route = useRoute()

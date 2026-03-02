@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { CartItem } from '@/entities/cart'
-import { useCartStore } from '@/app/stores/cart'
+import { useCartStore } from '@/entities/cart/model/cart'
 import { computed } from 'vue'
-import { Typography } from '@/shared/ui'
+import { Typography } from '@/shared/ui/typography'
 
 const cartStore = useCartStore()
 
@@ -25,10 +25,13 @@ const toggleItemSelect = (itemId: string) => {
       :key="item.cartItemId"
       :item="item"
       @update-quantity="updateItemQuantity(item.cartItemId, $event)"
-      @toggle-select="toggleItemSelect(item.cartItemId)"
-    />
+      @toggle-select="toggleItemSelect(item.cartItemId)" />
 
-    <Typography v-else tag="h5">Упс! В корзине пока что ничего нет</Typography>
+    <Typography
+      v-else
+      tag="h5"
+      >Упс! В корзине пока что ничего нет</Typography
+    >
   </div>
 </template>
 

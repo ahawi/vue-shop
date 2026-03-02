@@ -1,11 +1,13 @@
 <script lang="ts" setup>
-import { Section } from '@/shared/ui'
+import { Section } from '@/shared/ui/section'
 import ReviewsStats from './ReviewsStats.vue'
 import ReviewsList from './ReviewsList.vue'
 </script>
 
 <template>
-  <Section title="Отзывы" class="reviews">
+  <Section
+    title="Отзывы"
+    class="reviews">
     <div class="reviews__details">
       <ReviewsStats />
       <ReviewsList />

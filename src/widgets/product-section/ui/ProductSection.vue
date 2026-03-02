@@ -1,16 +1,17 @@
 <script lang="ts" setup>
-import { Section } from '@/shared/ui'
+import { Section } from '@/shared/ui/section'
 import { mockProducts } from '@/shared/lib/mocks/mock-products'
 import { computed } from 'vue'
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules'
-import router from '@/app/router'
-import { useAddToCart } from '@/features/add-to-cart/useAddToCart'
+import { router } from '@/app/router'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
-import SwiperProducts from '@/shared/ui/SwiperProducts.vue'
+import { SwiperProducts } from '@/shared/ui/swiper-products'
 import type { ProductProps } from '@/entities/product'
+import { CATALOG_LINK } from '@/pages/catalog/config'
+import { useCartStore } from '@/entities/cart/model/cart'
 
 const props = defineProps<{
   title: string
@@ -19,10 +20,10 @@ const props = defineProps<{
 }>()
 
 const goToProductPage = (product: ProductProps) => {
-  router.push(`/catalog/${product.categoryIds[0]}/${product.id}`)
+  router.push(`${CATALOG_LINK}/${product.categoryIds[0]}/${product.id}`)
 }
 
-const addToCart = useAddToCart()
+const { addToCart } = useCartStore()
 
 const filteredType = computed(() => {
   let result: typeof mockProducts
@@ -48,14 +49,17 @@ const modules = [Navigation, Pagination, Scrollbar, A11y]
 </script>
 
 <template>
-  <Section v-if="filteredType.length" :title="title" :link-title="linkTitle" class="section">
+  <Section
+    v-if="filteredType.length"
+    :title="title"
+    :link-title="linkTitle"
+    class="section">
     <SwiperProducts
       :products="filteredType"
       :slides-per-view="4"
       :space-between="40"
       @click:product="goToProductPage"
-      @add-to-cart="addToCart"
-    />
+      @add-to-cart="addToCart" />
   </Section>
 </template>
 

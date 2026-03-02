@@ -32,14 +32,15 @@ const modules = [Navigation, Pagination, Scrollbar, A11y]
     :slides-per-group="swiperOptions?.slidesPerGroup"
     :pagination="{ clickable: true }"
     :centered-slides="false"
-    class="products-swiper"
-  >
-    <SwiperSlide v-for="product in products" :key="product.id" class="product-slide">
+    class="products-swiper">
+    <SwiperSlide
+      v-for="product in products"
+      :key="product.id"
+      class="product-slide">
       <ProductCard
         v-bind="product"
         @click="emit('click:product', product)"
-        @add-to-cart="emit('add-to-cart', product)"
-      />
+        @add-to-cart="emit('add-to-cart', product)" />
     </SwiperSlide>
   </Swiper>
 </template>

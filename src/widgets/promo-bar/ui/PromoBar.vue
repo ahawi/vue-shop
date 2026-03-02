@@ -1,13 +1,21 @@
 <script setup lang="ts">
 import grocery from '@/shared/assets/grocery.png'
-import { Typography } from '@/shared/ui'
+import { Typography } from '@/shared/ui/typography'
 </script>
 
 <template>
   <div class="promo-bar">
     <div class="promo-bar__container">
-      <img :src="grocery" alt="" class="promo-bar__img" />
-      <Typography tag="h2" bold size="l">Доставка бесплатно от 1000 ₽</Typography>
+      <img
+        :src="grocery"
+        alt=""
+        class="promo-bar__img" />
+      <Typography
+        tag="h2"
+        bold
+        size="l"
+        >Доставка бесплатно от 1000 ₽</Typography
+      >
     </div>
   </div>
 </template>

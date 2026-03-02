@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Typography } from '@/shared/ui'
+import { Typography } from '@/shared/ui/typography'
 import { Header } from '@/widgets/header'
 import { CatalogSection } from '@/widgets/catalog-section'
 import { Breadcrumbs } from '@/widgets/breadcrumbs'

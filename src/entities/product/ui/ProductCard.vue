@@ -1,15 +1,19 @@
 <script setup lang="ts">
-import { Typography, Button, Icon, StarRating, Badge } from '@/shared/ui'
+import { Typography } from '@/shared/ui/typography'
+import { Button } from '@/shared/ui/button'
+import { Icon } from '@/shared/ui/icon'
+import { StarRating } from '@/shared/ui/star-rating'
+import { Badge } from '@/shared/ui/badge'
 import type { ProductProps } from '../model/types'
-import { useToggleFavorite } from '@/features/toggle-favorite/useToggleFavorite'
+import { useToggleFavorite } from '@/features/toggle-favorite/model/useToggleFavorite'
 import { computed } from 'vue'
 
 const props = defineProps<ProductProps>()
 const emit = defineEmits(['add-to-cart', 'toggle-favorite'])
 
-const { toggleFavorite, isFavorite } = useToggleFavorite()
+const { toggleFavoriteItem, isItemFavorite } = useToggleFavorite()
 
-const isProductFavorite = computed(() => isFavorite(props.id))
+const isProductFavorite = computed(() => isItemFavorite(props.id))
 
 const onAddToCart = (event: MouseEvent) => {
   event.stopPropagation()
@@ -17,7 +21,7 @@ const onAddToCart = (event: MouseEvent) => {
 }
 const onToggleFavorite = (event: MouseEvent) => {
   event.stopPropagation()
-  toggleFavorite(props)
+  toggleFavoriteItem(props)
 }
 </script>
 
@@ -26,8 +30,7 @@ const onToggleFavorite = (event: MouseEvent) => {
     <div class="product-card__header">
       <Button
         :class="['product-card__favorite', { 'product-card__favorite--active': isProductFavorite }]"
-        @click="onToggleFavorite"
-      >
+        @click="onToggleFavorite">
         <Icon
           type="favorite"
           :width="24"
@@ -36,30 +39,59 @@ const onToggleFavorite = (event: MouseEvent) => {
           stroke="currentColor"
           :class="[
             'product-card__favorite-icon',
-            { 'product-card__favorite-icon--active': isProductFavorite },
-          ]"
-        />
+            { 'product-card__favorite-icon--active': isProductFavorite }
+          ]" />
       </Button>
-      <Badge v-if="discount" :title="discount" :is-visible="true" />
+      <Badge
+        v-if="discount"
+        :title="discount"
+        :is-visible="true" />
       <div class="product-card__image">
-        <img :src="image" :alt="title" />
+        <img
+          :src="image"
+          :alt="title" />
       </div>
     </div>
 
     <div class="product-card__inner">
       <div class="product-card__prices">
-        <div v-if="cardPrice" class="product-card__price">
-          <Typography tag="span" size="s">{{ cardPrice }}₽</Typography>
-          <Typography class="product-card__price-title" tag="span" size="xs">С картой</Typography>
+        <div
+          v-if="cardPrice"
+          class="product-card__price">
+          <Typography
+            tag="span"
+            size="s"
+            >{{ cardPrice }}₽</Typography
+          >
+          <Typography
+            class="product-card__price-title"
+            tag="span"
+            size="xs"
+            >С картой</Typography
+          >
         </div>
         <div class="product-card__price">
-          <Typography tag="span" bold size="m">{{ price }}</Typography>
-          <Typography v-if="cardPrice" class="product-card__price-title" tag="span" size="xs"
+          <Typography
+            tag="span"
+            bold
+            size="m"
+            >{{ price }}</Typography
+          >
+          <Typography
+            v-if="cardPrice"
+            class="product-card__price-title"
+            tag="span"
+            size="xs"
             >Обычная</Typography
           >
         </div>
       </div>
-      <Typography class="product-card__title" tag="p" size="s">{{ title }}</Typography>
+      <Typography
+        class="product-card__title"
+        tag="p"
+        size="s"
+        >{{ title }}</Typography
+      >
       <div class="product-card__rating">
         <StarRating :rating="rating" />
       </div>
@@ -73,7 +105,11 @@ const onToggleFavorite = (event: MouseEvent) => {
         @click="onAddToCart"
         >В корзину</Button
       >
-      <Button v-else class="product-card__button-sold" background-color="grayscale" size="m"
+      <Button
+        v-else
+        class="product-card__button-sold"
+        background-color="grayscale"
+        size="m"
         >Нет в наличии</Button
       >
     </div>

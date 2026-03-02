@@ -1,9 +1,11 @@
 <script lang="ts" setup>
 import { mockProducts } from '@/shared/lib/mocks/mock-products'
-import { Button, StarRating, Typography } from '@/shared/ui'
+import { Button } from '@/shared/ui/button'
+import { StarRating } from '@/shared/ui/star-rating'
+import { Typography } from '@/shared/ui/typography'
 import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useToggleFavorite } from '@/features/toggle-favorite/useToggleFavorite'
+import { useToggleFavorite } from '@/features/toggle-favorite/model/useToggleFavorite'
 import { mockReviews } from '@/widgets/reviews-section/mock/mock-reviews'
 
 const route = useRoute()
@@ -78,10 +80,19 @@ const copyShareLink = async () => {
 
 <template>
   <div class="product-meta">
-    <Typography tag="span" size="xs" class="product-meta__art">арт. 371431</Typography>
+    <Typography
+      tag="span"
+      size="xs"
+      class="product-meta__art"
+      >арт. 371431</Typography
+    >
     <div class="product-meta__rating">
       <StarRating :rating="Number(product?.rating)" />
-      <Typography tag="span" size="xs">{{ reviewsText }}</Typography>
+      <Typography
+        tag="span"
+        size="xs"
+        >{{ reviewsText }}</Typography
+      >
     </div>
 
     <Button
@@ -98,11 +109,11 @@ const copyShareLink = async () => {
         type: 'favorite',
         width: 24,
         height: 24,
-        fill: 'none',
+        fill: 'none'
       }"
       :class="[
         'product-meta__favorite',
-        { 'product-meta__favorite-icon--active': isProductFavorite },
+        { 'product-meta__favorite-icon--active': isProductFavorite }
       ]"
       @click="onProductToggleFavorite"
       >{{ isProductFavorite ? 'В избранном' : 'В избранное' }}

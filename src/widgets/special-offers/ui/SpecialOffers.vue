@@ -2,7 +2,7 @@
 import { mockSpecialOffers } from '@/entities/offer/mocks/mock-offers'
 import { SpecialOfferCard } from '@/entities/offer'
 import type { SpecialOfferProps } from '@/entities/offer'
-import { Section } from '@/shared/ui'
+import { Section } from '@/shared/ui/section'
 
 export interface SpecialOffers {
   title: string
@@ -11,7 +11,10 @@ export interface SpecialOffers {
 </script>
 
 <template>
-  <Section display="grid" title="Специальные предложения" class="special-offers">
+  <Section
+    display="grid"
+    title="Специальные предложения"
+    class="special-offers">
     <SpecialOfferCard
       v-for="offer in mockSpecialOffers"
       :key="offer.id"
@@ -21,7 +24,6 @@ export interface SpecialOffers {
       :image="offer.image"
       :background-color="offer.backgroundColor"
       :has-decoration="offer.hasDecoration"
-      :has-image-shadow="offer.hasImageShadow"
-    />
+      :has-image-shadow="offer.hasImageShadow" />
   </Section>
 </template>

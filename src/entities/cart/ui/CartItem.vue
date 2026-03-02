@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { Badge, Checkbox, Typography } from '@/shared/ui'
-import { useCartStore, type CartItem } from '@/app/stores/cart'
-import QuantitySelector from '@/features/quantity-selector/QuantitySelector.vue'
+import { Badge } from '@/shared/ui/badge'
+import { Checkbox } from '@/shared/ui/checkbox'
+import { Typography } from '@/shared/ui/typography'
+import { type CartItem } from '@/entities/cart/model/cart'
+import { useQuantitySelector } from '@/features/quantity-selector'
 import { computed } from 'vue'
-import router from '@/app/router'
+import { router } from '@/app/router'
+import { CATALOG_LINK } from '@/pages/catalog/config'
 
 interface Props {
   item: CartItem
@@ -24,7 +27,7 @@ const goToProductPage = (event: MouseEvent) => {
   if (isCheckbox || isQuantitySelector) return
 
   if (props.item.categoryId) {
-    router.push(`/catalog/${props.item.categoryId}/${props.item.productId}`)
+    router.push(`${CATALOG_LINK}/${props.item.categoryId}/${props.item.productId}`)
   }
 }
 
@@ -54,46 +57,85 @@ const toggleSelect = () => {
   <div
     class="cart-item"
     :class="{ 'cart-item--out-of-stock': !item.inStock }"
-    @click="goToProductPage"
-  >
+    @click="goToProductPage">
     <div class="cart-item__content">
       <Checkbox
         :value="item.selected"
         :disabled="!item.inStock"
         @update:value="toggleSelect"
-        class="cart-item__checkbox"
-      />
-      <img :src="item.image" alt="" class="cart-item__image" />
+        class="cart-item__checkbox" />
+      <img
+        :src="item.image"
+        alt=""
+        class="cart-item__image" />
       <div class="cart-item__description">
-        <Typography tag="p" size="s">{{ item.title }}</Typography>
+        <Typography
+          tag="p"
+          size="s"
+          >{{ item.title }}</Typography
+        >
         <div>
           <div class="cart-item__prices">
             <div class="cart-item__price">
-              <Typography tag="span" bold size="xs">{{ item.price }} ₽</Typography>
-              <Typography v-if="item.cardPrice" tag="span" size="xs" class="cart-item__price-text"
+              <Typography
+                tag="span"
+                bold
+                size="xs"
+                >{{ item.price }} ₽</Typography
+              >
+              <Typography
+                v-if="item.cardPrice"
+                tag="span"
+                size="xs"
+                class="cart-item__price-text"
                 >С картой</Typography
               >
             </div>
-            <div v-if="item.cardPrice" class="cart-item__price">
-              <Typography tag="span" size="xs">{{ item.cardPrice }} ₽</Typography>
-              <Typography class="cart-item__price-text" tag="span" size="xs">Обычная</Typography>
+            <div
+              v-if="item.cardPrice"
+              class="cart-item__price">
+              <Typography
+                tag="span"
+                size="xs"
+                >{{ item.cardPrice }} ₽</Typography
+              >
+              <Typography
+                class="cart-item__price-text"
+                tag="span"
+                size="xs"
+                >Обычная</Typography
+              >
             </div>
-            <Typography tag="span" size="xs">за шт</Typography>
+            <Typography
+              tag="span"
+              size="xs"
+              >за шт</Typography
+            >
             <Badge
               v-if="item.discount"
               :title="`-${item.discount}%`"
               :is-visible="true"
-              class="cart-item__badge"
-            />
+              class="cart-item__badge" />
           </div>
         </div>
       </div>
     </div>
 
-    <div class="cart-item__actions" v-if="item.inStock">
-      <QuantitySelector :value="item.quantity" :min="0" :max="10" @change="updateQuantity" />
+    <div
+      class="cart-item__actions"
+      v-if="item.inStock">
+      <useQuantitySelector
+        :value="item.quantity"
+        :min="0"
+        :max="10"
+        @change="updateQuantity" />
       <div class="cart-item__total">
-        <Typography tag="span" size="m" bold>{{ totalPrice }} ₽</Typography>
+        <Typography
+          tag="span"
+          size="m"
+          bold
+          >{{ totalPrice }} ₽</Typography
+        >
         <Typography
           tag="span"
           size="s"
@@ -104,8 +146,14 @@ const toggleSelect = () => {
       </div>
     </div>
 
-    <div v-else class="cart-item__out-of-stock">
-      <Typography tag="span" size="xs"> Нет в наличии </Typography>
+    <div
+      v-else
+      class="cart-item__out-of-stock">
+      <Typography
+        tag="span"
+        size="xs">
+        Нет в наличии
+      </Typography>
     </div>
   </div>
 </template>

@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import { useCartStore } from '@/app/stores/cart'
-import { Button, Checkbox } from '@/shared/ui'
+import { useCartStore } from '@/entities/cart/model/cart'
+import { Button } from '@/shared/ui/button'
+import { Checkbox } from '@/shared/ui/checkbox'
 import { computed } from 'vue'
 
 const cartStore = useCartStore()

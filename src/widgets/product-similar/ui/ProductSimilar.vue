@@ -1,8 +1,9 @@
 <script lang="ts" setup>
+import { CATALOG_LINK } from '@/pages/catalog/config'
 import { mockProducts } from '@/shared/lib/mocks/mock-products'
-import { Typography } from '@/shared/ui'
+import { Typography } from '@/shared/ui/typography'
 import { computed } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 
 const route = useRoute()
 
@@ -18,7 +19,7 @@ const similarProducts = computed(() => {
       (product) =>
         product.id !== currentProduct.value?.id &&
         product.categoryIds &&
-        product.categoryIds[1] === currentProductCategoryId,
+        product.categoryIds[1] === currentProductCategoryId
     )
     .slice(0, 4)
 })
@@ -26,18 +27,29 @@ const similarProducts = computed(() => {
 
 <template>
   <div class="product-similar">
-    <Typography tag="span" size="s" class="product-similar__title">Похожие</Typography>
+    <Typography
+      tag="span"
+      size="s"
+      class="product-similar__title"
+      >Похожие</Typography
+    >
     <div class="product-similar__cards">
       <div
         class="product-similar__card"
         v-for="product in similarProducts"
         :key="product.id"
-        @click="$router.push(`/catalog/${product.categoryIds[0]}/${product.id}`)"
-      >
-        <img :src="product.image" :alt="product.title" class="product-similar__card-image" />
-        <Typography tag="span" bold size="m" class="product-similar__card-price">{{
-          product.cardPrice ? product.cardPrice : product.price
-        }}</Typography>
+        @click="$router.push(`${CATALOG_LINK}/${product.categoryIds[0]}/${product.id}`)">
+        <img
+          :src="product.image"
+          :alt="product.title"
+          class="product-similar__card-image" />
+        <Typography
+          tag="span"
+          bold
+          size="m"
+          class="product-similar__card-price"
+          >{{ product.cardPrice ? product.cardPrice : product.price }}</Typography
+        >
       </div>
     </div>
   </div>

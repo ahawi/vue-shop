@@ -3,17 +3,18 @@ import { mockProducts } from '@/shared/lib/mocks/mock-products'
 import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { Swiper, SwiperSlide } from 'swiper/vue'
+import type { Swiper as SwiperClass } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/free-mode'
 import 'swiper/css/navigation'
 import 'swiper/css/thumbs'
 import { FreeMode, Navigation, Thumbs } from 'swiper/modules'
-import { Badge } from '@/shared/ui'
+import { Badge } from '@/shared/ui/badge'
 
 const modules = [FreeMode, Navigation, Thumbs]
-const thumbsSwiper = ref(null)
+const thumbsSwiper = ref<SwiperClass | null>(null)
 
-const setThumbsSwiper = (swiper) => {
+const setThumbsSwiper = (swiper: SwiperClass) => {
   thumbsSwiper.value = swiper
 }
 
@@ -32,8 +33,7 @@ const product = computed(() => {
       :is-visible="true"
       class="product__gallery-badge"
       position-top="10px"
-      position-right="10px"
-    />
+      position-right="10px" />
 
     <swiper
       @swiper="setThumbsSwiper"
@@ -42,8 +42,7 @@ const product = computed(() => {
       :freeMode="true"
       :watchSlidesProgress="true"
       :modules="modules"
-      class="mySwiper"
-    >
+      class="mySwiper">
       <swiper-slide class="product__image--small"><img :src="product?.image" /></swiper-slide
       ><swiper-slide class="product__image--small"><img :src="product?.image" /></swiper-slide
       ><swiper-slide class="product__image--small"><img :src="product?.image" /></swiper-slide
@@ -54,8 +53,7 @@ const product = computed(() => {
       :modules="modules"
       :slidesPerView="1"
       :thumbs="{ swiper: thumbsSwiper }"
-      class="mySwiper2"
-    >
+      class="mySwiper2">
       <swiper-slide class="product__image"><img :src="product?.image" /></swiper-slide
       ><swiper-slide class="product__image"><img :src="product?.image" /></swiper-slide
       ><swiper-slide class="product__image"><img :src="product?.image" /></swiper-slide

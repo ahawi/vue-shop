@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Typography } from '@/shared/ui'
+import { Typography } from '@/shared/ui/typography'
 import { Header } from '@/widgets/header'
 import { Breadcrumbs } from '@/widgets/breadcrumbs'
 import { Footer } from '@/widgets/footer'
@@ -22,7 +22,13 @@ const categoryTitle = computed(() => currentCategory.value?.title || '')
   <Header />
   <main class="main">
     <Breadcrumbs />
-    <Typography tag="h1" size="xl" bold class="main__title">{{ categoryTitle }}</Typography>
+    <Typography
+      tag="h1"
+      size="xl"
+      bold
+      class="main__title"
+      >{{ categoryTitle }}</Typography
+    >
     <CategorySection />
   </main>
   <Footer />

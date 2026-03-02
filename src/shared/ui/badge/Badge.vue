@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import Typography from './Typography.vue'
+import { Typography } from '../typography'
 
 interface BadgeProps {
   isVisible?: boolean
@@ -17,13 +17,20 @@ const badgePosition = computed(() => ({
   left: props.positionLeft,
   right: props.positionRight,
   top: props.positionTop,
-  bottom: props.positionBottom,
+  bottom: props.positionBottom
 }))
 </script>
 
 <template>
-  <div v-if="isVisible" class="badge" :style="badgePosition">
-    <Typography tag="span" size="s">{{ title }}</Typography>
+  <div
+    v-if="isVisible"
+    class="badge"
+    :style="badgePosition">
+    <Typography
+      tag="span"
+      size="s"
+      >{{ title }}</Typography
+    >
   </div>
 </template>
 

@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { Button, Section } from '@/shared/ui'
-import YandexMap from './YandexMap.vue'
+import { Button } from '@/shared/ui/button'
+import { Section } from '@/shared/ui/section'
+import { YandexMap } from '@/features/yandex-map'
 import { mockYandexMap } from '../model/mock-coordinates'
 import { computed, ref } from 'vue'
 
@@ -14,7 +15,10 @@ const currentCity = computed(() => mockYandexMap.find((city) => city.id === curr
 </script>
 
 <template>
-  <Section display="flex" title="Наши магазины" class="contacts">
+  <Section
+    display="flex"
+    title="Наши магазины"
+    class="contacts">
     <div class="contacts__inner">
       <div class="contacts__buttons">
         <Button
@@ -32,8 +36,7 @@ const currentCity = computed(() => mockYandexMap.find((city) => city.id === curr
       <YandexMap
         v-if="currentCity"
         :coordinates="currentCity?.coordinates"
-        :title="currentCity?.title"
-      ></YandexMap>
+        :title="currentCity?.title"></YandexMap>
     </div>
   </Section>
 </template>

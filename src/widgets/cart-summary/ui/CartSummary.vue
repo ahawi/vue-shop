@@ -1,93 +1,136 @@
 <script lang="ts" setup>
-import { useCartStore } from '@/app/stores/cart'
-import { Button, Typography } from '@/shared/ui'
-import { ref, watch } from 'vue'
+import { useCartStore } from '@/entities/cart/model/cart'
+import { Button } from '@/shared/ui/button'
+import { Typography } from '@/shared/ui/typography'
+import { storeToRefs } from 'pinia'
+import { ref, watch, type Ref } from 'vue'
 
-const cartStore = useCartStore()
+const {
+  items,
+  appliedBonus,
+  userBonus,
+  selectedItems,
+  totalItems,
+  subtotal,
+  totalPrice,
+  maxBonusApplicable
+} = storeToRefs(useCartStore())
 
-const useBonus = ref(false)
+const useBonus: Ref<number> = ref(0)
 
-watch(useBonus, (newValue) => {
-  if (newValue) {
-    cartStore.applyAllBonus()
+const props = defineProps<{
+  currentStep: number
+}>()
+
+const emit = defineEmits<{
+  'go-to-delivery': []
+  'submit-delivery': []
+}>()
+
+const handleClick = () => {
+  if (props.currentStep === 1) {
+    emit('go-to-delivery')
   } else {
-    cartStore.removeBonus()
+    emit('submit-delivery')
   }
-})
-
-const totalItems = () => {
-  const titles = ['товар', 'товара', 'товаров']
-  const value = cartStore.totalItems % 10
-  if (cartStore.totalItems % 100 > 4 && cartStore.totalItems % 100 < 20)
-    return `${cartStore.totalItems} ${titles[2]}`
-  if (value > 1 && value < 5) return `${cartStore.totalItems} ${titles[1]}`
-  if (value === 1) return `${cartStore.totalItems} ${titles[0]}`
-  return `${cartStore.totalItems} ${titles[2]}`
-}
-
-const totalBonusEarned = () => {
-  const titles = ['бонус', 'бонуса', 'бонусов']
-  const value = cartStore.bonusEarned % 10
-  if (cartStore.bonusEarned % 100 > 4 && cartStore.bonusEarned % 100 < 20)
-    return `${cartStore.bonusEarned} ${titles[2]}`
-  if (value > 1 && value < 5) return `${cartStore.bonusEarned} ${titles[1]}`
-  if (value === 1) return `${cartStore.bonusEarned} ${titles[0]}`
-  return `${cartStore.bonusEarned} ${titles[2]}`
 }
 </script>
 
 <template>
-  <div class="cart-summary" v-if="cartStore.totalItems">
+  <div
+    class="cart-summary"
+    v-if="items">
     <div class="cart-summary__bonus-spending">
       <label class="cart-summary__bonus-spending-label">
         <input
           type="checkbox"
           class="cart-summary__bonus-spending-input"
           v-model="useBonus"
-          :disabled="cartStore.maxBonusApplicable <= 0"
-        />
-        <Typography tag="span" size="s" class="cart-summary__bonus-spending-inner"
-          >Списать {{ cartStore.maxBonusApplicable.toFixed() }} ₽</Typography
+          :disabled="maxBonusApplicable <= 0" />
+        <Typography
+          tag="span"
+          size="s"
+          class="cart-summary__bonus-spending-inner"
+          >Списать {{ maxBonusApplicable.toFixed() }} ₽</Typography
         ></label
       >
-      <Typography tag="p" size="s" class="cart-summary__text-gray"
-        >На карте накоплено {{ cartStore.userBonus }} ₽</Typography
+      <Typography
+        tag="p"
+        size="s"
+        class="cart-summary__text-gray"
+        >На карте накоплено {{ userBonus }} ₽</Typography
       >
     </div>
 
     <div class="cart-summary__discounts">
       <div class="cart-summary__without-discounts">
-        <Typography tag="p" size="s" class="cart-summary__text-gray">{{ totalItems() }}</Typography>
-        <Typography tag="p" size="s">{{ cartStore.originalSubtotal.toFixed(2) }} ₽</Typography>
+        <Typography
+          tag="p"
+          size="s"
+          class="cart-summary__text-gray"
+          >{{ totalItems }}</Typography
+        >
+        <Typography
+          tag="p"
+          size="s"
+          >{{ subtotal.toFixed(2) }} ₽</Typography
+        >
       </div>
       <div class="cart-summary__with-discounts">
-        <Typography tag="p" size="s" class="cart-summary__text-gray">Скидка</Typography>
-        <Typography tag="p" size="s" bold>{{ cartStore.cardDiscount.toFixed(2) }} ₽</Typography>
+        <Typography
+          tag="p"
+          size="s"
+          class="cart-summary__text-gray"
+          >Скидка</Typography
+        >
+        <Typography
+          tag="p"
+          size="s"
+          bold
+          >{{ totalPrice }} ₽</Typography
+        >
       </div>
     </div>
 
     <div class="cart-summary__total">
       <div class="cart-summary__total-price">
-        <Typography tag="p" size="s" class="cart-summary__text-gray">Итог</Typography>
-        <Typography tag="p" size="l" bold>{{ cartStore.totalPrice }} ₽</Typography>
+        <Typography
+          tag="p"
+          size="s"
+          class="cart-summary__text-gray"
+          >Итог</Typography
+        >
+        <Typography
+          tag="p"
+          size="l"
+          bold
+          >{{ totalPrice }} ₽</Typography
+        >
       </div>
 
-      <div class="cart-summary__total-bonus" v-if="Number(cartStore.totalPrice) >= 1000">
+      <div
+        class="cart-summary__total-bonus"
+        v-if="Number(totalPrice) >= 1000">
         <svg
           width="24"
           height="24"
           viewBox="0 0 24 24"
           fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+          xmlns="http://www.w3.org/2000/svg">
           <path
             d="M23.1883 6.66661H0.811961C0.343143 6.66661 -0.0396916 7.05823 0.0033005 7.52051C0.494639 13.0113 5.67826 17.3333 12.0001 17.3333C18.322 17.3333 23.5056 13.0133 23.997 7.52051C24.0379 7.05823 23.6571 6.66661 23.1883 6.66661Z"
-            fill="#70C05B"
-          />
+            fill="#70C05B" />
         </svg>
-        <Typography tag="span" size="xs"
+        <Typography
+          tag="span"
+          size="xs"
           >Вы получаете
-          <Typography tag="span" size="xs" bold>{{ totalBonusEarned() }}</Typography>
+          <Typography
+            tag="span"
+            size="xs"
+            bold
+            >{{ appliedBonus }}</Typography
+          >
         </Typography>
       </div>
     </div>
@@ -97,14 +140,15 @@ const totalBonusEarned = () => {
         tag="p"
         size="xs"
         class="cart-summary__order-notice"
-        v-if="Number(cartStore.totalPrice) < 1000"
+        v-if="Number(totalPrice) < 1000"
         >Минимальная сумма заказа 1000р</Typography
       >
       <Button
         class="cart-summary__order-button"
         background-color="primary"
         size="l"
-        :disabled="Number(cartStore.totalPrice) < 1000"
+        :disabled="Number(totalPrice) < 1000"
+        @click="handleClick"
         >Оформить заказ</Button
       >
     </div>
@@ -115,6 +159,7 @@ const totalBonusEarned = () => {
 .cart-summary {
   width: 100%;
   margin-top: 52px;
+  max-width: 272px;
 
   &__bonus-spending,
   &__discounts {
