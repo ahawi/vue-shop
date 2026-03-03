@@ -3,92 +3,71 @@ import { Button } from '@/shared/ui/button'
 import { Typography } from '@/shared/ui/typography'
 import { Field } from '@/shared/ui/field'
 import { Icon } from '@/shared/ui/icon'
-import { computed } from 'vue'
+import { toRef, type Ref } from 'vue'
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/default.css'
-import { useFilterState, type SelectedCategory } from '../composables/useFilterState'
-import { useCategoryFilter } from '../composables/useCategoryFilter'
-import { usePriceRange } from '../composables/usePriceRange'
-import { useStockFilter } from '../composables/useStockFilter'
-import { mockCategory } from '@/shared/lib/mocks/mock-products'
-import { useRoute } from 'vue-router'
+import { useFilter } from '@/features/filter'
+import type { ProductProps } from '@/entities/product'
+import type { FilterActive, FiltersPayload } from '@/features/filter/model/types'
 
-interface RangeSliderProps {
-  modelValue: [number, number]
-  max: number
-  min: number
-  categories?: SelectedCategory[]
-}
+const props = defineProps<{
+  products: ProductProps[]
+}>()
 
-const route = useRoute()
-const currentCategoryId = computed(() => route.params.category as string)
+const emits = defineEmits<{
+  (e: 'apply:filters', payload: FiltersPayload): void
+}>()
 
-const currentSubCategories = computed(() => {
-  const parent = mockCategory.find((cat) => cat.id === currentCategoryId.value)
-  return parent?.categories ?? []
-})
-
-const categoryOptions = computed<SelectedCategory[]>(() => {
-  if (props.categories && props.categories.length > 0) return props.categories
-  return currentSubCategories.value
-})
-
-const props = defineProps<RangeSliderProps>()
-const emit = defineEmits(['update:modelValue', 'update:filters', 'apply:filters'])
-
-const hasFilters = computed(() => {
-  const isPriceFilterChange =
-    appliedFilters.value.filterPrice[0] !== props.min ||
-    appliedFilters.value.filterPrice[1] !== props.max
-
-  const isCategoryFilterChange = appliedFilters.value.filterCategories.length > 0
-
-  const hasInStockFilter = appliedFilters.value.inStock === true
-
-  return isCategoryFilterChange || isPriceFilterChange || hasInStockFilter
-})
-
-const { filterState, appliedFilters, emitFilters, resetFilterState, applyFilters } = useFilterState(
-  props,
-  emit
-)
-
-const { range, minInput, maxInput, updateMinValue, updateMaxValue, clearRange } = usePriceRange(
-  props,
-  emit,
-  filterState,
-  () => emitFilters('update:filters')
-)
-
-const { isCategorySelected, toggleCategory, removeCategory, removeCategoryById } =
-  useCategoryFilter(filterState, appliedFilters, emitFilters)
-
-const { toggleInStock, removeStockFilter } = useStockFilter(
-  filterState,
+const {
+  price,
+  min,
+  max,
+  draftFilterState,
+  appliedFilterState,
   appliedFilters,
-  emitFilters
-)
+  categoriesOptions,
+  filteredProducts,
 
-const clearAllFilters = () => {
-  resetFilterState()
+  setPrice,
+  toggleCategory,
+  removeCategoryById,
+  removeAppliedCategoryById,
+  toggleInStock,
+  applyFilters,
+  removeFilterButtons,
+  resetFilterState,
+  removePriceFilter,
+  removeStockFilter,
+  recalcRangeFromProducts
+} = useFilter(toRef(props, 'products'))
+
+const isCategorySelected = (id: string) =>
+  draftFilterState.value.filterCategories.some((category) => category.id === id)
+
+const clearRange = () => {
+  removePriceFilter()
 }
 
-const removePriceFilter = () => {
-  appliedFilters.value.filterPrice = [props.min, props.max]
-  filterState.value.filterPrice = [props.min, props.max]
-  emit('update:modelValue', [props.min, props.max])
-  emitFilters('apply:filters')
-  emitFilters('update:filters')
+const onApplyFilters = () => {
+  const payload = applyFilters()
+  emits('apply:filters', payload)
 }
 
 defineExpose({
-  clearAllFilters,
-  removePriceFilter,
+  filteredProducts,
+  appliedFilters,
+  price,
+  min,
+  max,
+
   removeCategoryById,
+  removeAppliedCategoryById,
+  removePriceFilter,
+  removeFilterButtons,
   removeStockFilter,
-  applyFilters,
-  filterState,
-  appliedFilters
+  resetFilterState,
+  recalcRangeFromProducts,
+  applyFilters
 })
 </script>
 
@@ -114,7 +93,7 @@ defineExpose({
           size="s"
           class="filter__clear-button"
           @click="clearRange"
-          :disabled="!hasFilters"
+          :disabled="appliedFilters.length === 0"
           >Очистить</Button
         >
       </div>
@@ -123,8 +102,8 @@ defineExpose({
           size="m"
           type="number"
           class="filter__field"
-          :modelValue="minInput"
-          @update:modelValue="updateMinValue"
+          :modelValue="price[0]"
+          @update:modelValue="(value) => setPrice([Number(value), price[1]])"
           :min="min"
           :max="max" />
         <span></span>
@@ -132,13 +111,13 @@ defineExpose({
           size="m"
           type="number"
           class="filter__field"
-          :modelValue="maxInput"
-          @update:modelValue="updateMaxValue"
+          :modelValue="price[1]"
+          @update:modelValue="(value) => setPrice([price[0], Number(value)])"
           :min="min"
           :max="max" />
       </div>
       <vue-slider
-        v-model="range"
+        v-model="price"
         :min="min"
         :max="max"
         :contained="true"
@@ -161,7 +140,7 @@ defineExpose({
     <ul class="filter__products">
       <li
         class="filter__product"
-        v-for="category in categoryOptions"
+        v-for="category in categoriesOptions"
         :key="category.id"
         :class="{ 'filter__product--selected': isCategorySelected(category.id) }"
         @click="toggleCategory(category)">
@@ -172,12 +151,12 @@ defineExpose({
         >
         <span
           v-if="isCategorySelected(category.id)"
-          @click="removeCategory(category.id, $event)"
-          ><Icon
+          @click.stop="removeCategoryById(category.id)">
+          <Icon
             type="close"
             :width="24"
-            :height="24"></Icon
-        ></span>
+            :height="24"></Icon>
+        </span>
       </li>
     </ul>
     <div class="filter__in-stock">
@@ -189,7 +168,7 @@ defineExpose({
           class="filter__in-stock-input"
           id="checkbox"
           @change="toggleInStock"
-          :checked="filterState.inStock" />
+          :checked="appliedFilterState.filterInStock" />
         <Typography
           tag="span"
           size="s"
@@ -202,7 +181,7 @@ defineExpose({
       backgroundColor="primary"
       size="m"
       class="filter__apply-button"
-      @click="applyFilters"
+      @click="onApplyFilters"
       >Применить</Button
     >
   </div>

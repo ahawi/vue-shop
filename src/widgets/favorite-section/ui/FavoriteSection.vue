@@ -1,237 +1,57 @@
 <script lang="ts" setup>
 import { Button } from '@/shared/ui/button'
 import { Typography } from '@/shared/ui/typography'
-import { ProductCard, type ProductProps } from '@/entities/product'
+import { ProductCard } from '@/entities/product'
 import { ProductFilter } from '@/widgets/product-filter'
-import { computed, onMounted, ref, watch } from 'vue'
-import { mockCategory } from '@/shared/lib/mocks/mock-products'
-import { useRoute } from 'vue-router'
-import { router } from '@/app/router'
-import { useToggleFavorite } from '@/features/toggle-favorite/model/useToggleFavorite'
+import { computed, ref, watch } from 'vue'
+import { mockProducts } from '@/shared/lib/mocks/mock-products'
 import { useFavoritesStore } from '@/features/favorite/model/favorite'
-import { CATALOG_LINK } from '@/pages/catalog/config'
 import { storeToRefs } from 'pinia'
 import { useCartStore } from '@/entities/cart/model/cart'
+import { useToggleFavorite } from '@/features/toggle-favorite'
+import type { FilterActive } from '@/features/filter/model/types'
+import { useNavigate } from '@/shared/lib/useNavigate'
+
+const PAGE_STEP = 6
 
 const { itemIds, totalFavorites } = storeToRefs(useFavoritesStore())
-const { isFavorite, addToFavorites, removeFromFavorites, toggleFavorite, resetFavorites } =
-  useFavoritesStore()
-
-interface FiltersPayload {
-  filterPrice: [number, number]
-  filterCategories: { id: string; title: string }[]
-  inStock: boolean
-  hasActiveFilters: boolean
-}
-
-const goToProductPage = (product: ProductProps) => {
-  router.push(`${CATALOG_LINK}/${product.categoryIds[0]}/${product.id}`)
-}
-
-const { addToCart } = useCartStore()
 const { toggleFavoriteItem } = useToggleFavorite()
-
-const favoriteRootCategories = computed(() => {
-  const ids = new Set<string>()
-
-  for (const p of itemIds) {
-    const rootId = p?.categoryIds?.[0]
-    if (rootId) ids.add(rootId)
-  }
-
-  return mockCategory
-    .filter((cat) => ids.has(cat.id))
-    .map((cat) => ({ id: cat.id, title: cat.title }))
-})
-
-const onProductToggleFavorite = (product: ProductProps) => {
-  toggleFavorite(product.id)
-}
-
-const categoryProducts = computed(() => {
-  return itemIds
-})
-
-const initialPriceRange = () => {
-  const prices = categoryProducts.value.map((product) =>
-    parseFloat(product.price.replace(',', '.'))
-  )
-  return {
-    min: Math.min(...prices),
-    max: Math.max(...prices)
-  }
-}
-
-const priceRange = ref({ min: 0, max: 0 })
-const priceMin = ref(0)
-const priceMax = ref(10000)
-
-const step = 6
-const visibleCount = ref(step)
-
-const route = useRoute()
-const currentCategoryId = ref('')
-
-const updatePriceRange = () => {
-  const range = initialPriceRange()
-  priceRange.value = range
-  priceMin.value = range.min
-  priceMax.value = range.max
-}
-
-onMounted(() => {
-  currentCategoryId.value = route.params.category as string
-  updatePriceRange()
-})
-
-const tempPrice = ref<[number, number]>([priceMin.value, priceMax.value])
-
-const appliedFiltersState = ref<FiltersPayload>({
-  filterPrice: [priceMin.value, priceMax.value],
-  filterCategories: [],
-  inStock: false,
-  hasActiveFilters: false
-})
-
-watch(
-  () => itemIds,
-  () => {
-    updatePriceRange()
-    appliedFiltersState.value.filterPrice = [priceMin.value, priceMax.value]
-    tempPrice.value = [priceMin.value, priceMax.value]
-    visibleCount.value = step
-  },
-  { deep: true }
-)
-
-watch(
-  [priceMin, priceMax],
-  ([min, max]) => {
-    if (min !== 0 || max !== 200) {
-      appliedFiltersState.value.filterPrice = [min, max]
-      tempPrice.value = [min, max]
-    }
-  },
-  { immediate: true }
-)
-
-const filteredProducts = computed(() => {
-  let products = categoryProducts.value
-
-  if (appliedFiltersState.value.filterCategories.length > 0) {
-    const selectedCategoryIds = appliedFiltersState.value.filterCategories.map(
-      (category) => category.id
-    )
-    products = products.filter((product) =>
-      product.categoryIds.some((categoryId) => selectedCategoryIds.includes(categoryId))
-    )
-  }
-
-  const [minPrice, maxPrice] = appliedFiltersState.value.filterPrice
-  products = products.filter((product) => {
-    const productPrice = parseFloat(product.price.replace(',', '.'))
-    return productPrice >= minPrice && productPrice <= maxPrice
-  })
-
-  if (appliedFiltersState.value.inStock) {
-    products = products.filter((product) => product.inStock)
-  }
-
-  return products
-})
-
-const displayedProducts = computed(() => {
-  const products = filteredProducts.value ?? []
-  return products.slice(0, visibleCount.value)
-})
-
-const showMore = () => {
-  const total = filteredProducts.value.length ?? 0
-  if (visibleCount.value < total) {
-    visibleCount.value = Math.min(visibleCount.value + step, total)
-  }
-}
-
-const price = computed<[number, number]>({
-  get() {
-    return tempPrice.value
-  },
-  set(value: [number, number]) {
-    tempPrice.value = value
-  }
-})
+const { addToCart } = useCartStore()
+const { goToProduct } = useNavigate()
 
 const productFilter = ref<InstanceType<typeof ProductFilter> | null>(null)
 
-interface ActiveFilter {
-  type: 'category' | 'price' | 'stock'
-  id: string
-  title: string
-  value: any
+const favoriteProducts = computed(() => mockProducts.filter((p) => itemIds.value.includes(p.id)))
+
+const filteredProducts = computed(
+  () => productFilter.value?.filteredProducts ?? favoriteProducts.value
+)
+const appliedFilters = computed(() => productFilter.value?.appliedFilters ?? [])
+
+const visibleCount = ref(PAGE_STEP)
+
+const displayedProducts = computed(() => filteredProducts.value.slice(0, visibleCount.value))
+
+const showMore = () => {
+  visibleCount.value = Math.min(visibleCount.value + PAGE_STEP, filteredProducts.value.length)
 }
 
-const appliedFilters = ref<ActiveFilter[]>([])
-
-const updateAppliedFilters = (filters: FiltersPayload) => {
-  appliedFiltersState.value = { ...filters }
-  appliedFilters.value = []
-  visibleCount.value = step
-
-  if (filters.filterCategories && filters.filterCategories.length > 0) {
-    filters.filterCategories.forEach((category: any) => {
-      appliedFilters.value.push({
-        type: 'category',
-        id: `category-${category.id}`,
-        title: category.title,
-        value: category.id
-      })
-    })
-  }
-
-  if (
-    filters.filterPrice &&
-    (filters.filterPrice[0] !== priceMin.value || filters.filterPrice[1] !== priceMax.value)
-  ) {
-    appliedFilters.value.push({
-      type: 'price',
-      id: 'price-range',
-      title: `Цена от ${filters.filterPrice[0]} до ${filters.filterPrice[1]}`,
-      value: filters.filterPrice
-    })
-  }
-
-  if (filters.inStock) {
-    appliedFilters.value.push({
-      type: 'stock',
-      id: 'in-stock',
-      title: 'В наличии',
-      value: true
-    })
-  }
+const removeFilterButtons = (filter: FilterActive) => {
+  productFilter.value?.removeFilterButtons(filter)
 }
 
-const removeFilter = (filterId: string) => {
-  const filter = appliedFilters.value.find((f) => f.id === filterId)
-  if (!filter) return
-
-  if (filter.type === 'category' && productFilter.value) {
-    productFilter.value.removeCategoryById(filter.value)
-  } else if (filter.type === 'price' && productFilter.value) {
-    productFilter.value.removePriceFilter()
-  } else if (filter.type === 'stock' && productFilter.value) {
-    productFilter.value.removeStockFilter()
-  }
+const resetFilterState = () => {
+  productFilter.value?.resetFilterState()
 }
 
-const clearAllFilters = () => {
-  if (productFilter.value) {
-    productFilter.value.clearAllFilters()
-  }
-  appliedFiltersState.value.filterPrice = [priceMin.value, priceMax.value]
-  tempPrice.value = [priceMin.value, priceMax.value]
-}
+watch(favoriteProducts, () => {
+  productFilter.value?.recalcRangeFromProducts()
+  visibleCount.value = PAGE_STEP
+})
 
-const appliedFiltersCount = computed(() => appliedFilters.value.length)
+const onApplyFilter = () => {
+  visibleCount.value = PAGE_STEP
+}
 </script>
 
 <template>
@@ -241,16 +61,15 @@ const appliedFiltersCount = computed(() => appliedFilters.value.length)
         class="category-section__filter"
         v-if="totalFavorites > 0">
         <ProductFilter
-          v-model="price"
-          :min="priceMin"
-          :max="priceMax"
-          :categories="favoriteRootCategories"
           ref="productFilter"
-          @apply:filters="updateAppliedFilters" />
+          :products="favoriteProducts"
+          @apply:filters="onApplyFilter" />
       </div>
       <div
         :class="[
-          appliedFiltersCount > 0 ? 'category-section__main' : 'category-section__main--no-filters',
+          appliedFilters.length
+            ? 'category-section__main'
+            : 'category-section__main--no-filters',
           'main'
         ]">
         <div class="main__top-filters">
@@ -264,11 +83,11 @@ const appliedFiltersCount = computed(() => appliedFilters.value.length)
               width: 24,
               height: 24
             }"
-            @click="removeFilter(filter.id)"
+            @click="removeFilterButtons(filter)"
             >{{ filter.title }}</Button
           >
           <Button
-            v-if="appliedFiltersCount > 0"
+            v-if="appliedFilters.length"
             :right-icon="{
               type: 'close',
               width: 24,
@@ -276,7 +95,7 @@ const appliedFiltersCount = computed(() => appliedFilters.value.length)
             }"
             backgroundColor="grayscale"
             size="s"
-            @click="clearAllFilters"
+            @click="resetFilterState"
             class="main__top-filters-clear-button"
             >Очистить фильтры</Button
           >
@@ -296,13 +115,13 @@ const appliedFiltersCount = computed(() => appliedFilters.value.length)
             v-for="product in displayedProducts"
             :key="product.id"
             v-bind="product"
-            @click="goToProductPage(product)"
+            @click="goToProduct(product)"
             @add-to-cart="addToCart(product)"
-            @toggle-favorite="onProductToggleFavorite" />
+            @toggle-favorite="toggleFavoriteItem" />
         </div>
         <div class="main__more">
           <Button
-            v-if="visibleCount < (filteredProducts.length ?? 0)"
+            v-if="visibleCount < filteredProducts.length"
             backgroundColor="grayscale"
             size="m"
             class="main__more-button"
