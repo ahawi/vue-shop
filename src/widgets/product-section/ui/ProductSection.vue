@@ -3,15 +3,14 @@ import { Section } from '@/shared/ui/section'
 import { mockProducts } from '@/shared/lib/mocks/mock-products'
 import { computed } from 'vue'
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules'
-import { router } from '@/app/router'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
 import { SwiperProducts } from '@/shared/ui/swiper-products'
 import type { ProductProps } from '@/entities/product'
-import { CATALOG_LINK, CATALOG_ROUTE } from '@/pages/catalog/config'
 import { useCartStore } from '@/entities/cart/model/cart'
+import { useNavigate } from '@/shared/lib/useNavigate'
 
 const props = defineProps<{
   title: string
@@ -19,11 +18,8 @@ const props = defineProps<{
   filterType: 'sale' | 'new' | 'buy-before' | 'none'
 }>()
 
-const goToProductPage = (product: ProductProps) => {
-  router.push(`${CATALOG_ROUTE.path}/${product.categoryIds[0]}/${product.id}`)
-}
-
 const { addToCart } = useCartStore()
+const { goToProduct } = useNavigate()
 
 const filteredType = computed(() => {
   let result: typeof mockProducts
@@ -58,7 +54,7 @@ const modules = [Navigation, Pagination, Scrollbar, A11y]
       :products="filteredType"
       :slides-per-view="4"
       :space-between="40"
-      @click:product="goToProductPage"
+      @click:product="goToProduct"
       @add-to-cart="addToCart" />
   </Section>
 </template>

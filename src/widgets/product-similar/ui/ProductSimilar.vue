@@ -1,11 +1,14 @@
 <script lang="ts" setup>
+import { router } from '@/app/router'
 import { CATALOG_LINK } from '@/pages/catalog/config'
 import { mockProducts } from '@/shared/lib/mocks/mock-products'
+import { useNavigate } from '@/shared/lib/useNavigate'
 import { Typography } from '@/shared/ui/typography'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
+const { goToProduct } = useNavigate()
 
 const currentProduct = computed(() => {
   return mockProducts.find((product) => product.id === route.params.id)
@@ -38,7 +41,7 @@ const similarProducts = computed(() => {
         class="product-similar__card"
         v-for="product in similarProducts"
         :key="product.id"
-        @click="$router.push(`${CATALOG_LINK}/${product.categoryIds[0]}/${product.id}`)">
+        @click="goToProduct(product)">
         <img
           :src="product.image"
           :alt="product.title"
