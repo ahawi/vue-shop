@@ -5,8 +5,10 @@ import { Typography } from '@/shared/ui/typography'
 import { type CartItem } from '@/entities/cart/model/cart'
 import { useQuantitySelector } from '@/features/quantity-selector'
 import { computed } from 'vue'
-import { router } from '@/app/router'
-import { CATALOG_LINK } from '@/pages/catalog/config'
+import { useNavigate } from '@/shared/lib/useNavigate'
+import type { ProductProps } from '@/entities/product'
+
+const { goToProduct } = useNavigate()
 
 interface Props {
   item: CartItem
@@ -21,13 +23,18 @@ const emit = defineEmits<{
 
 const goToProductPage = (event: MouseEvent) => {
   const target = event.target as HTMLElement
+
   const isCheckbox = target.closest('.checkbox') || target.closest('.cart-item__checkbox')
+
   const isQuantitySelector = target.closest('.quantity-selector')
 
   if (isCheckbox || isQuantitySelector) return
 
-  if (props.item.categoryId) {
-    router.push(`${CATALOG_LINK}/${props.item.categoryId}/${props.item.productId}`)
+  if (props.item.categoryId && props.item.productId) {
+    goToProduct({
+      id: props.item.productId,
+      categoryIds: [props.item.categoryId]
+    } as ProductProps)
   }
 }
 
