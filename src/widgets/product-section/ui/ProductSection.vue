@@ -10,7 +10,7 @@ import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
 import { SwiperProducts } from '@/shared/ui/swiper-products'
 import type { ProductProps } from '@/entities/product'
-import { CATALOG_LINK } from '@/pages/catalog/config'
+import { CATALOG_LINK, CATALOG_ROUTE } from '@/pages/catalog/config'
 import { useCartStore } from '@/entities/cart/model/cart'
 
 const props = defineProps<{
@@ -20,7 +20,7 @@ const props = defineProps<{
 }>()
 
 const goToProductPage = (product: ProductProps) => {
-  router.push(`${CATALOG_LINK}/${product.categoryIds[0]}/${product.id}`)
+  router.push(`${CATALOG_ROUTE.path}/${product.categoryIds[0]}/${product.id}`)
 }
 
 const { addToCart } = useCartStore()
