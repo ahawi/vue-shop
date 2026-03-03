@@ -5,7 +5,7 @@ import { Icon } from '@/shared/ui/icon'
 import { StarRating } from '@/shared/ui/star-rating'
 import { Badge } from '@/shared/ui/badge'
 import type { ProductProps } from '../model/types'
-import { useToggleFavorite } from '@/features/toggle-favorite/model/useToggleFavorite'
+import { useToggleFavorite } from '@/features/toggle-favorite'
 import { computed } from 'vue'
 
 const props = defineProps<ProductProps>()

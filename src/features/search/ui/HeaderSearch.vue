@@ -122,7 +122,7 @@ watch(showDropdown, (value) => {
 
     <transition name="dropdown-fade">
       <div
-        v-if="showDropdown && filteredOptions.length > 0"
+        v-if="showDropdown && filteredOptions.length"
         class="header-search__dropdown">
         <div
           v-for="option in filteredOptions"

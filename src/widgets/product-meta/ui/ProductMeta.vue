@@ -5,7 +5,7 @@ import { StarRating } from '@/shared/ui/star-rating'
 import { Typography } from '@/shared/ui/typography'
 import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { useToggleFavorite } from '@/features/toggle-favorite/model/useToggleFavorite'
+import { useToggleFavorite } from '@/features/toggle-favorite'
 import { mockReviews } from '@/widgets/reviews-section/mock/mock-reviews'
 
 const route = useRoute()

@@ -20,7 +20,7 @@ const toggleItemSelect = (itemId: string) => {
 <template>
   <div class="cart-items">
     <CartItem
-      v-if="items.length > 0"
+      v-if="items.length"
       v-for="item in items"
       :key="item.cartItemId"
       :item="item"

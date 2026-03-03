@@ -21,7 +21,7 @@ const productReviews = computed(() => {
 <template>
   <div
     class="reviews-list"
-    v-if="productReviews.length > 0">
+    v-if="productReviews.length">
     <div
       class="review"
       v-for="review in productReviews"
