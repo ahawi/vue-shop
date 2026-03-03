@@ -17,6 +17,7 @@ import { storeToRefs } from 'pinia'
 
 const cartStore = useCartStore()
 const { totalFavorites } = storeToRefs(useFavoritesStore())
+const { totalItems } = storeToRefs(useCartStore())
 
 const route = useRoute()
 
@@ -25,28 +26,23 @@ const LINKS = {
   catalog: { to: CATALOG_LINK, name: 'Каталог' },
   favorites: { to: FAVORITES_LINK, name: 'Избранное' },
   orders: { to: ORDERS_LINK, name: 'Заказы' },
-  cart: { to: CART_LINK, name: 'Заказы' }
+  cart: { to: CART_LINK, name: 'Корзина' }
 }
 
 const isFavoritesPage = computed(() => route.name === 'favorites')
 const isCartPage = computed(() => route.name === 'cart')
 const isOrdersPage = computed(() => route.name === 'orders')
-
-const totalItems = computed(() => {
-  return cartStore.totalItems
-})
 </script>
 
 <template>
   <header class="header">
     <div class="header__container">
       <RouterLink :to="LINKS.main.to">
-        <Button>
-          <Logo
-            :variant="LogoVariant.TEXT"
-            :mouth-color="LogoMouthColor.ORANGE"
-            :color="LogoTextColor.BLACK"
-        /></Button>
+        <Logo
+          class="header__logo"
+          :variant="LogoVariant.TEXT"
+          :mouth-color="LogoMouthColor.ORANGE"
+          :color="LogoTextColor.BLACK" />
       </RouterLink>
       <div class="header__actions">
         <RouterLink :to="LINKS.catalog.to">

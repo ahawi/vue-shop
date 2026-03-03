@@ -42,13 +42,13 @@ const reviewsText = computed(() => {
   return `${count} ${getReviewWord(count)}`
 })
 
-const { toggleFavorite, isFavorite } = useToggleFavorite()
+const { toggleFavoriteItem, isItemFavorite } = useToggleFavorite()
 
 const localIsFavorite = ref(false)
 
 const isProductFavorite = computed(() => {
   if (!product.value) return false
-  const favoriteStatus = isFavorite(product.value.id)
+  const favoriteStatus = isItemFavorite(product.value.id)
   localIsFavorite.value = favoriteStatus
   return favoriteStatus
 })
@@ -57,7 +57,7 @@ const onProductToggleFavorite = () => {
   if (!product.value) return
 
   localIsFavorite.value = !localIsFavorite.value
-  toggleFavorite(product.value)
+  toggleFavoriteItem(product.value)
 }
 
 const isCopied = ref(false)
