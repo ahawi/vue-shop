@@ -140,57 +140,60 @@ const handleAddToCart = () => {
     </div>
 
     <table class="product-info__specs">
-      <tr>
-        <th>
-          <Typography
-            tag="span"
-            size="xs"
-            >Бренд</Typography
-          >
-        </th>
-        <td>
-          <Typography
-            tag="span"
-            size="xs"
-            bold
-            >{{ product?.brand?.toUpperCase() }}</Typography
-          >
-        </td>
-      </tr>
-      <tr>
-        <th>
-          <Typography
-            tag="span"
-            size="xs"
-            >Страна производителя</Typography
-          >
-        </th>
-        <td>
-          <Typography
-            tag="span"
-            size="xs"
-            bold
-            >Россия</Typography
-          >
-        </td>
-      </tr>
-      <tr>
-        <th>
-          <Typography
-            tag="span"
-            size="xs"
-            >Упаковка</Typography
-          >
-        </th>
-        <td>
-          <Typography
-            tag="span"
-            size="xs"
-            bold
-            >{{ product?.weight }}</Typography
-          >
-        </td>
-      </tr>
+      <tbody>
+        <tr>
+          <td>
+            <Typography
+              tag="span"
+              size="xs"
+              >Бренд</Typography
+            >
+          </td>
+          <td>
+            <Typography
+              tag="span"
+              size="xs"
+              bold
+              >{{ product?.brand?.toUpperCase() }}</Typography
+            >
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <Typography
+              tag="span"
+              size="xs"
+              >Страна производителя</Typography
+            >
+          </td>
+          <td>
+            <Typography
+              tag="span"
+              size="xs"
+              bold
+              >Россия</Typography
+            >
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <Typography
+              tag="span"
+              size="xs"
+              >Упаковка</Typography
+            >
+          </td>
+          <td>
+            <Typography
+              tag="span"
+              size="xs"
+              bold
+              >{{ product?.weight }}</Typography
+            >
+          </td>
+        </tr>
+      </tbody>
     </table>
   </div>
 </template>
@@ -288,22 +291,18 @@ const handleAddToCart = () => {
     border-collapse: collapse;
     margin-top: 24px;
 
-    th {
-      text-align: left;
-      padding-inline: 8px;
-    }
-
-    td {
-      color: var(--main-on-surface);
-      text-align: left;
-    }
-
     tr {
       &:nth-child(odd) {
         background-color: var(--grayscale-lightest);
       }
-      :nth-child(even) {
-        padding-block: 4px;
+    }
+
+    td {
+      width: 50%;
+      padding-block: 3px 4px;
+
+      &:nth-child(odd) {
+        padding-left: 8px;
       }
     }
   }
