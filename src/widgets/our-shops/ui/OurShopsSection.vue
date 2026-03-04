@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { Button } from '@/shared/ui/button'
 import { Section } from '@/shared/ui/section'
-import { YandexMap } from '@/features/yandex-map'
-import { mockYandexMap } from '../model/mock-coordinates'
+import { customYandexMap } from '@/shared/ui/custom-yandex-map'
+import { mockYandexMap } from '@/shared/model/yandex-map'
 import { computed, ref } from 'vue'
 
 const currentCityId = ref(mockYandexMap[0]?.id)
@@ -33,10 +33,10 @@ const currentCity = computed(() => mockYandexMap.find((city) => city.id === curr
         >
       </div>
 
-      <YandexMap
+      <customYandexMap
         v-if="currentCity"
         :coordinates="currentCity?.coordinates"
-        :title="currentCity?.title"></YandexMap>
+        :title="currentCity?.title"></customYandexMap>
     </div>
   </Section>
 </template>

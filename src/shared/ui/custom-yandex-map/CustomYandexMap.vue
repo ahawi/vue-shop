@@ -5,17 +5,13 @@ import {
   YandexMap,
   YandexMapDefaultSchemeLayer,
   YandexMapDefaultFeaturesLayer,
-  YandexMapDefaultMarker,
+  YandexMapDefaultMarker
 } from 'vue-yandex-maps'
+import type { YandexMapCoordinates } from '@/shared/model/yandex-map'
 
 const map = shallowRef<null | YMap>(null)
 
-interface YandexMapProps {
-  coordinates: [number, number]
-  title: string
-}
-
-const props = defineProps<YandexMapProps>()
+const props = defineProps<Omit<YandexMapCoordinates, 'id'>>()
 </script>
 
 <template>
@@ -24,19 +20,17 @@ const props = defineProps<YandexMapProps>()
     :settings="{
       location: {
         center: coordinates,
-        zoom: 15,
-      },
+        zoom: 15
+      }
     }"
     width="100%"
-    height="400px"
-  >
+    height="400px">
     <YandexMapDefaultSchemeLayer />
     <YandexMapDefaultFeaturesLayer />
     <YandexMapDefaultMarker
       :settings="{
         coordinates: coordinates,
-        title: title,
-      }"
-    />
+        title: title
+      }" />
   </YandexMap>
 </template>
