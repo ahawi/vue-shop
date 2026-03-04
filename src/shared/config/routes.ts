@@ -1,6 +1,6 @@
 import type { RouteLocationRaw } from 'vue-router'
 
-const MAIN_ROUTE_NAME = 'main'
+const MAIN_ROUTE_NAME = '/'
 
 export const MAIN_LINK = {
   name: MAIN_ROUTE_NAME
