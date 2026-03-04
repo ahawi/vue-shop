@@ -282,6 +282,10 @@ defineExpose({
   &__in-stock {
     display: inline-block;
 
+    &-label {
+      cursor: pointer;
+    }
+
     &-input {
       position: absolute;
       opacity: 0;
