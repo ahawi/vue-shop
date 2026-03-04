@@ -3,10 +3,12 @@ import { mockProducts } from '@/shared/lib/mocks/mock-products'
 import { Button } from '@/shared/ui/button'
 import { StarRating } from '@/shared/ui/star-rating'
 import { Typography } from '@/shared/ui/typography'
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useToggleFavorite } from '@/features/toggle-favorite'
 import { mockReviews } from '@/widgets/reviews-section/mock/mock-reviews'
+import { reviewDeclension } from '@/shared/lib/word-declension'
+import { ShareLink } from '@/features/share-link'
 
 const route = useRoute()
 const { toggleFavoriteItem, isItemFavorite } = useToggleFavorite()
@@ -19,53 +21,17 @@ const productReviews = computed(() => {
   return mockReviews.filter((review) => review.productId === product.value?.id)
 })
 
-const getReviewWord = (count: number) => {
-  const lastDigit = count % 10
-  const lastTwoDigits = count % 100
-
-  if (lastTwoDigits >= 11 && lastTwoDigits <= 14) {
-    return 'отзывов'
-  }
-
-  if (lastDigit === 1) {
-    return 'отзыв'
-  }
-
-  if (lastDigit >= 2 && lastDigit <= 4) {
-    return 'отзыва'
-  }
-
-  return 'отзывов'
-}
-
 const reviewsText = computed(() => {
   const count = productReviews.value.length
-  return `${count} ${getReviewWord(count)}`
+  return `${count} ${reviewDeclension(count)}`
 })
 
 const isProductFavorite = computed(() =>
   product.value?.id ? isItemFavorite(product.value.id) : false
 )
 
-const onToggleFavorite = computed(() =>
-  product.value?.id ? toggleFavoriteItem(product.value) : false
-)
-
-const isCopied = ref(false)
-
-const copyShareLink = async () => {
-  try {
-    const currentUrl = window.location.href
-    await navigator.clipboard.writeText(currentUrl)
-
-    isCopied.value = true
-
-    setTimeout(() => {
-      isCopied.value = false
-    }, 2000)
-  } catch (err) {
-    console.error(err)
-  }
+const onToggleFavorite = () => {
+  if (product.value) toggleFavoriteItem(product.value)
 }
 </script>
 
@@ -86,13 +52,7 @@ const copyShareLink = async () => {
       >
     </div>
 
-    <Button
-      size="s"
-      :leftIcon="{ type: 'share', width: 24, height: 24, fill: 'none' }"
-      class="product-meta__share"
-      @click="copyShareLink"
-      >{{ isCopied ? 'Скопировано!' : 'Поделиться' }}
-    </Button>
+    <ShareLink />
 
     <Button
       size="s"
