@@ -1,5 +1,3 @@
-import type { ProductProps } from '@/entities/product'
-
 export type SelectedCategory = { id: string; title: string }
 
 export interface FiltersPayload {
@@ -9,9 +7,7 @@ export interface FiltersPayload {
   hasActiveFilters: boolean
 }
 
-export interface FilterActive {
-  type: 'category' | 'price' | 'stock'
-  id: string
-  title: string
-  value: any
-}
+export type FilterActive =
+  | { type: 'category'; id: string; title: string; value: string }
+  | { type: 'price'; id: string; title: string; value: [number, number] }
+  | { type: 'stock'; id: string; title: string; value: boolean }

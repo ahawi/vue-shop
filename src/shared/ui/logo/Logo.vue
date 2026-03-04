@@ -6,7 +6,7 @@ interface LogoProps {
   mouthColor: LogoMouthColor
   color: LogoTextColor
 }
-const props = defineProps<LogoProps>()
+defineProps<LogoProps>()
 </script>
 
 <template>

@@ -5,13 +5,18 @@ interface TextProps {
   size?: 'xs' | 's' | 'm' | 'l' | 'xl'
 }
 
-const props = defineProps<TextProps>()
+defineProps<TextProps>()
 </script>
 
 <template>
   <component
     :is="tag"
-    :class="['typography', size ? `text-size--${size}` : 'text-size--m', bold ? 'bold' : '', `tag--${tag}`]"
+    :class="[
+      'typography',
+      size ? `text-size--${size}` : 'text-size--m',
+      bold ? 'bold' : '',
+      `tag--${tag}`
+    ]"
     ><slot></slot
   ></component>
 </template>

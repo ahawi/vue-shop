@@ -3,7 +3,7 @@ import { Typography } from '@/shared/ui/typography'
 import { Button } from '@/shared/ui/button'
 import type { ArticleCardProps } from '../model/types'
 
-const props = defineProps<ArticleCardProps>()
+defineProps<ArticleCardProps>()
 </script>
 
 <template>

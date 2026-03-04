@@ -2,13 +2,11 @@
 import { Section } from '@/shared/ui/section'
 import { mockProducts } from '@/shared/lib/mocks/mock-products'
 import { computed } from 'vue'
-import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
 import { SwiperProducts } from '@/shared/ui/swiper-products'
-import type { ProductProps } from '@/entities/product'
 import { useCartStore } from '@/entities/cart/model/cart'
 import { useNavigate } from '@/shared/lib/useNavigate'
 
@@ -40,8 +38,6 @@ const filteredType = computed(() => {
 
   return [...result].slice(0, 8)
 })
-
-const modules = [Navigation, Pagination, Scrollbar, A11y]
 </script>
 
 <template>

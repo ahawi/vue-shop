@@ -3,13 +3,12 @@ import { useCartStore } from '@/entities/cart/model/cart'
 import { Button } from '@/shared/ui/button'
 import { Typography } from '@/shared/ui/typography'
 import { storeToRefs } from 'pinia'
-import { ref, watch, type Ref } from 'vue'
+import { ref, type Ref } from 'vue'
 
 const {
   items,
   appliedBonus,
   userBonus,
-  selectedItems,
   totalItems,
   subtotal,
   totalPrice,

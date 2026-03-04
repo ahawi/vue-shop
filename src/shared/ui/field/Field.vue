@@ -73,12 +73,16 @@ const selectOption = (option: OptionProps) => {
 }
 
 const selectedOptionTitle = computed(() => {
-  if (!inputValue.value && props.placeholder) return props.placeholder || ''
-
-  if (props.options && inputValue.value) {
-    const selected = props.options.find((option) => option.id === inputValue.value)
-    return selected ? selected.title : props.placeholder
+  if (!inputValue.value) {
+    return props.placeholder || ''
   }
+
+  if (props.options) {
+    const selected = props.options.find((option) => option.id === inputValue.value)
+    return selected ? selected.title : props.placeholder || ''
+  }
+
+  return props.placeholder || ''
 })
 
 watch(
@@ -86,7 +90,7 @@ watch(
   (value) => {
     inputValue.value = value !== undefined ? value : ''
   },
-  { immediate: true },
+  { immediate: true }
 )
 
 watch(isOpen, (value) => {
@@ -102,10 +106,19 @@ watch(isOpen, (value) => {
 
 <template>
   <div class="field">
-    <label v-if="label" for="input" class="field__label"
-      ><Typography :size="size" tag="p"><slot></slot></Typography
+    <label
+      v-if="label"
+      for="input"
+      class="field__label"
+      ><Typography
+        :size="size"
+        tag="p"
+        ><slot></slot></Typography
     ></label>
-    <Icon v-if="leftIcon" v-bind="leftIcon" class="field__icon" />
+    <Icon
+      v-if="leftIcon"
+      v-bind="leftIcon"
+      class="field__icon" />
 
     <input
       v-if="type === 'text'"
@@ -116,8 +129,7 @@ watch(isOpen, (value) => {
       :disabled="disabled"
       autocomplete="off"
       v-model="inputValue"
-      @input="handleInput"
-    />
+      @input="handleInput" />
 
     <input
       v-if="type === 'number' || type === 'tel'"
@@ -129,11 +141,14 @@ watch(isOpen, (value) => {
       autocomplete="off"
       :inputmode="type === 'tel' ? 'tel' : undefined"
       v-model="inputValue"
-      @input="handleInput"
-    />
+      @input="handleInput" />
 
-    <div v-if="type === 'select'" class="field__select-wrapper">
-      <div class="field__select" @click.stop="handleSelectClick">
+    <div
+      v-if="type === 'select'"
+      class="field__select-wrapper">
+      <div
+        class="field__select"
+        @click.stop="handleSelectClick">
         <input
           class="field__select-input"
           type="text"
@@ -141,25 +156,28 @@ watch(isOpen, (value) => {
           :disabled="disabled"
           :value="selectedOptionTitle"
           autocomplete="off"
-          readonly
-        />
+          readonly />
       </div>
 
       <transition name="dropdown-fade">
-        <ul v-if="isOpen" class="field__select-dropdown">
+        <ul
+          v-if="isOpen"
+          class="field__select-dropdown">
           <li
             v-for="option in options"
             :key="option.id"
             @click="selectOption(option)"
-            class="field__select-dropdown-option"
-          >
+            class="field__select-dropdown-option">
             {{ option.title }}
           </li>
         </ul></transition
       >
     </div>
 
-    <Icon v-if="rightIcon" v-bind="rightIcon" class="field__icon" />
+    <Icon
+      v-if="rightIcon"
+      v-bind="rightIcon"
+      class="field__icon" />
   </div>
 </template>
 

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { CART_LINK, CART_ROUTE } from '@/pages/cart'
-import { ORDERS_LINK, ORDERS_ROUTE } from '@/pages/orders'
+import { CART_ROUTE } from '@/pages/cart'
+import { ORDERS_ROUTE } from '@/pages/orders'
 import { mockCategory, mockProducts } from '@/shared/lib/mocks/mock-products'
 import { Icon } from '@/shared/ui/icon'
 import { Typography } from '@/shared/ui/typography'

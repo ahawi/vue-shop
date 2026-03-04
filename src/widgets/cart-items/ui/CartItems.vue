@@ -19,18 +19,16 @@ const toggleItemSelect = (itemId: string) => {
 
 <template>
   <div class="cart-items">
-    <CartItem
-      v-if="items.length"
-      v-for="item in items"
-      :key="item.cartItemId"
-      :item="item"
-      @update-quantity="updateItemQuantity(item.cartItemId, $event)"
-      @toggle-select="toggleItemSelect(item.cartItemId)" />
-
-    <Typography
-      v-else
-      tag="h5"
-      >Упс! В корзине пока что ничего нет</Typography
+    <template v-if="items.length">
+      <CartItem
+        v-for="item in items"
+        :key="item.cartItemId"
+        :item="item"
+        @update-quantity="updateItemQuantity(item.cartItemId, $event)"
+        @toggle-select="toggleItemSelect(item.cartItemId)" />
+    </template>
+    <template v-else>
+      <Typography tag="h5">Упс! В корзине пока что ничего нет</Typography></template
     >
   </div>
 </template>

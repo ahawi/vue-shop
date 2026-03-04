@@ -2,7 +2,7 @@
 import { Typography } from '@/shared/ui/typography'
 import { type SpecialOfferProps } from '../model/types'
 
-const props = defineProps<SpecialOfferProps>()
+defineProps<SpecialOfferProps>()
 </script>
 
 <template>

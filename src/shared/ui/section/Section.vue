@@ -9,7 +9,7 @@ export interface SectionProps {
   display?: 'grid' | 'flex'
 }
 
-const props = defineProps<SectionProps>()
+defineProps<SectionProps>()
 </script>
 
 <template>

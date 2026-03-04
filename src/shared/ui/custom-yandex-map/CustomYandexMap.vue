@@ -11,7 +11,7 @@ import type { YandexMapCoordinates } from '@/shared/model/yandex-map'
 
 const map = shallowRef<null | YMap>(null)
 
-const props = defineProps<Omit<YandexMapCoordinates, 'id'>>()
+defineProps<Omit<YandexMapCoordinates, 'id'>>()
 </script>
 
 <template>

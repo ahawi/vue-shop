@@ -9,6 +9,7 @@ import { useToggleFavorite } from '@/features/toggle-favorite'
 import { mockReviews } from '@/widgets/reviews-section/mock/mock-reviews'
 
 const route = useRoute()
+const { toggleFavoriteItem, isItemFavorite } = useToggleFavorite()
 
 const product = computed(() => {
   return mockProducts.find((product) => product.id === route.params.id)
@@ -42,23 +43,13 @@ const reviewsText = computed(() => {
   return `${count} ${getReviewWord(count)}`
 })
 
-const { toggleFavoriteItem, isItemFavorite } = useToggleFavorite()
+const isProductFavorite = computed(() =>
+  product.value?.id ? isItemFavorite(product.value.id) : false
+)
 
-const localIsFavorite = ref(false)
-
-const isProductFavorite = computed(() => {
-  if (!product.value) return false
-  const favoriteStatus = isItemFavorite(product.value.id)
-  localIsFavorite.value = favoriteStatus
-  return favoriteStatus
-})
-
-const onProductToggleFavorite = () => {
-  if (!product.value) return
-
-  localIsFavorite.value = !localIsFavorite.value
-  toggleFavoriteItem(product.value)
-}
+const onToggleFavorite = computed(() =>
+  product.value?.id ? toggleFavoriteItem(product.value) : false
+)
 
 const isCopied = ref(false)
 
@@ -115,7 +106,7 @@ const copyShareLink = async () => {
         'product-meta__favorite',
         { 'product-meta__favorite-icon--active': isProductFavorite }
       ]"
-      @click="onProductToggleFavorite"
+      @click="onToggleFavorite"
       >{{ isProductFavorite ? 'В избранном' : 'В избранное' }}
     </Button>
   </div>

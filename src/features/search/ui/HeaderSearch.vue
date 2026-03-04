@@ -20,7 +20,7 @@ export interface SearchOption {
   path: string
 }
 
-const props = withDefaults(defineProps<SearchProps>(), {
+withDefaults(defineProps<SearchProps>(), {
   placeholder: 'Найти товар',
   size: 'm',
   disabled: false

@@ -44,7 +44,11 @@ const totalPrice = computed(() => {
 })
 
 const totalPriceWithoutCard = computed(() => {
-  if (props.item.cardPrice) return (props.item.cardPrice * props.item.quantity).toFixed(2)
+  if (props.item.cardPrice) {
+    return (props.item.cardPrice * props.item.quantity).toFixed(2)
+  }
+
+  return '0.00'
 })
 
 const shouldShowWithoutCard = computed(() => {

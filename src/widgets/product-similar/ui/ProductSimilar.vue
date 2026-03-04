@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import { router } from '@/app/router'
-import { CATALOG_LINK } from '@/pages/catalog/config'
 import { mockProducts } from '@/shared/lib/mocks/mock-products'
 import { useNavigate } from '@/shared/lib/useNavigate'
 import { Typography } from '@/shared/ui/typography'

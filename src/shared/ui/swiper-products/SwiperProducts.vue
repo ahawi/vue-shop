@@ -7,7 +7,7 @@ import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
 import { ProductCard, type ProductProps } from '@/entities/product'
 
-const props = defineProps<{
+defineProps<{
   products: ProductProps[]
   swiperOptions?: {
     spaceBetween?: number

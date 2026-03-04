@@ -3,12 +3,12 @@ import { Button } from '@/shared/ui/button'
 import { Typography } from '@/shared/ui/typography'
 import { Field } from '@/shared/ui/field'
 import { Icon } from '@/shared/ui/icon'
-import { toRef, type Ref } from 'vue'
+import { toRef } from 'vue'
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/default.css'
 import { useFilter } from '@/features/filter'
 import type { ProductProps } from '@/entities/product'
-import type { FilterActive, FiltersPayload } from '@/features/filter/model/types'
+import type { FiltersPayload } from '@/features/filter/model/types'
 
 const props = defineProps<{
   products: ProductProps[]

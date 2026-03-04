@@ -5,7 +5,6 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { Section } from '@/shared/ui/section'
 import { SwiperProducts } from '@/shared/ui/swiper-products'
-import type { ProductProps } from '@/entities/product'
 import { useCartStore } from '@/entities/cart/model/cart'
 import { useNavigate } from '@/shared/lib/useNavigate'
 
