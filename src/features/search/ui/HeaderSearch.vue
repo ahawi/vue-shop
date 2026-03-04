@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { mockCategory, mockProducts } from '@/shared/lib/mocks/mock-products'
 import type { IconProps } from '@/shared/ui/icon'
-import { computed, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { Typography } from '@/shared/ui/typography'
 import { Icon } from '@/shared/ui/icon'
@@ -74,6 +74,8 @@ const selectOption = (option: SearchOption) => {
 }
 
 const handleCloseSelect = (e: MouseEvent) => {
+  if (!showDropdown.value) return
+
   const target = e.target as HTMLElement
   if (!target.closest('.header-search')) {
     showDropdown.value = false
@@ -87,12 +89,12 @@ const highlightMatch = (text: string) => {
   return text.replace(regex, '<span class="header-search__highlight">$1</span>')
 }
 
-watch(showDropdown, (value) => {
-  if (value) {
-    document.addEventListener('click', handleCloseSelect)
-  } else {
-    document.removeEventListener('click', handleCloseSelect)
-  }
+onMounted(() => {
+  document.addEventListener('click', handleCloseSelect)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleCloseSelect)
 })
 </script>
 

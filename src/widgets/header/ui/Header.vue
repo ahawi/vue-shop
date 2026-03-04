@@ -17,7 +17,6 @@ import { storeToRefs } from 'pinia'
 
 const cartStore = useCartStore()
 const { totalFavorites } = storeToRefs(useFavoritesStore())
-const { totalItems } = storeToRefs(useCartStore())
 
 const route = useRoute()
 
@@ -128,12 +127,12 @@ const isOrdersPage = computed(() => route.name === 'orders')
             }"
             :class="['header__control', { 'header__control--active': isCartPage }]"
             ><div
-              v-if="cartStore.totalItems > 0"
+              v-if="cartStore.totalItems"
               class="header__badge">
               <Typography
                 tag="span"
                 size="xs"
-                >{{ totalItems.toString() }}</Typography
+                >{{ cartStore.totalItems.toString() }}</Typography
               >
             </div>
             <Typography
