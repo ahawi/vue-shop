@@ -2,22 +2,17 @@
 import { useCartStore } from '@/entities/cart/model/cart'
 import { Button } from '@/shared/ui/button'
 import { Checkbox } from '@/shared/ui/checkbox'
-import { computed } from 'vue'
+import { storeToRefs } from 'pinia'
 
-const cartStore = useCartStore()
+const { allProductsSelected, totalProducts, selectedProducts } = storeToRefs(useCartStore())
+const { toggleAllSelectedProducts, removeAllSelectedProducts } = useCartStore()
 
-const allSelected = computed(() => cartStore.allSelected)
-
-const handleSelectAll = (checked: boolean) => {
-  if (checked) {
-    cartStore.selectAll()
-  } else {
-    cartStore.unselectAll()
-  }
+const handleToggleSelectAll = () => {
+  toggleAllSelectedProducts()
 }
 
 const handleDeleteSelected = () => {
-  cartStore.removeSelectedItems()
+  removeAllSelectedProducts()
 }
 </script>
 
@@ -25,9 +20,9 @@ const handleDeleteSelected = () => {
   <div class="cart-header">
     <div class="cart-header__select-all">
       <Checkbox
-        :value="allSelected"
-        @update:value="handleSelectAll"
-        :disabled="cartStore.totalItems === 0"
+        :value="allProductsSelected"
+        @update:value="handleToggleSelectAll"
+        :disabled="totalProducts === 0"
         >Выделить всё</Checkbox
       >
     </div>
@@ -37,7 +32,7 @@ const handleDeleteSelected = () => {
       size="s"
       class="cart-header__delete-selected"
       @click="handleDeleteSelected"
-      :disabled="cartStore.selectedItemsCount === 0"
+      :disabled="selectedProducts.length === 0"
       >Удалить выбранное</Button
     >
   </div>

@@ -3,19 +3,18 @@ import { useCartStore } from '@/entities/cart/model/cart'
 import { Button } from '@/shared/ui/button'
 import { Typography } from '@/shared/ui/typography'
 import { storeToRefs } from 'pinia'
-import { ref, type Ref } from 'vue'
 
 const {
-  items,
+  products,
   appliedBonus,
   userBonus,
-  totalItems,
+  totalProducts,
   subtotal,
   totalPrice,
   maxBonusApplicable
 } = storeToRefs(useCartStore())
 
-const useBonus: Ref<number> = ref(0)
+const { applyBonus } = useCartStore()
 
 const props = defineProps<{
   currentStep: number
@@ -38,13 +37,13 @@ const handleClick = () => {
 <template>
   <div
     class="cart-summary"
-    v-if="items">
+    v-if="products">
     <div class="cart-summary__bonus-spending">
       <label class="cart-summary__bonus-spending-label">
         <input
           type="checkbox"
           class="cart-summary__bonus-spending-input"
-          v-model="useBonus"
+          v-model="applyBonus"
           :disabled="maxBonusApplicable <= 0" />
         <Typography
           tag="span"
@@ -67,7 +66,7 @@ const handleClick = () => {
           tag="p"
           size="s"
           class="cart-summary__text-gray"
-          >{{ totalItems }}</Typography
+          >{{ totalProducts }}</Typography
         >
         <Typography
           tag="p"

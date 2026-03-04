@@ -15,8 +15,8 @@ import { CART_LINK } from '@/pages/cart'
 import { MAIN_LINK } from '@/shared/config'
 import { storeToRefs } from 'pinia'
 
-const cartStore = useCartStore()
 const { totalFavorites } = storeToRefs(useFavoritesStore())
+const { totalProducts } = storeToRefs(useCartStore())
 
 const route = useRoute()
 
@@ -127,12 +127,12 @@ const isOrdersPage = computed(() => route.name === 'orders')
             }"
             :class="['header__control', { 'header__control--active': isCartPage }]"
             ><div
-              v-if="cartStore.totalItems"
+              v-if="totalProducts"
               class="header__badge">
               <Typography
                 tag="span"
                 size="xs"
-                >{{ cartStore.totalItems.toString() }}</Typography
+                >{{ totalProducts.toString() }}</Typography
               >
             </div>
             <Typography

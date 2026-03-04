@@ -1,31 +1,30 @@
 <script lang="ts" setup>
 import { CartItem } from '@/entities/cart'
 import { useCartStore } from '@/entities/cart/model/cart'
-import { computed } from 'vue'
 import { Typography } from '@/shared/ui/typography'
+import { storeToRefs } from 'pinia'
 
-const cartStore = useCartStore()
-
-const items = computed(() => cartStore.items)
+const { products } = storeToRefs(useCartStore())
+const { updateQuantity } = useCartStore()
 
 const updateItemQuantity = (itemId: string, quantity: number) => {
-  cartStore.updateQuantity(itemId, quantity)
+  updateQuantity(itemId, quantity)
 }
 
 const toggleItemSelect = (itemId: string) => {
-  cartStore.toggleItemSelect(itemId)
+  toggleItemSelect(itemId)
 }
 </script>
 
 <template>
   <div class="cart-items">
-    <template v-if="items.length">
+    <template v-if="products.length">
       <CartItem
-        v-for="item in items"
-        :key="item.cartItemId"
+        v-for="item in products"
+        :key="item.cartProductId"
         :item="item"
-        @update-quantity="updateItemQuantity(item.cartItemId, $event)"
-        @toggle-select="toggleItemSelect(item.cartItemId)" />
+        @update-quantity="updateItemQuantity(item.cartProductId, $event)"
+        @toggle-select="toggleItemSelect(item.cartProductId)" />
     </template>
     <template v-else>
       <Typography tag="h5">Упс! В корзине пока что ничего нет</Typography></template

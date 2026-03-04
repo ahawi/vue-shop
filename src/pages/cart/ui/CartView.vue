@@ -2,16 +2,13 @@
 import { Typography } from '@/shared/ui/typography'
 import { Breadcrumbs } from '@/widgets/breadcrumbs'
 import { useCartStore } from '@/entities/cart/model/cart'
-import { computed, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { CartStep } from '@/widgets/cart-step'
 import { DeliveryStep } from '@/widgets/delivery-step'
 import { CartSummary } from '@/widgets/cart-summary'
+import { storeToRefs } from 'pinia'
 
-const cartStore = useCartStore()
-
-const totalItems = computed(() => {
-  return cartStore.totalItems
-})
+const { totalProducts } = storeToRefs(useCartStore())
 
 const currentStep = ref(1)
 
@@ -49,12 +46,12 @@ const submitDelivery = () => {
         >{{ currentStep === 1 ? 'Корзина' : 'Доставка' }}</Typography
       >
       <div
-        v-if="cartStore.totalItems > 0"
+        v-if="totalProducts > 0"
         class="cart__badge">
         <Typography
           tag="span"
           size="s"
-          >{{ totalItems.toString() }}</Typography
+          >{{ totalProducts.toString() }}</Typography
         >
       </div>
     </div>
@@ -75,8 +72,6 @@ const submitDelivery = () => {
 
 <style lang="scss" scoped>
 .cart {
-
-
   &__title {
     margin-bottom: 60px;
     margin-top: 24px;

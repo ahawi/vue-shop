@@ -4,7 +4,7 @@ import { useStorage } from '@vueuse/core'
 import type { ProductProps } from '@/entities/product'
 
 export interface CartItem {
-  cartItemId: string
+  cartProductId: string
   productId: string
   title: string
   price: number
@@ -18,44 +18,48 @@ export interface CartItem {
 }
 
 interface CartStore {
-  items: Ref<CartItem[]>
+  products: Ref<CartItem[]>
   appliedBonus: Ref<number>
   userBonus: Ref<number>
-  totalItems: Ref<number>
-  selectedItems: Ref<CartItem[]>
+  totalProducts: Ref<number>
+  selectedProducts: Ref<CartItem[]>
   subtotal: Ref<number>
   totalPrice: Ref<string>
   maxBonusApplicable: Ref<number>
+  allProductsSelected: Ref<boolean>
+
   addToCart: (product: ProductProps) => void
-  removeFromCart: (cartItemId: string) => void
-  updateQuantity: (cartItemId: string, quantity: number) => void
-  toggleItemSelect: (cartItemId: string) => void
+  removeFromCart: (cartProductId: string) => void
+  updateQuantity: (cartProductId: string, quantity: number) => void
+  toggleProductSelect: (cartProductId: string) => void
   clearCart: () => void
 
   applyBonus: (amount: number) => void
   removeBonus: () => void
   setUserBonus: (amount: number) => void
+  selectAllProducts: (selected: boolean) => void
+  toggleAllSelectedProducts: () => void
+  removeAllSelectedProducts: () => void
 }
 
 export const useCartStore = defineStore('cart', (): CartStore => {
-  const items = useStorage<CartItem[]>('cart-items', [], localStorage)
-
+  const products = useStorage<CartItem[]>('cart-products', [], localStorage)
   const appliedBonus = useStorage<number>('cart-applied-bonus', 0, localStorage)
 
   const userBonus = ref<number>(0)
 
-  const totalItems: CartStore['totalItems'] = computed(() =>
-    items.value.reduce((sum, item) => sum + item.quantity, 0)
+  const totalProducts: CartStore['totalProducts'] = computed(() =>
+    products.value.reduce((sum, product) => sum + product.quantity, 0)
   )
 
-  const selectedItems: CartStore['selectedItems'] = computed(() =>
-    items.value.filter((item) => item.selected)
+  const selectedProducts: CartStore['selectedProducts'] = computed(() =>
+    products.value.filter((product) => product.selected)
   )
 
   const subtotal: CartStore['subtotal'] = computed(() =>
-    selectedItems.value.reduce((sum, item) => {
-      const price = item.cardPrice ?? item.price
-      return sum + price * item.quantity
+    selectedProducts.value.reduce((sum, product) => {
+      const price = product.cardPrice ?? product.price
+      return sum + price * product.quantity
     }, 0)
   )
 
@@ -68,12 +72,16 @@ export const useCartStore = defineStore('cart', (): CartStore => {
     Math.max(0, subtotal.value - appliedBonus.value).toFixed(2)
   )
 
+  const allProductsSelected: CartStore['allProductsSelected'] = computed(
+    () => products.value.length > 0 && products.value.every((product) => product.selected)
+  )
+
   function normalizePrice(price: string) {
     return parseFloat(price.replace(',', '.')) || 0
   }
 
   const addToCart: CartStore['addToCart'] = (product) => {
-    const existing = items.value.find((i) => i.productId === product.id)
+    const existing = products.value.find((item) => item.productId === product.id)
 
     if (existing) {
       existing.quantity += 1
@@ -81,7 +89,7 @@ export const useCartStore = defineStore('cart', (): CartStore => {
     }
 
     const newItem: CartItem = {
-      cartItemId: `cart_${crypto.randomUUID()}`,
+      cartProductId: `cart_${crypto.randomUUID()}`,
       productId: product.id,
       title: product.title,
       price: normalizePrice(product.price),
@@ -93,36 +101,36 @@ export const useCartStore = defineStore('cart', (): CartStore => {
       categoryId: product.categoryIds?.[0]
     }
 
-    items.value.push(newItem)
+    products.value.push(newItem)
   }
 
-  const removeFromCart: CartStore['removeFromCart'] = (cartItemId) => {
-    items.value = items.value.filter((i) => i.cartItemId !== cartItemId)
+  const removeFromCart: CartStore['removeFromCart'] = (cartProductId) => {
+    products.value = products.value.filter((product) => product.cartProductId !== cartProductId)
   }
 
-  const updateQuantity: CartStore['updateQuantity'] = (cartItemId, quantity) => {
-    const item = items.value.find((i) => i.cartItemId === cartItemId)
-    if (!item) return
+  const updateQuantity: CartStore['updateQuantity'] = (cartProductId, quantity) => {
+    const product = products.value.find((product) => product.cartProductId === cartProductId)
+    if (!product) return
 
     if (quantity <= 0) {
-      removeFromCart(cartItemId)
+      removeFromCart(cartProductId)
       return
     }
 
     if (quantity > 10) quantity = 10
 
-    item.quantity = quantity
+    product.quantity = quantity
   }
 
-  const toggleItemSelect: CartStore['toggleItemSelect'] = (cartItemId) => {
-    const item = items.value.find((i) => i.cartItemId === cartItemId)
-    if (item && item.inStock) {
-      item.selected = !item.selected
+  const toggleProductSelect: CartStore['toggleProductSelect'] = (cartProductId) => {
+    const product = products.value.find((product) => product.cartProductId === cartProductId)
+    if (product && product.inStock) {
+      product.selected = !product.selected
     }
   }
 
   const clearCart: CartStore['clearCart'] = () => {
-    items.value = []
+    products.value = []
     appliedBonus.value = 0
   }
 
@@ -138,22 +146,46 @@ export const useCartStore = defineStore('cart', (): CartStore => {
     userBonus.value = amount
   }
 
+  const selectAllProducts: CartStore['selectAllProducts'] = (selected: boolean) => {
+    products.value.forEach((products) => {
+      products.selected = selected
+    })
+  }
+
+  const toggleAllSelectedProducts: CartStore['toggleAllSelectedProducts'] = () => {
+    const allProductsSelected = products.value.every((product) => product.selected)
+
+    selectAllProducts(!allProductsSelected)
+  }
+
+  const removeAllSelectedProducts: CartStore['removeAllSelectedProducts'] = () => {
+    products.value = products.value.filter((product) => !product.selected)
+
+    if (appliedBonus.value > maxBonusApplicable.value) {
+      appliedBonus.value = maxBonusApplicable.value
+    }
+  }
+
   return {
-    items,
+    products,
     appliedBonus,
     userBonus,
-    totalItems,
-    selectedItems,
+    totalProducts,
+    selectedProducts,
     subtotal,
     totalPrice,
     maxBonusApplicable,
+    allProductsSelected,
     addToCart,
     removeFromCart,
     updateQuantity,
-    toggleItemSelect,
+    toggleProductSelect,
     clearCart,
     applyBonus,
     removeBonus,
-    setUserBonus
+    setUserBonus,
+    selectAllProducts,
+    toggleAllSelectedProducts,
+    removeAllSelectedProducts
   }
 })
