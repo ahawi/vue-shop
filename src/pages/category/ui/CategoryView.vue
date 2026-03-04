@@ -1,8 +1,6 @@
 <script lang="ts" setup>
 import { Typography } from '@/shared/ui/typography'
-import { Header } from '@/widgets/header'
 import { Breadcrumbs } from '@/widgets/breadcrumbs'
-import { Footer } from '@/widgets/footer'
 import { useRoute } from 'vue-router'
 import { computed } from 'vue'
 import { mockCategory } from '@/shared/lib/mocks/mock-products'
@@ -19,31 +17,20 @@ const categoryTitle = computed(() => currentCategory.value?.title || '')
 </script>
 
 <template>
-  <Header />
-  <main class="main">
-    <Breadcrumbs />
-    <Typography
-      tag="h1"
-      size="xl"
-      bold
-      class="main__title"
-      >{{ categoryTitle }}</Typography
-    >
-    <CategorySection />
-  </main>
-  <Footer />
+  <Breadcrumbs />
+  <Typography
+    tag="h1"
+    size="xl"
+    bold
+    class="title"
+    >{{ categoryTitle }}</Typography
+  >
+  <CategorySection />
 </template>
 
 <style lang="scss" scoped>
-.main {
-  max-width: 1208px;
-  margin: auto;
+.title {
+  margin-bottom: 60px;
   margin-top: 24px;
-  margin-bottom: 80px;
-
-  &__title {
-    margin-bottom: 60px;
-    margin-top: 24px;
-  }
 }
 </style>

@@ -1,8 +1,6 @@
 <script lang="ts" setup>
 import { Typography } from '@/shared/ui/typography'
-import { Header } from '@/widgets/header'
 import { Breadcrumbs } from '@/widgets/breadcrumbs'
-import { Footer } from '@/widgets/footer'
 import { useCartStore } from '@/entities/cart/model/cart'
 import { computed, ref, watch } from 'vue'
 import { CartStep } from '@/widgets/cart-step'
@@ -41,7 +39,6 @@ const submitDelivery = () => {
 </script>
 
 <template>
-  <Header />
   <main class="cart">
     <Breadcrumbs />
     <div class="cart__title">
@@ -74,15 +71,11 @@ const submitDelivery = () => {
         :current-step="currentStep" />
     </div>
   </main>
-  <Footer />
 </template>
 
 <style lang="scss" scoped>
 .cart {
-  max-width: 1208px;
-  margin: auto;
-  margin-top: 24px;
-  margin-bottom: 80px;
+
 
   &__title {
     margin-bottom: 60px;

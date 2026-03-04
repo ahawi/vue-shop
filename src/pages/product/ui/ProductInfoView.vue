@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import { Header } from '@/widgets/header'
-import { Footer } from '@/widgets/footer'
 import { Breadcrumbs } from '@/widgets/breadcrumbs'
 import { Typography } from '@/shared/ui/typography'
 import { mockProducts } from '@/shared/lib/mocks/mock-products'
@@ -19,39 +17,25 @@ const product = computed(() => {
 </script>
 
 <template>
-  <Header />
-
-  <main class="container">
-    <Breadcrumbs />
-    <Typography
-      tag="h4"
-      bold
-      size="s"
-      class="product__title"
-      >{{ product?.title }}</Typography
-    >
-    <ProductDetails />
-    <BoughtTogether />
-    <ReviewsSection />
-    <ProductSection
-      title="Акции"
-      link-title="Все акции"
-      :filter-type="'sale'" />
-  </main>
-  <Footer />
+  <Breadcrumbs />
+  <Typography
+    tag="h4"
+    bold
+    size="s"
+    class="title"
+    >{{ product?.title }}</Typography
+  >
+  <ProductDetails />
+  <BoughtTogether />
+  <ReviewsSection />
+  <ProductSection
+    title="Акции"
+    link-title="Все акции"
+    :filter-type="'sale'" />
 </template>
 
 <style lang="scss" scoped>
-.container {
-  max-width: 1208px;
-  margin: auto;
-  margin-top: 24px;
-  margin-bottom: 80px;
-}
-
-.product {
-  &__title {
-    margin-block: 24px 16px;
-  }
+.title {
+  margin-block: 24px 16px;
 }
 </style>
