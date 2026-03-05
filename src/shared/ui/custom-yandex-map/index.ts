@@ -1,1 +1,3 @@
-export * from './ui'
+import customYandexMap from './CustomYandexMap.vue'
+
+export { customYandexMap }

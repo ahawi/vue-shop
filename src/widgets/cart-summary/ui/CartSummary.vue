@@ -1,8 +1,11 @@
 <script lang="ts" setup>
 import { useCartStore } from '@/entities/cart/model/cart'
+import { currencyFormatter, deliveryFormatter, normalizePrice } from '@/shared/lib/formats'
 import { Button } from '@/shared/ui/button'
 import { Typography } from '@/shared/ui/typography'
 import { storeToRefs } from 'pinia'
+
+const MIN_DELIVERY_SUM = 1000
 
 const {
   products,
@@ -49,14 +52,15 @@ const handleClick = () => {
           tag="span"
           size="s"
           class="cart-summary__bonus-spending-inner"
-          >Списать {{ maxBonusApplicable.toFixed() }} ₽</Typography
+          >Списать
+          {{ currencyFormatter.format(normalizePrice(maxBonusApplicable.toFixed())) }}</Typography
         ></label
       >
       <Typography
         tag="p"
         size="s"
         class="cart-summary__text-gray"
-        >На карте накоплено {{ userBonus }} ₽</Typography
+        >На карте накоплено {{ currencyFormatter.format(userBonus) }}</Typography
       >
     </div>
 
@@ -71,7 +75,7 @@ const handleClick = () => {
         <Typography
           tag="p"
           size="s"
-          >{{ subtotal.toFixed(2) }} ₽</Typography
+          >{{ currencyFormatter.format(normalizePrice(subtotal.toFixed(2))) }}</Typography
         >
       </div>
       <div class="cart-summary__with-discounts">
@@ -85,7 +89,7 @@ const handleClick = () => {
           tag="p"
           size="s"
           bold
-          >{{ totalPrice }} ₽</Typography
+          >{{ currencyFormatter.format(normalizePrice(totalPrice)) }}</Typography
         >
       </div>
     </div>
@@ -102,13 +106,13 @@ const handleClick = () => {
           tag="p"
           size="l"
           bold
-          >{{ totalPrice }} ₽</Typography
+          >{{ currencyFormatter.format(normalizePrice(totalPrice)) }}</Typography
         >
       </div>
 
       <div
         class="cart-summary__total-bonus"
-        v-if="Number(totalPrice) >= 1000">
+        v-if="normalizePrice(totalPrice) >= 1000">
         <svg
           width="24"
           height="24"
@@ -138,14 +142,14 @@ const handleClick = () => {
         tag="p"
         size="xs"
         class="cart-summary__order-notice"
-        v-if="Number(totalPrice) < 1000"
-        >Минимальная сумма заказа 1000р</Typography
+        v-if="normalizePrice(totalPrice) < 1000"
+        >Минимальная сумма заказа {{ deliveryFormatter.format(MIN_DELIVERY_SUM) }}</Typography
       >
       <Button
         class="cart-summary__order-button"
         background-color="primary"
         size="l"
-        :disabled="Number(totalPrice) < 1000"
+        :disabled="normalizePrice(totalPrice) < 1000"
         @click="handleClick"
         >Оформить заказ</Button
       >

@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import grocery from '@/shared/assets/grocery.png'
+import { deliveryFormatter } from '@/shared/lib/formats'
 import { Typography } from '@/shared/ui/typography'
+
+const MIN_DELIVERY_SUM = 1000
 </script>
 
 <template>
@@ -14,7 +17,7 @@ import { Typography } from '@/shared/ui/typography'
         tag="h2"
         bold
         size="l"
-        >Доставка бесплатно от 1000 ₽</Typography
+        >Доставка бесплатно от {{ deliveryFormatter.format(MIN_DELIVERY_SUM) }}</Typography
       >
     </div>
   </div>

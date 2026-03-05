@@ -7,6 +7,7 @@ import { Badge } from '@/shared/ui/badge'
 import type { ProductProps } from '../model/types'
 import { useToggleFavorite } from '@/features/toggle-favorite'
 import { computed } from 'vue'
+import { currencyFormatter, normalizePrice } from '@/shared/lib/formats'
 
 const props = defineProps<ProductProps>()
 const emit = defineEmits(['add-to-cart', 'toggle-favorite'])
@@ -61,7 +62,7 @@ const onToggleFavorite = (event: MouseEvent) => {
           <Typography
             tag="span"
             size="s"
-            >{{ cardPrice }}₽</Typography
+            >{{ currencyFormatter.format(normalizePrice(cardPrice)) }}</Typography
           >
           <Typography
             class="product-card__price-title"

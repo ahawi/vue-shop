@@ -6,6 +6,8 @@ import { Typography } from '@/shared/ui/typography'
 import { Button } from '@/shared/ui/button'
 import { Icon } from '@/shared/ui/icon'
 import { useCartStore } from '@/entities/cart/model/cart'
+import { currencyFormatter } from '@/shared/lib/formats'
+import { normalizePrice } from '@/shared/lib/formats'
 
 const route = useRoute()
 
@@ -21,15 +23,17 @@ const handleAddToCart = () => {
 </script>
 
 <template>
-  <div class="product-info">
+  <div
+    class="product-info"
+    v-if="product">
     <div class="product-info__prices">
       <div class="product-info__price">
         <Typography
           tag="span"
           :size="product?.cardPrice ? 'l' : 'xl'"
           :bold="!product?.cardPrice"
-          >{{ product?.price }} ₽</Typography
-        >
+          >{{ currencyFormatter.format(normalizePrice(product.price)) }}
+        </Typography>
         <Typography
           v-if="product?.cardPrice"
           class="product-info__price-title"
@@ -45,7 +49,7 @@ const handleAddToCart = () => {
           tag="h3"
           size="m"
           bold
-          >{{ product?.cardPrice }} ₽</Typography
+          >{{ currencyFormatter.format(normalizePrice(product?.cardPrice)) }}</Typography
         >
         <Typography
           class="product-info__price-title"

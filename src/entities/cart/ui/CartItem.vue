@@ -7,6 +7,7 @@ import { useQuantitySelector } from '@/features/quantity-selector'
 import { computed } from 'vue'
 import { useNavigate } from '@/shared/lib/useNavigate'
 import type { ProductProps } from '@/entities/product'
+import { currencyFormatter } from '@/shared/lib/formats'
 
 const { goToProduct } = useNavigate()
 
@@ -40,19 +41,19 @@ const goToProductPage = (event: MouseEvent) => {
 
 const totalPrice = computed(() => {
   const price = props.item.price ?? props.item.cardPrice
-  return (price * props.item.quantity).toFixed(2)
+  return Number((price * props.item.quantity).toFixed(2))
 })
 
 const totalPriceWithoutCard = computed(() => {
   if (props.item.cardPrice) {
-    return (props.item.cardPrice * props.item.quantity).toFixed(2)
+    return Number((props.item.cardPrice * props.item.quantity).toFixed(2))
   }
 
-  return '0.00'
+  return 0.0
 })
 
 const shouldShowWithoutCard = computed(() => {
-  return props.item.cardPrice !== undefined
+  return props.item.cardPrice
 })
 
 const updateQuantity = (quantity: number) => {
@@ -60,7 +61,7 @@ const updateQuantity = (quantity: number) => {
 }
 
 const toggleSelect = () => {
-  emit('toggle-select', props.item.cartItemId)
+  emit('toggle-select', props.item.cartProductId)
 }
 </script>
 
@@ -87,29 +88,28 @@ const toggleSelect = () => {
         >
         <div>
           <div class="cart-item__prices">
-            <div class="cart-item__price">
+            <div
+              class="cart-item__price"
+              v-if="item.cardPrice">
               <Typography
                 tag="span"
                 bold
                 size="xs"
-                >{{ item.price }} ₽</Typography
+                >{{ currencyFormatter.format(item.cardPrice) }}</Typography
               >
               <Typography
-                v-if="item.cardPrice"
                 tag="span"
                 size="xs"
                 class="cart-item__price-text"
                 >С картой</Typography
               >
             </div>
-            <div
-              v-if="item.cardPrice"
-              class="cart-item__price">
+            <div class="cart-item__price">
               <Typography
                 tag="span"
                 size="xs"
-                >{{ item.cardPrice }} ₽</Typography
-              >
+                >{{ currencyFormatter.format(item.price) }}
+              </Typography>
               <Typography
                 class="cart-item__price-text"
                 tag="span"
@@ -145,14 +145,14 @@ const toggleSelect = () => {
           tag="span"
           size="m"
           bold
-          >{{ totalPrice }} ₽</Typography
+          >{{ currencyFormatter.format(totalPriceWithoutCard) }}</Typography
         >
         <Typography
           tag="span"
           size="s"
           class="cart-item__total-before-discount"
           v-if="shouldShowWithoutCard"
-          >{{ totalPriceWithoutCard }} ₽</Typography
+          >{{ currencyFormatter.format(totalPrice) }}</Typography
         >
       </div>
     </div>

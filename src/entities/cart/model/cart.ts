@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { computed, ref, type Ref } from 'vue'
 import { useStorage } from '@vueuse/core'
 import type { ProductProps } from '@/entities/product'
+import { normalizePrice } from '@/shared/lib/formats'
 
 export interface CartItem {
   cartProductId: string
@@ -75,10 +76,6 @@ export const useCartStore = defineStore('cart', (): CartStore => {
   const allProductsSelected: CartStore['allProductsSelected'] = computed(
     () => products.value.length > 0 && products.value.every((product) => product.selected)
   )
-
-  function normalizePrice(price: string) {
-    return parseFloat(price.replace(',', '.')) || 0
-  }
 
   const addToCart: CartStore['addToCart'] = (product) => {
     const existing = products.value.find((item) => item.productId === product.id)
