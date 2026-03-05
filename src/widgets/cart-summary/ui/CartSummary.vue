@@ -4,6 +4,8 @@ import { currencyFormatter, deliveryFormatter, normalizePrice } from '@/shared/l
 import { Button } from '@/shared/ui/button'
 import { Typography } from '@/shared/ui/typography'
 import { storeToRefs } from 'pinia'
+import { productDeclension } from '@/shared/lib/word-declension/product'
+import { computed } from 'vue'
 
 const MIN_DELIVERY_SUM = 1000
 
@@ -34,6 +36,11 @@ const handleClick = () => {
   } else {
     emit('submit-delivery')
   }
+}
+
+const productsTotalCount = () => {
+  const count = totalProducts.value
+  return `${count} ${productDeclension(count)}`
 }
 </script>
 
@@ -70,8 +77,8 @@ const handleClick = () => {
           tag="p"
           size="s"
           class="cart-summary__text-gray"
-          >{{ totalProducts }}</Typography
-        >
+          >{{ productsTotalCount() }}
+        </Typography>
         <Typography
           tag="p"
           size="s"
