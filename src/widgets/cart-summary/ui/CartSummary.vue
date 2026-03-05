@@ -5,20 +5,21 @@ import { Button } from '@/shared/ui/button'
 import { Typography } from '@/shared/ui/typography'
 import { storeToRefs } from 'pinia'
 import { productDeclension } from '@/shared/lib/word-declension/product'
+import { computed } from 'vue'
+import { pointDeclension } from '@/shared/lib/word-declension'
 
 const MIN_DELIVERY_SUM = 1000
 
 const {
   products,
-  appliedBonus,
   userBonus,
-  totalProducts,
+  useBonus,
+  selectedProducts,
   subtotal,
+  totalDiscount,
   totalPrice,
   maxBonusApplicable
 } = storeToRefs(useCartStore())
-
-const { applyBonus } = useCartStore()
 
 const props = defineProps<{
   currentStep: number
@@ -38,9 +39,14 @@ const handleClick = () => {
 }
 
 const productsTotalCount = () => {
-  const count = totalProducts.value
+  const count = selectedProducts.value.length
   return `${count} ${productDeclension(count)}`
 }
+
+const bonusEarned = computed(() => {
+  if (useBonus.value) return `0 ${pointDeclension(0)}`
+  return `${(totalPrice.value / 10).toFixed()} ${pointDeclension(totalPrice.value / 10)}`
+})
 </script>
 
 <template>
@@ -52,21 +58,21 @@ const productsTotalCount = () => {
         <input
           type="checkbox"
           class="cart-summary__bonus-spending-input"
-          v-model="applyBonus"
+          v-model="useBonus"
           :disabled="maxBonusApplicable <= 0" />
         <Typography
           tag="span"
           size="s"
           class="cart-summary__bonus-spending-inner"
           >Списать
-          {{ currencyFormatter.format(normalizePrice(maxBonusApplicable.toFixed())) }}</Typography
+          {{ deliveryFormatter.format(normalizePrice(maxBonusApplicable.toFixed())) }}</Typography
         ></label
       >
       <Typography
         tag="p"
         size="s"
         class="cart-summary__text-gray"
-        >На карте накоплено {{ currencyFormatter.format(userBonus) }}</Typography
+        >На карте накоплено {{ deliveryFormatter.format(userBonus) }}</Typography
       >
     </div>
 
@@ -95,7 +101,7 @@ const productsTotalCount = () => {
           tag="p"
           size="s"
           bold
-          >{{ currencyFormatter.format(normalizePrice(totalPrice)) }}</Typography
+          >{{ currencyFormatter.format(totalDiscount) }}</Typography
         >
       </div>
     </div>
@@ -112,13 +118,13 @@ const productsTotalCount = () => {
           tag="p"
           size="l"
           bold
-          >{{ currencyFormatter.format(normalizePrice(totalPrice)) }}</Typography
+          >{{ currencyFormatter.format(totalPrice) }}</Typography
         >
       </div>
 
       <div
         class="cart-summary__total-bonus"
-        v-if="normalizePrice(totalPrice) >= 1000">
+        v-if="totalPrice >= 1000">
         <svg
           width="24"
           height="24"
@@ -137,7 +143,7 @@ const productsTotalCount = () => {
             tag="span"
             size="xs"
             bold
-            >{{ appliedBonus }}</Typography
+            >{{ bonusEarned }}</Typography
           >
         </Typography>
       </div>
@@ -148,14 +154,14 @@ const productsTotalCount = () => {
         tag="p"
         size="xs"
         class="cart-summary__order-notice"
-        v-if="normalizePrice(totalPrice) < 1000"
+        v-if="totalPrice < 1000"
         >Минимальная сумма заказа {{ deliveryFormatter.format(MIN_DELIVERY_SUM) }}</Typography
       >
       <Button
         class="cart-summary__order-button"
         background-color="primary"
         size="l"
-        :disabled="normalizePrice(totalPrice) < 1000"
+        :disabled="totalPrice < 1000"
         @click="handleClick"
         >Оформить заказ</Button
       >
@@ -294,7 +300,7 @@ const productsTotalCount = () => {
       color: var(--main-on-primary);
       padding: 3px 8px;
       border-radius: 4px;
-      max-width: 215px;
+      max-width: 222px;
     }
 
     &-button {

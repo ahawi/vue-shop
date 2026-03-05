@@ -5,14 +5,14 @@ import { Typography } from '@/shared/ui/typography'
 import { storeToRefs } from 'pinia'
 
 const { products } = storeToRefs(useCartStore())
-const { updateQuantity } = useCartStore()
+const { updateQuantity, toggleProductSelect } = useCartStore()
 
 const updateItemQuantity = (itemId: string, quantity: number) => {
   updateQuantity(itemId, quantity)
 }
 
 const toggleItemSelect = (itemId: string) => {
-  toggleItemSelect(itemId)
+  toggleProductSelect(itemId)
 }
 </script>
 
