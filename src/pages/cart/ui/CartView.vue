@@ -36,38 +36,37 @@ const submitDelivery = () => {
 </script>
 
 <template>
-  <main class="cart">
-    <Breadcrumbs />
-    <div class="cart__title">
+  <Breadcrumbs />
+  <div class="cart__title">
+    <Typography
+      tag="h1"
+      size="xl"
+      bold
+      >{{ currentStep === 1 ? 'Корзина' : 'Доставка' }}</Typography
+    >
+    <div
+      v-if="totalProducts"
+      class="cart__badge">
       <Typography
-        tag="h1"
-        size="xl"
-        bold
-        >{{ currentStep === 1 ? 'Корзина' : 'Доставка' }}</Typography
+        tag="span"
+        size="s"
+        >{{ totalProducts.toString() }}</Typography
       >
-      <div
-        v-if="totalProducts > 0"
-        class="cart__badge">
-        <Typography
-          tag="span"
-          size="s"
-          >{{ totalProducts.toString() }}</Typography
-        >
-      </div>
     </div>
+  </div>
 
-    <div class="cart__main">
-      <CartStep v-if="currentStep === 1" />
-      <DeliveryStep
-        v-if="currentStep === 2"
-        ref="deliveryStepRef" />
-      <CartSummary
-        class="cart__main-summary"
-        @go-to-delivery="goToDelivery"
-        @submit-delivery="submitDelivery"
-        :current-step="currentStep" />
-    </div>
-  </main>
+  <div class="cart__main">
+    <CartStep v-if="currentStep === 1" />
+    <DeliveryStep
+      v-if="currentStep === 2"
+      ref="deliveryStepRef" />
+    <CartSummary
+      v-if="totalProducts"
+      class="cart__main-summary"
+      @go-to-delivery="goToDelivery"
+      @submit-delivery="submitDelivery"
+      :current-step="currentStep" />
+  </div>
 </template>
 
 <style lang="scss" scoped>

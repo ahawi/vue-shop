@@ -5,7 +5,6 @@ import { Button } from '@/shared/ui/button'
 import { Typography } from '@/shared/ui/typography'
 import { storeToRefs } from 'pinia'
 import { productDeclension } from '@/shared/lib/word-declension/product'
-import { computed } from 'vue'
 
 const MIN_DELIVERY_SUM = 1000
 
