@@ -1,0 +1,1 @@
+export { productHandlers } from './handlers'

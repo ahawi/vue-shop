@@ -1,4 +1,4 @@
-import type { SpecialOfferProps } from "@/entities/offer";
+import type { SpecialOfferProps } from '@/entities/offer'
 
 export const mockSpecialOffers: SpecialOfferProps[] = [
   {
@@ -8,7 +8,7 @@ export const mockSpecialOffers: SpecialOfferProps[] = [
     image: '/images/offer-card.png',
     backgroundColor: '#FCD5BA',
     hasDecoration: false,
-    hasImageShadow: true,
+    hasImageShadow: true
   },
   {
     id: '2',
@@ -17,6 +17,6 @@ export const mockSpecialOffers: SpecialOfferProps[] = [
     image: '/images/cart.png',
     backgroundColor: '#E5FFDE',
     hasDecoration: true,
-    hasImageShadow: false,
-  },
+    hasImageShadow: false
+  }
 ]

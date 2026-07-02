@@ -1,0 +1,1 @@
+export { offerApi } from './offerApi'

@@ -1,0 +1,1 @@
+export { articleHandlers } from './handlers'

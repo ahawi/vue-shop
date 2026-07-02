@@ -1,4 +1,4 @@
-import type { ArticleCardProps } from "@/entities/article";
+import type { ArticleCardProps } from '@/entities/article'
 
 export const mockArticles: ArticleCardProps[] = [
   {
@@ -7,7 +7,7 @@ export const mockArticles: ArticleCardProps[] = [
     description:
       'Подробная информация о режимах использования масок и перчаток на территории магазинов "ЛЕНТА". Информация обновляется каждый будний день.',
     image: '/article/article-image-1.png',
-    date: '05.03.21',
+    date: '05.03.21'
   },
   {
     id: '2',
@@ -15,7 +15,7 @@ export const mockArticles: ArticleCardProps[] = [
     description:
       '8 Марта – это не просто Международный женский день, это ещё день тюльпанов, приятных сюрпризов и праздничных тёплых пожеланий.',
     image: '/article/article-image-2.png',
-    date: '05.03.21',
+    date: '05.03.21'
   },
   {
     id: '3',
@@ -23,6 +23,6 @@ export const mockArticles: ArticleCardProps[] = [
     description:
       'Голосуйте за любимые категории, выбирайте категорию-победителя в мобильном приложении и получайте кешбэк 10% баллами в апреле!',
     image: '/article/article-image-3.png',
-    date: '22.02.2020',
-  },
+    date: '22.02.2020'
+  }
 ]

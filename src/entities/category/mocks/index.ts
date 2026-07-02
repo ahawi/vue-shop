@@ -1,0 +1,1 @@
+export { categoryHandlers } from './handlers'
