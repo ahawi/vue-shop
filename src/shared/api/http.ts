@@ -100,6 +100,6 @@ const defaultHeaders = {
   'Content-Type': 'application/json'
 } as const
 
-const http = httpClient({ baseURL, defaultHeaders: {} })
+const http = httpClient({ baseURL, defaultHeaders })
 
 export { http }

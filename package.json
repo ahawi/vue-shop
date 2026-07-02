@@ -19,6 +19,7 @@
   "dependencies": {
     "@regle/core": "^1.19.1",
     "@regle/rules": "^1.19.1",
+    "@vueform/slider": "^2.1.10",
     "@vuepic/vue-datepicker": "^12.1.0",
     "@vueuse/core": "^14.2.1",
     "@yandex/ymaps3-default-ui-theme": "^0.0.24",
@@ -29,7 +30,6 @@
     "vee-validate": "^4.15.1",
     "vue": "^3.5.22",
     "vue-router": "^4.6.3",
-    "vue-slider-component": "^4.1.0-beta.7",
     "vue-yandex-maps": "^3.0.1"
   },
   "devDependencies": {
@@ -46,6 +46,7 @@
     "eslint-plugin-vue": "~10.4.0",
     "jiti": "^2.5.1",
     "jsdom": "^27.0.0",
+    "msw": "^2.14.6",
     "npm-run-all2": "^8.0.4",
     "prettier": "3.6.2",
     "sass": "^1.93.3",
@@ -54,5 +55,10 @@
     "vite": "^7.1.7",
     "vite-plugin-vue-devtools": "^8.0.2",
     "vue-tsc": "^3.1.0"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }
