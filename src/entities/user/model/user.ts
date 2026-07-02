@@ -17,7 +17,7 @@ interface UserStore {
 
   setUser: (userData: User) => void
   resetUser: () => void
-  getToken: () => string
+  getToken: () => string | undefined
 }
 
 export const useUserStore = defineStore('useUserStore', (): UserStore => {

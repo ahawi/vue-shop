@@ -1,7 +1,7 @@
 import type { ProductProps } from '@/entities/product'
 import { computed, ref, type Ref } from 'vue'
 import type { FilterActive, FiltersPayload, SelectedCategory } from './types'
-import { mockCategory } from '@/shared/lib/mocks/mock-products'
+import { mockCategory } from '@/entities/category/mocks/mock-categories'
 
 export const useFilter = (products: Ref<ProductProps[]>) => {
   const computePriceRange = () => {

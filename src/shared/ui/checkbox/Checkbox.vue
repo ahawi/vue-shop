@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Typography } from '../typography';
+import { Typography } from '../typography'
 
 interface CheckboxProps {
   size?: 's' | 'm' | 'l' | 'xl'
@@ -10,7 +10,7 @@ interface CheckboxProps {
 const props = withDefaults(defineProps<CheckboxProps>(), {
   size: 'l',
   disabled: false,
-  value: false,
+  value: false
 })
 
 const emit = defineEmits<{
@@ -27,21 +27,26 @@ const handleChange = (event: Event) => {
 
 <template>
   <div class="checkbox">
-    <label class="checkbox__label" :size="size">
+    <label
+      class="checkbox__label"
+      :size="size">
       <input
         :class="[
           'checkbox__input',
           `checkbox__input--${size}`,
           {
-            'checkbox__input--disabled': disabled,
-          },
+            'checkbox__input--disabled': disabled
+          }
         ]"
         type="checkbox"
         :disabled="disabled"
         :checked="value"
-        @change="handleChange"
-      />
-      <Typography tag="p" size="xs"><slot></slot></Typography>
+        @change="handleChange" />
+      <Typography
+        tag="p"
+        size="xs"
+        ><slot></slot
+      ></Typography>
     </label>
   </div>
 </template>

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { Typography } from '@/shared/ui/typography'
-import type { Category } from '@/shared/lib/mocks/mock-products'
+import type { Category } from '../model/types'
 
 const props = defineProps<Category>()
 </script>

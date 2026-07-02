@@ -1,6 +1,17 @@
 import { defineStore } from 'pinia'
 import { computed, ref, type Ref } from 'vue'
 import { useStorage } from '@vueuse/core'
+import { normalizePrice } from '@/shared/lib/formats'
+
+export interface AddToCartInput {
+  id: string
+  title: string
+  price: string
+  cardPrice?: string
+  image?: string
+  inStock: boolean
+  categoryIds: string[]
+}
 
 export interface CartItem {
   cartProductId: string
@@ -29,7 +40,7 @@ interface CartStore {
   maxBonusApplicable: Ref<number>
   allProductsSelected: Ref<boolean>
 
-  addToCart: (product: CartItem) => void
+  addToCart: (product: AddToCartInput) => void
   removeFromCart: (cartProductId: string) => void
   updateQuantity: (cartProductId: string, quantity: number) => void
   toggleProductSelect: (cartProductId: string) => void
@@ -69,7 +80,7 @@ export const useCartStore = defineStore('cart', (): CartStore => {
   )
 
   const maxBonusApplicable: CartStore['maxBonusApplicable'] = computed(() => {
-    const halfOrder = (subtotal.value - totalDiscount.value) / 2
+    const halfOrder = subtotal.value / 2
     return Math.min(halfOrder, userBonus.value)
   })
 
@@ -87,7 +98,7 @@ export const useCartStore = defineStore('cart', (): CartStore => {
   )
 
   const addToCart: CartStore['addToCart'] = (product) => {
-    const existing = products.value.find((item) => item.productId === product.productId)
+    const existing = products.value.find((item) => item.productId === product.id)
 
     if (existing) {
       existing.quantity += 1
@@ -96,15 +107,15 @@ export const useCartStore = defineStore('cart', (): CartStore => {
 
     const newItem: CartItem = {
       cartProductId: `cart_${crypto.randomUUID()}`,
-      productId: product.productId,
+      productId: product.id,
       title: product.title,
-      price: product.price,
+      price: normalizePrice(product.price),
+      cardPrice: product.cardPrice ? normalizePrice(product.cardPrice) : undefined,
       quantity: 1,
       selected: true,
-      cardPrice: product.cardPrice ? product.cardPrice : undefined,
       image: product.image,
       inStock: product.inStock,
-      categoryId: product.categoryId
+      categoryId: product.categoryIds?.[0]
     }
 
     products.value.push(newItem)
@@ -144,8 +155,8 @@ export const useCartStore = defineStore('cart', (): CartStore => {
   }
 
   const selectAllProducts: CartStore['selectAllProducts'] = (selected: boolean) => {
-    products.value.forEach((products) => {
-      products.selected = selected
+    products.value.forEach((product) => {
+      product.selected = selected
     })
   }
 

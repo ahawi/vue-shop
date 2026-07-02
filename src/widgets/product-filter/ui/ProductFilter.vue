@@ -4,8 +4,8 @@ import { Typography } from '@/shared/ui/typography'
 import { Field } from '@/shared/ui/field'
 import { Icon } from '@/shared/ui/icon'
 import { toRef } from 'vue'
-import VueSlider from 'vue-slider-component'
-import 'vue-slider-component/theme/default.css'
+import Slider from '@vueform/slider'
+import '@vueform/slider/themes/default.css'
 import { useFilter } from '@/features/filter'
 import type { ProductProps } from '@/entities/product'
 import type { FiltersPayload } from '@/features/filter/model/types'
@@ -116,25 +116,12 @@ defineExpose({
           :min="min"
           :max="max" />
       </div>
-      <vue-slider
+      <Slider
         v-model="price"
         :min="min"
         :max="max"
-        :contained="true"
-        :interval="0.01"
-        :min-range="20"
-        :dot-size="22"
-        :dot-style="{
-          backgroundColor: '#70C05B',
-          border: '1px solid #FFFFFF',
-          boxShadow: '2px 4px 8px 0px rgba(112, 192, 91, 0.2)'
-        }"
-        :height="5"
-        :enable-cross="false"
-        :process-style="{ backgroundColor: '#70C05B' }"
-        :rail-style="{ backgroundColor: '#F3F2F1' }"
-        :tooltip="'none'"
-        range
+        :step="-1"
+        :tooltips="false"
         class="filter__range-slider" />
     </div>
     <ul class="filter__products">
@@ -259,6 +246,19 @@ defineExpose({
   &__field {
     max-width: 124px;
     width: 100%;
+  }
+
+  &__range-slider {
+    --slider-height: 5px;
+    --slider-bg: #f3f2f1;
+    --slider-connect-bg: #70c05b;
+    --slider-handle-width: 22px;
+    --slider-handle-height: 22px;
+    --slider-handle-radius: 50%;
+    --slider-handle-bg: #70c05b;
+    --slider-handle-border: 1px solid #ffffff;
+    --slider-handle-shadow: 2px 4px 8px 0 rgba(112, 192, 91, 0.2);
+    --slider-handle-ring-width: 0;
   }
 
   &__products {

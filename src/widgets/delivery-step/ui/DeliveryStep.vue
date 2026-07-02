@@ -102,11 +102,8 @@ if (saved) {
 
 const submit = () => {
   if (!validate()) {
-    console.log('Ошибки:', errors)
     return
   }
-
-  console.log('Форма валидна:', form)
 
   localStorage.removeItem(STORAGE_KEY)
 
@@ -130,7 +127,6 @@ defineExpose({ submit })
     <form
       class="delivery-step__form"
       @submit.prevent="submit">
-      <!-- КУДА -->
       <section class="delivery-step__section">
         <Typography
           tag="h3"
@@ -202,7 +198,6 @@ defineExpose({ submit })
         </div>
       </section>
 
-      <!-- КОГДА -->
       <section class="delivery-step__section">
         <Typography
           tag="h3"
@@ -256,7 +251,6 @@ defineExpose({ submit })
         </div>
       </section>
 
-      <!-- ВХОД -->
       <section class="delivery-step__section">
         <Typography
           tag="h3"
