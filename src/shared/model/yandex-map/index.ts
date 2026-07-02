@@ -1,5 +1,1 @@
-import { mockYandexMap } from './coordinates'
-import type { YandexMapCoordinates } from './types'
-
-export { mockYandexMap }
-export type { YandexMapCoordinates }
+export type { YandexMapCoordinates } from './types'
