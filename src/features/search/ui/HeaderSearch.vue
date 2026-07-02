@@ -1,23 +1,18 @@
 <script lang="ts" setup>
-import { mockCategory, mockProducts } from '@/shared/lib/mocks/mock-products'
 import type { IconProps } from '@/shared/ui/icon'
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { Typography } from '@/shared/ui/typography'
 import { Icon } from '@/shared/ui/icon'
+import type { SearchOption } from '../model/types'
+import { watchDebounced } from '@vueuse/core'
+import { searchApi } from '../api/searchApi'
 
 interface SearchProps {
   placeholder?: string
   size?: 'm' | 'l'
   disabled?: boolean
   rightIcon?: IconProps
-}
-
-export interface SearchOption {
-  id: string
-  title: string
-  type: 'product' | 'category'
-  path: string
 }
 
 withDefaults(defineProps<SearchProps>(), {
@@ -30,40 +25,16 @@ const router = useRouter()
 const searchQuery = ref('')
 const showDropdown = ref(false)
 const selectedOption = ref<SearchOption | null>(null)
+const options = ref<SearchOption[]>([])
 
-const searchOptions = computed<SearchOption[]>(() => {
-  const options: SearchOption[] = []
-
-  mockProducts.forEach((product) => {
-    options.push({
-      id: product.id,
-      title: product.title,
-      type: 'product',
-      path: `/catalog/${product.categoryIds[0]}/${product.id}`
-    })
-  })
-
-  mockCategory.forEach((category) => {
-    options.push({
-      id: category.id,
-      title: category.title,
-      type: 'category',
-      path: `/catalog/${category.id}`
-    })
-  })
-
-  return options
-})
-
-const filteredOptions = computed(() => {
-  if (!searchQuery.value) return []
-
-  const searchToLowerCase = searchQuery.value.toLocaleLowerCase()
-
-  return searchOptions.value
-    .filter((option) => option.title.toLowerCase().includes(searchToLowerCase))
-    .slice(0, 10)
-})
+watchDebounced(
+  searchQuery,
+  async (query) => {
+    const trimmed = query.trim()
+    options.value = trimmed ? ((await searchApi.search(trimmed)) ?? []) : []
+  },
+  { debounce: 300 }
+)
 
 const selectOption = (option: SearchOption) => {
   selectedOption.value = option
@@ -124,10 +95,10 @@ onUnmounted(() => {
 
     <transition name="dropdown-fade">
       <div
-        v-if="showDropdown && filteredOptions.length"
+        v-if="showDropdown && options.length"
         class="header-search__dropdown">
         <div
-          v-for="option in filteredOptions"
+          v-for="option in options"
           :key="`${option.type}-${option.id}`"
           class="header-search__option"
           @click="selectOption(option)">
@@ -142,7 +113,7 @@ onUnmounted(() => {
 
     <transition name="dropdown-fade">
       <div
-        v-if="showDropdown && searchQuery && filteredOptions.length === 0"
+        v-if="showDropdown && searchQuery && options.length === 0"
         class="header-search__no-results">
         <Typography
           tag="p"
