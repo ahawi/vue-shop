@@ -1,17 +1,25 @@
 <script lang="ts" setup>
-import { CategoryCard } from '@/entities/category'
-import { mockCategory } from '@/shared/lib/mocks/mock-products'
+import { CategoryCard, type Category } from '@/entities/category'
+import { categoryApi } from '@/entities/category/api'
+import { ref } from 'vue'
+
+const categories = ref<Category[]>([])
+
+const loadCategories = async () => {
+  categories.value = (await categoryApi.getList()) ?? []
+}
+
+loadCategories()
 </script>
 
 <template>
   <div class="categories">
     <CategoryCard
-      v-for="category in mockCategory"
+      v-for="category in categories"
       :title="category.title"
       :image="category.image"
       :id="category.id"
-      :key="category.id"
-    />
+      :key="category.id" />
   </div>
 </template>
 

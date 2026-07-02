@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { Section } from '@/shared/ui/section'
-import { mockProducts } from '@/shared/lib/mocks/mock-products'
-import { computed } from 'vue'
+import { ref, watch } from 'vue'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
@@ -9,6 +8,8 @@ import 'swiper/css/scrollbar'
 import { SwiperProducts } from '@/shared/ui/swiper-products'
 import { useCartStore } from '@/entities/cart/model/cart'
 import { useNavigate } from '@/shared/lib/useNavigate'
+import type { ProductProps } from '@/entities/product'
+import { productApi } from '@/entities/product/api'
 
 const props = defineProps<{
   title: string
@@ -19,35 +20,28 @@ const props = defineProps<{
 const { addToCart } = useCartStore()
 const { goToProduct } = useNavigate()
 
-const filteredType = computed(() => {
-  let result: typeof mockProducts
+const products = ref<ProductProps[]>([])
 
-  switch (props.filterType) {
-    case 'sale':
-      result = mockProducts.filter((product) => product.discount)
-      break
-    case 'new':
-      result = mockProducts.filter((product) => product.rating < 5)
-      break
-    case 'buy-before':
-      result = mockProducts.filter((product) => product.rating > 4.5)
-      break
-    default:
-      result = mockProducts
-  }
-
-  return [...result].slice(0, 8)
-})
+watch(
+  () => props.filterType,
+  async (filterType) => {
+    const list = await productApi.getList(
+      filterType === 'none' ? undefined : { filter: filterType }
+    )
+    products.value = (list ?? []).slice(0, 8)
+  },
+  { immediate: true }
+)
 </script>
 
 <template>
   <Section
-    v-if="filteredType.length"
+    v-if="products.length"
     :title="title"
     :link-title="linkTitle"
     class="section">
     <SwiperProducts
-      :products="filteredType"
+      :products="products"
       :slides-per-view="4"
       :space-between="40"
       @click:product="goToProduct"

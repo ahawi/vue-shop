@@ -1,11 +1,14 @@
 <script lang="ts" setup>
-import { Section } from '@/shared/ui/section';
-import { ArticleCard } from '@/entities/article';
-import { mockArticles } from '@/entities/article/mocks/mock-articles';
+import { Section } from '@/shared/ui/section'
+import { ArticleCard } from '@/entities/article'
+import { mockArticles } from '@/entities/article/mocks/mock-articles'
 </script>
 
 <template>
-  <Section title="Статьи" link-title="Все статьи" display="flex">
+  <Section
+    title="Статьи"
+    link-title="Все статьи"
+    display="flex">
     <div class="cards">
       <ArticleCard
         v-for="article in mockArticles"
@@ -14,8 +17,7 @@ import { mockArticles } from '@/entities/article/mocks/mock-articles';
         :description="article.description"
         :date="article.date"
         :image="article.image"
-        :id="article.id"
-      ></ArticleCard>
+        :id="article.id"></ArticleCard>
     </div>
   </Section>
 </template>

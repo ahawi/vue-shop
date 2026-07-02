@@ -1,16 +1,17 @@
 <script lang="ts" setup>
 import { Button } from '@/shared/ui/button'
 import { Typography } from '@/shared/ui/typography'
-import { ProductCard } from '@/entities/product'
+import { ProductCard, type ProductProps } from '@/entities/product'
 import { ProductFilter } from '@/widgets/product-filter'
-import { computed, ref, watch } from 'vue'
-import { mockProducts } from '@/shared/lib/mocks/mock-products'
+import { computed, nextTick, ref, watch } from 'vue'
+
 import { useFavoritesStore } from '@/features/favorite/model/favorite'
 import { storeToRefs } from 'pinia'
 import { useCartStore } from '@/entities/cart/model/cart'
 import { useToggleFavorite } from '@/features/toggle-favorite'
 import type { FilterActive } from '@/features/filter/model/types'
 import { useNavigate } from '@/shared/lib/useNavigate'
+import { productApi } from '@/entities/product/api'
 
 const PAGE_STEP = 6
 
@@ -21,8 +22,7 @@ const { goToProduct } = useNavigate()
 
 const productFilter = ref<InstanceType<typeof ProductFilter> | null>(null)
 
-const favoriteProducts = computed(() => mockProducts.filter((p) => itemIds.value.includes(p.id)))
-
+const favoriteProducts = ref<ProductProps[]>([])
 const filteredProducts = computed(
   () => productFilter.value?.filteredProducts ?? favoriteProducts.value
 )
@@ -44,10 +44,18 @@ const resetFilterState = () => {
   productFilter.value?.resetFilterState()
 }
 
-watch(favoriteProducts, () => {
-  productFilter.value?.recalcRangeFromProducts()
-  visibleCount.value = PAGE_STEP
-})
+watch(
+  itemIds,
+  async (ids) => {
+    favoriteProducts.value = ids.length
+      ? ((await productApi.getList({ ids: ids.join(',') })) ?? [])
+      : []
+    visibleCount.value = PAGE_STEP
+    await nextTick()
+    productFilter.value?.recalcRangeFromProducts()
+  },
+  { immediate: true }
+)
 
 const onApplyFilter = () => {
   visibleCount.value = PAGE_STEP
@@ -67,9 +75,7 @@ const onApplyFilter = () => {
       </div>
       <div
         :class="[
-          appliedFilters.length
-            ? 'category-section__main'
-            : 'category-section__main--no-filters',
+          appliedFilters.length ? 'category-section__main' : 'category-section__main--no-filters',
           'main'
         ]">
         <div class="main__top-filters">

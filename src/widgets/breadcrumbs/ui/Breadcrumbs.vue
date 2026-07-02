@@ -1,10 +1,11 @@
 <script lang="ts" setup>
+import { categoryApi } from '@/entities/category/api'
+import { productApi } from '@/entities/product/api'
 import { CART_ROUTE } from '@/pages/cart'
 import { ORDERS_ROUTE } from '@/pages/orders'
-import { mockCategory, mockProducts } from '@/shared/lib/mocks/mock-products'
 import { Icon } from '@/shared/ui/icon'
 import { Typography } from '@/shared/ui/typography'
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
 interface Breadcrumb {
@@ -13,6 +14,25 @@ interface Breadcrumb {
 }
 
 const route = useRoute()
+
+const categoryTitle = ref('')
+const productTitle = ref('')
+
+watch(
+  () => route.path,
+  async () => {
+    const [section, categoryId, productId] = route.path.split('/').slice(1)
+
+    categoryTitle.value =
+      section === 'catalog' && categoryId
+        ? ((await categoryApi.getById(categoryId))?.title ?? '')
+        : ''
+
+    productTitle.value =
+      section === 'catalog' && productId ? ((await productApi.getById(productId))?.title ?? '') : ''
+  },
+  { immediate: true }
+)
 
 const breadcrumbs = computed<Breadcrumb[]>(() => {
   const pathArray = route.path.split('/')
@@ -28,17 +48,15 @@ const breadcrumbs = computed<Breadcrumb[]>(() => {
     crumbs.push({ to: '/catalog', title: 'Каталог' })
 
     if (pathArray[1]) {
-      const category = mockCategory.find((c) => c.id === pathArray[1])
       crumbs.push({
         to: `/catalog/${pathArray[1]}`,
-        title: category?.title || pathArray[1]
+        title: categoryTitle.value || pathArray[1]
       })
 
       if (pathArray[2]) {
-        const product = mockProducts.find((p) => p.id === pathArray[2])
         crumbs.push({
           to: route.path,
-          title: product?.title || pathArray[2]
+          title: productTitle.value || pathArray[2]
         })
       }
     }

@@ -1,29 +1,35 @@
 <script lang="ts" setup>
-import { mockProducts } from '@/shared/lib/mocks/mock-products'
-import { getBoughtTogether } from '@/features/bought-together'
-import { computed } from 'vue'
+import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { Section } from '@/shared/ui/section'
 import { SwiperProducts } from '@/shared/ui/swiper-products'
 import { useCartStore } from '@/entities/cart/model/cart'
 import { useNavigate } from '@/shared/lib/useNavigate'
+import type { ProductProps } from '@/entities/product'
+import { productApi } from '@/entities/product/api'
 
 const route = useRoute()
 const { addToCart } = useCartStore()
 const { goToProduct } = useNavigate()
 
-const currentProduct = computed(() => {
-  return mockProducts.find((product) => product.id === route.params.id)
-})
+const products = ref<ProductProps[]>([])
+
+watch(
+  () => route.params.id,
+  async (id) => {
+    products.value = (await productApi.getBoughtTogether(String(id))) ?? []
+  },
+  { immediate: true }
+)
 </script>
 
 <template>
   <Section
-    v-if="currentProduct"
+    v-if="products.length"
     title="С этим товаром покупают"
     class="section">
     <SwiperProducts
-      :products="getBoughtTogether(currentProduct)"
+      :products="products"
       :slides-per-view="4"
       :space-between="40"
       @click:product="goToProduct"

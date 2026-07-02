@@ -1,28 +1,31 @@
 <script lang="ts" setup>
-import { mockProducts } from '@/shared/lib/mocks/mock-products'
 import { Button } from '@/shared/ui/button'
 import { StarRating } from '@/shared/ui/star-rating'
 import { Typography } from '@/shared/ui/typography'
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useToggleFavorite } from '@/features/toggle-favorite'
-import { mockReviews } from '@/widgets/reviews-section/mock/mock-reviews'
-import { reviewDeclension } from '@/shared/lib/word-declension'
+import { reviewApi, type Review } from '@/entities/review'
 import { ShareLink } from '@/features/share-link'
+import { reviewDeclension } from '@/shared/lib/word-declension'
+import { useProduct } from '@/entities/product/model/current-product'
 
 const route = useRoute()
 const { toggleFavoriteItem, isItemFavorite } = useToggleFavorite()
 
-const product = computed(() => {
-  return mockProducts.find((product) => product.id === route.params.id)
-})
+const product = useProduct()
+const reviews = ref<Review[]>([])
 
-const productReviews = computed(() => {
-  return mockReviews.filter((review) => review.productId === product.value?.id)
-})
+watch(
+  () => route.params.id,
+  async (id) => {
+    reviews.value = (await reviewApi.getByProduct(String(id))) ?? []
+  },
+  { immediate: true }
+)
 
 const reviewsText = computed(() => {
-  const count = productReviews.value.length
+  const count = reviews.value.length
   return `${count} ${reviewDeclension(count)}`
 })
 

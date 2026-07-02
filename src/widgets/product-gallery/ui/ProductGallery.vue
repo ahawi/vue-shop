@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import { mockProducts } from '@/shared/lib/mocks/mock-products'
-import { computed, ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import type { Swiper as SwiperClass } from 'swiper'
@@ -10,6 +9,8 @@ import 'swiper/css/navigation'
 import 'swiper/css/thumbs'
 import { FreeMode, Navigation, Thumbs } from 'swiper/modules'
 import { Badge } from '@/shared/ui/badge'
+import { productApi } from '@/entities/product/api'
+import { useProduct } from '@/entities/product/model/current-product'
 
 const modules = [FreeMode, Navigation, Thumbs]
 const thumbsSwiper = ref<SwiperClass | null>(null)
@@ -20,9 +21,15 @@ const setThumbsSwiper = (swiper: SwiperClass) => {
 
 const route = useRoute()
 
-const product = computed(() => {
-  return mockProducts.find((product) => product.id === route.params.id)
-})
+const product = useProduct()
+
+watch(
+  () => route.params.id,
+  async (id) => {
+    product.value = await productApi.getById(String(id))
+  },
+  { immediate: true }
+)
 </script>
 
 <template>

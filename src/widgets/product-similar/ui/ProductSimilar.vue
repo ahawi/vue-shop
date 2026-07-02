@@ -1,29 +1,23 @@
 <script lang="ts" setup>
-import { mockProducts } from '@/shared/lib/mocks/mock-products'
+import type { ProductProps } from '@/entities/product'
+import { productApi } from '@/entities/product/api'
 import { useNavigate } from '@/shared/lib/useNavigate'
 import { Typography } from '@/shared/ui/typography'
-import { computed } from 'vue'
+import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
 const { goToProduct } = useNavigate()
 
-const currentProduct = computed(() => {
-  return mockProducts.find((product) => product.id === route.params.id)
-})
+const similarProducts = ref<ProductProps[]>([])
 
-const similarProducts = computed(() => {
-  const currentProductCategoryId = currentProduct.value?.categoryIds?.[1]
-
-  return mockProducts
-    .filter(
-      (product) =>
-        product.id !== currentProduct.value?.id &&
-        product.categoryIds &&
-        product.categoryIds[1] === currentProductCategoryId
-    )
-    .slice(0, 4)
-})
+watch(
+  () => route.params.id,
+  async (id) => {
+    similarProducts.value = (await productApi.getSimilar(String(id))) ?? []
+  },
+  { immediate: true }
+)
 </script>
 
 <template>

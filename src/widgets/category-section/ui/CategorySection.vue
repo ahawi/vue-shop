@@ -1,15 +1,16 @@
 <script lang="ts" setup>
 import { Button } from '@/shared/ui/button'
 import { Typography } from '@/shared/ui/typography'
-import { ProductCard } from '@/entities/product'
+import { ProductCard, type ProductProps } from '@/entities/product'
 import { ProductFilter } from '@/widgets/product-filter'
-import { computed, ref, watch } from 'vue'
-import { mockProducts } from '@/shared/lib/mocks/mock-products'
+import { computed, nextTick, ref, watch } from 'vue'
+
 import { useRoute } from 'vue-router'
 import { useToggleFavorite } from '@/features/toggle-favorite'
 import { useCartStore } from '@/entities/cart/model/cart'
 import type { FilterActive } from '@/features/filter/model/types'
 import { useNavigate } from '@/shared/lib/useNavigate'
+import { productApi } from '@/entities/product/api'
 
 const PAGE_STEP = 6
 
@@ -23,11 +24,7 @@ const productFilter = ref<InstanceType<typeof ProductFilter> | null>(null)
 
 const currentCategoryId = computed(() => (route.params.category as string) || '')
 
-const categoryProducts = computed(() =>
-  currentCategoryId.value
-    ? mockProducts.filter((p) => p.categoryIds.includes(currentCategoryId.value))
-    : []
-)
+const categoryProducts = ref<ProductProps[]>([])
 
 const filteredProducts = computed(
   () => productFilter.value?.filteredProducts ?? categoryProducts.value
@@ -50,10 +47,16 @@ const removeFilterButtons = (filter: FilterActive) => {
   productFilter.value?.removeFilterButtons(filter)
 }
 
-watch(currentCategoryId, () => {
-  productFilter.value?.recalcRangeFromProducts()
-  visibleCount.value = PAGE_STEP
-})
+watch(
+  currentCategoryId,
+  async (category) => {
+    categoryProducts.value = category ? ((await productApi.getList({ category })) ?? []) : []
+    visibleCount.value = PAGE_STEP
+    await nextTick()
+    productFilter.value?.recalcRangeFromProducts()
+  },
+  { immediate: true }
+)
 
 const onApplyFilter = () => {
   visibleCount.value = PAGE_STEP

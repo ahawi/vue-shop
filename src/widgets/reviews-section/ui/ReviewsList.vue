@@ -2,29 +2,30 @@
 import { Icon } from '@/shared/ui/icon'
 import { StarRating } from '@/shared/ui/star-rating'
 import { Typography } from '@/shared/ui/typography'
-import { mockProducts } from '@/shared/lib/mocks/mock-products'
-import { computed } from 'vue'
+import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { mockReviews } from '../mock/mock-reviews'
+import { reviewApi, type Review } from '@/entities/review'
 
 const route = useRoute()
 
-const product = computed(() => {
-  return mockProducts.find((product) => product.id === route.params.id)
-})
+const reviews = ref<Review[]>([])
 
-const productReviews = computed(() => {
-  return mockReviews.filter((review) => review.productId === product.value?.id)
-})
+watch(
+  () => route.params.id,
+  async (id) => {
+    reviews.value = (await reviewApi.getByProduct(String(id))) ?? []
+  },
+  { immediate: true }
+)
 </script>
 
 <template>
   <div
     class="reviews-list"
-    v-if="productReviews.length">
+    v-if="reviews.length">
     <div
       class="review"
-      v-for="review in productReviews"
+      v-for="review in reviews"
       :key="review.reviewId">
       <div class="review__user">
         <Icon

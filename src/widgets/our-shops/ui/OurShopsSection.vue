@@ -2,16 +2,24 @@
 import { Button } from '@/shared/ui/button'
 import { Section } from '@/shared/ui/section'
 import { customYandexMap } from '@/shared/ui/custom-yandex-map'
-import { mockYandexMap } from '@/shared/model/yandex-map'
 import { computed, ref } from 'vue'
+import { shopApi, type Shop } from '@/entities/shop'
 
-const currentCityId = ref(mockYandexMap[0]?.id)
+const shops = ref<Shop[]>([])
+const currentShopId = ref<string>()
 
-const toggleCityId = (id: string) => {
-  currentCityId.value = id
+const loadShops = async () => {
+  shops.value = (await shopApi.getList()) ?? []
+  currentShopId.value = shops.value[0]?.id
 }
 
-const currentCity = computed(() => mockYandexMap.find((city) => city.id === currentCityId.value))
+loadShops()
+
+const currentShop = computed(() => shops.value.find((shop) => shop.id === currentShopId.value))
+
+const toggleShopId = (id: string) => {
+  currentShopId.value = id
+}
 </script>
 
 <template>
@@ -22,21 +30,21 @@ const currentCity = computed(() => mockYandexMap.find((city) => city.id === curr
     <div class="contacts__inner">
       <div class="contacts__buttons">
         <Button
-          :class="['contacts__button', { active: currentCityId === cityName.id }]"
-          v-for="cityName in mockYandexMap"
+          :class="['contacts__button', { active: currentShopId === cityName.id }]"
+          v-for="cityName in shops"
           :key="cityName.id"
           background-color="grayscale"
           decoration="default"
           size="s"
-          @click="toggleCityId(cityName.id)"
+          @click="toggleShopId(cityName.id)"
           >{{ cityName.title }}</Button
         >
       </div>
 
       <customYandexMap
-        v-if="currentCity"
-        :coordinates="currentCity?.coordinates"
-        :title="currentCity?.title"></customYandexMap>
+        v-if="currentShop"
+        :coordinates="currentShop?.coordinates"
+        :title="currentShop?.title"></customYandexMap>
     </div>
   </Section>
 </template>

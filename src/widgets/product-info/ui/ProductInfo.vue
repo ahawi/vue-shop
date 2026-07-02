@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import { mockProducts } from '@/shared/lib/mocks/mock-products'
-import { computed } from 'vue'
+import { watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { Typography } from '@/shared/ui/typography'
 import { Button } from '@/shared/ui/button'
@@ -8,18 +7,26 @@ import { Icon } from '@/shared/ui/icon'
 import { useCartStore } from '@/entities/cart/model/cart'
 import { currencyFormatter } from '@/shared/lib/formats'
 import { normalizePrice } from '@/shared/lib/formats'
+import { productApi } from '@/entities/product/api'
+import { useProduct } from '@/entities/product/model/current-product'
 
 const route = useRoute()
 
-const product = computed(() => {
-  return mockProducts.find((product) => product.id === route.params.id)
-})
+const product = useProduct()
 const { addToCart } = useCartStore()
 
 const handleAddToCart = () => {
   if (!product.value) return
   addToCart(product.value)
 }
+
+watch(
+  () => route.params.id,
+  async (id) => {
+    product.value = await productApi.getById(String(id))
+  },
+  { immediate: true }
+)
 </script>
 
 <template>
