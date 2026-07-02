@@ -1,3 +1,3 @@
-import CartView from './CartView.vue'
+import CartPage from './CartPage.vue'
 
-export default CartView
+export default CartPage

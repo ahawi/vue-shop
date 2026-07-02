@@ -1,3 +1,3 @@
-import CategoryView from './CategoryView.vue'
+import CategoryPage from './CategoryPage.vue'
 
-export default CategoryView
+export default CategoryPage

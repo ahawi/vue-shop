@@ -1,19 +1,13 @@
 <script lang="ts" setup>
 import { Breadcrumbs } from '@/widgets/breadcrumbs'
 import { Typography } from '@/shared/ui/typography'
-import { mockProducts } from '@/shared/lib/mocks/mock-products'
-import { useRoute } from 'vue-router'
-import { computed } from 'vue'
 import { ProductDetails } from '@/widgets/product-details'
 import { BoughtTogether } from '@/widgets/bought-together'
 import { ReviewsSection } from '@/widgets/reviews-section'
 import { ProductSection } from '@/widgets/product-section'
+import { useProvideProduct } from '@/entities/product/model/current-product'
 
-const route = useRoute()
-
-const product = computed(() => {
-  return mockProducts.find((product) => product.id === route.params.id)
-})
+const product = useProvideProduct()
 </script>
 
 <template>

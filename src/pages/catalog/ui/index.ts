@@ -1,3 +1,3 @@
-import CatalogView from './CatalogView.vue'
+import CatalogPage from './CatalogPage.vue'
 
-export default CatalogView
+export default CatalogPage

@@ -1,3 +1,3 @@
-import ProductInfoView from './ProductInfoView.vue'
+import ProductPage from './ProductPage.vue'
 
-export default ProductInfoView
+export default ProductPage

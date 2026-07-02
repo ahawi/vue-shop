@@ -1,3 +1,3 @@
-import OrdersView from './OrdersView.vue'
+import OrdersPage from './OrdersPage.vue'
 
-export default OrdersView
+export default OrdersPage

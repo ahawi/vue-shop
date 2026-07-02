@@ -1,33 +1,24 @@
 <script lang="ts" setup>
 import { Typography } from '@/shared/ui/typography'
-import { Header } from '@/widgets/header'
 import { CatalogSection } from '@/widgets/catalog-section'
 import { Breadcrumbs } from '@/widgets/breadcrumbs'
-import { Footer } from '@/widgets/footer'
 </script>
 
 <template>
-  <Header />
-
-  <main class="main">
-    <Breadcrumbs />
-    <Typography tag="h1" size="xl" bold class="main__title">Каталог</Typography>
-    <CatalogSection />
-  </main>
-
-  <Footer />
+  <Breadcrumbs />
+  <Typography
+    tag="h1"
+    size="xl"
+    bold
+    class="title"
+    >Каталог</Typography
+  >
+  <CatalogSection />
 </template>
 
 <style lang="scss" scoped>
-.main {
-  max-width: 1208px;
-  margin: auto;
+.title {
+  margin-bottom: 60px;
   margin-top: 24px;
-  margin-bottom: 80px;
-
-  &__title {
-    margin-bottom: 60px;
-    margin-top: 24px;
-  }
 }
 </style>

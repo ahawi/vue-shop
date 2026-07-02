@@ -1,3 +1,3 @@
-import MainView from './MainView.vue'
+import MainPage from './MainPage.vue'
 
-export default MainView
+export default MainPage

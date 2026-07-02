@@ -1,3 +1,3 @@
-import FavoriteView from './FavoriteView.vue'
+import FavoritePage from './FavoritePage.vue'
 
-export default FavoriteView
+export default FavoritePage

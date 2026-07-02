@@ -1,19 +1,14 @@
 <script lang="ts" setup>
 import { Typography } from '@/shared/ui/typography'
-import { Header } from '@/widgets/header'
 import { Breadcrumbs } from '@/widgets/breadcrumbs'
-import { Footer } from '@/widgets/footer'
 import { useCartStore } from '@/entities/cart/model/cart'
-import { computed, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { CartStep } from '@/widgets/cart-step'
 import { DeliveryStep } from '@/widgets/delivery-step'
 import { CartSummary } from '@/widgets/cart-summary'
+import { storeToRefs } from 'pinia'
 
-const cartStore = useCartStore()
-
-const totalItems = computed(() => {
-  return cartStore.totalProducts
-})
+const { totalProducts } = storeToRefs(useCartStore())
 
 const currentStep = ref(1)
 
@@ -35,45 +30,46 @@ const goToDelivery = () => {
 const deliveryStepRef = ref()
 
 const submitDelivery = () => {
-  console.log('submitDelivery вызван', deliveryStepRef.value)
   deliveryStepRef.value?.submit()
 }
 </script>
 
 <template>
-  <Header />
-  <main class="cart">
-    <Breadcrumbs />
-    <div class="cart__title">
-      <Typography tag="h1" size="xl" bold>{{
-        currentStep === 1 ? 'Корзина' : 'Доставка'
-      }}</Typography>
-      <div v-if="cartStore.totalProducts > 0" class="cart__badge">
-        <Typography tag="span" size="s">{{ totalItems.toString() }}</Typography>
-      </div>
+  <Breadcrumbs />
+  <div class="cart__title">
+    <Typography
+      tag="h1"
+      size="xl"
+      bold
+      >{{ currentStep === 1 ? 'Корзина' : 'Доставка' }}</Typography
+    >
+    <div
+      v-if="totalProducts"
+      class="cart__badge">
+      <Typography
+        tag="span"
+        size="s"
+        >{{ totalProducts.toString() }}</Typography
+      >
     </div>
+  </div>
 
-    <div class="cart__main">
-      <CartStep v-if="currentStep === 1" />
-      <DeliveryStep v-if="currentStep === 2" ref="deliveryStepRef" />
-      <CartSummary
-        class="cart__main-summary"
-        @go-to-delivery="goToDelivery"
-        @submit-delivery="submitDelivery"
-        :current-step="currentStep"
-      />
-    </div>
-  </main>
-  <Footer />
+  <div class="cart__main">
+    <CartStep v-if="currentStep === 1" />
+    <DeliveryStep
+      v-if="currentStep === 2"
+      ref="deliveryStepRef" />
+    <CartSummary
+      v-if="totalProducts"
+      class="cart__main-summary"
+      @go-to-delivery="goToDelivery"
+      @submit-delivery="submitDelivery"
+      :current-step="currentStep" />
+  </div>
 </template>
 
 <style lang="scss" scoped>
 .cart {
-  max-width: 1208px;
-  margin: auto;
-  margin-top: 24px;
-  margin-bottom: 80px;
-
   &__title {
     margin-bottom: 60px;
     margin-top: 24px;
